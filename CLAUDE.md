@@ -10,6 +10,7 @@ This repo is the public website for stonefoldlabs.com. Read `README.md` first. T
 - **Names.** Only names the owner has made final appear: Bellwether Budget and Small Flock (2026-11-12). The others are named by kind. Ask before adding one.
 - **The company's legal name** is written only once it is true. Until the owner says the LLC is formed, pages say "Stonefold Labs", with no "LLC" and no copyright line (`PUBLISHING.md` Part 8).
 - **The brand is the owner's.** The mark in `docs/brand/` is used exactly as supplied; don't redraw or recolour it. Colours come from his palette (`README.md`, "The brand"). The full logo says "LLC" and sets words in a font, so it stays off the site until the company exists and its words are outlines. A picture is one `.svg` of this site, with `alt`, `width` and `height`.
+- **A sibling of longlinelabs.com, not a twin.** The owner wants the two companies' sites to look made by the same person (`README.md`, "The brand"). Keep the shared shape; never borrow Longline's scripts, its Google fonts, or its colours.
 - **The host adds nothing.** GitHub Pages, with Cloudflare set to "DNS only". If hosting ever changes, `scripts/check-live.sh` must still pass and the privacy page must still be true.
 - **The privacy page is true or it is changed.** If anything about hosting, mail or the apps changes what we know about a person, the page changes first, with its date.
 

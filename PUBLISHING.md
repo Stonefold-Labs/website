@@ -117,7 +117,7 @@ Mail already points to Proton (the records were checked on 2026-11-12).
 ## Part 8. The day the company exists (Claude, on your word)
 
 Tell any Stonefold chat that the state has confirmed Stonefold Labs LLC. Then, in `Website/`:
-- each page's footer and the privacy page's "runs this website" line change to "Stonefold Labs LLC";
+- each page's footer gains a line with the year and "Stonefold Labs LLC" beside the wordmark (as longlinelabs.com's footer has), and the privacy page's "runs this website" line changes to "Stonefold Labs LLC";
 - `COMPANY_FORMED` in `scripts/check.py` becomes `True`, after which the check fails if any page lacks the full name;
 - the full logo (the one that reads "STONEFOLD LABS LLC") may then replace the mark and typed name in the header, once its words are turned into outlines so they look the same on every device (`README.md`, "The brand");
 - the privacy page's date changes; commit, push, run `scripts/check-live.sh`.
