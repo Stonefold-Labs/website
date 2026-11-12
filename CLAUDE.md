@@ -13,6 +13,11 @@ This repo is the public website for stonefoldlabs.com. Read `README.md` first. T
 - **The host adds nothing.** GitHub Pages, with Cloudflare set to "DNS only". If hosting ever changes, `scripts/check-live.sh` must still pass and the privacy page must still be true.
 - **The privacy page is true or it is changed.** If anything about hosting, mail or the apps changes what we know about a person, the page changes first, with its date.
 
+## The shape of the site (the owner, 2026-11-12)
+- **One company site, three pages.** Home lists the apps; Privacy and Support are the two small pages every App Store listing links to. No app gets its own domain or its own page.
+- **App Store links arrive with each release.** Until an app is released it reads "In development" with no link. On release it gets one link to its App Store page (iPhone and Mac are planned as one store record; confirm against Apple's page when the first listing exists), and `scripts/check.py` is loosened for that wording only.
+- `bellwetherbudget.com` is meant to forward here. Bellwether's `SPEC.md` §4.9 still says it carries Bellwether's own pages; that line is Bellwether's to change.
+
 ## How to work
 1. Plan first for anything beyond a wording fix, and wait for the owner's yes.
 2. `python3 -I scripts/check.py` must say `clean` before every commit. A new outside link is added to `OUTSIDE_LINKS` there on purpose, not to quiet the check.
