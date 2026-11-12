@@ -3,19 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
 <title>Stonefold Labs</title>
 <meta name="description" content="Stonefold Labs makes apps for iPhone and Mac that each do one everyday job, plainly. No account, no ads, no tracking, no AI. Pay once.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script src="/theme.js"></script>
 <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to the page</a>
 <header class="top">
 <div class="wrap bar">
-<a class="brand" href="/"><picture><source srcset="/brand/stonefold-labs-mark-dark.svg" media="(prefers-color-scheme: dark)"><img src="/brand/stonefold-labs-mark-light.svg" alt="" width="36" height="36"></picture>Stonefold Labs</a>
+<a class="brand" href="/"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="36" height="36"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="36" height="36">Stonefold Labs</a>
 <nav aria-label="Pages">
 <ul>
 <li><a href="#apps">Apps</a></li>
@@ -24,6 +25,12 @@
 <li><a href="/support/">Support</a></li>
 </ul>
 </nav>
+<button type="button" id="theme-toggle" class="theme" role="switch" aria-checked="false" aria-label="Dark mode" hidden>
+<span class="theme-track"><span class="theme-knob">
+<svg class="sun" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="2.8" fill="currentColor" stroke="none"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1"/></svg>
+<svg class="moon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6Z" fill="currentColor"/></svg>
+</span></span>
+</button>
 </div>
 </header>
 <main id="main">
@@ -34,7 +41,7 @@
 <p class="lede">Stonefold Labs makes apps for iPhone and Mac. Each one does a single job you already understand: a budget, a note, a list, a date.</p>
 <p class="actions"><a class="button" href="#apps">See the apps</a> <a href="#about">About Stonefold Labs</a></p>
 </div>
-<picture><source srcset="/brand/stonefold-labs-mark-dark.svg" media="(prefers-color-scheme: dark)"><img class="hero-art" src="/brand/stonefold-labs-mark-light.svg" alt="" width="256" height="256"></picture>
+<div class="hero-art"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="256" height="256"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="256" height="256"></div>
 </section>
 
 <section id="apps" class="wrap section">
@@ -65,7 +72,7 @@
 <h2>About Stonefold Labs</h2>
 <p>Stonefold Labs makes apps for iPhone and Mac. Each one does a single job, and does it plainly.</p>
 <p>A fold is a pen with stone walls, built to keep a flock together. The apps are made the same way: what you put in one is yours. There is no account to make, nothing is tracked, and you pay once.</p>
-<p>This website keeps the same promises: no cookies, no analytics, no scripts. <a href="/privacy/">Privacy</a> has the details.</p>
+<p>This website keeps the same promises: no cookies, no analytics, and nothing loaded from anyone else. <a href="/privacy/">Privacy</a> has the details.</p>
 </div>
 <ul class="promises">
 <li><h3>No account</h3><p>No sign-up.</p></li>
@@ -93,7 +100,7 @@
 </main>
 <footer>
 <div class="wrap foot">
-<a class="brand" href="/"><picture><source srcset="/brand/stonefold-labs-mark-dark.svg" media="(prefers-color-scheme: dark)"><img src="/brand/stonefold-labs-mark-light.svg" alt="" width="24" height="24"></picture>Stonefold Labs</a>
+<a class="brand" href="/"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="24" height="24"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="24" height="24">Stonefold Labs</a>
 <ul>
 <li><a href="#apps">Apps</a></li>
 <li><a href="#about">About</a></li>

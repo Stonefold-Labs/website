@@ -4,10 +4,12 @@
     python3 -I scripts/check.py              check docs/
     python3 -I scripts/check.py --self-test  prove each rule can fail
 
-It fails if a page could track a reader, load anything from another site, or say
+It fails if a page could track a reader, load anything from another site, run any
+script but the light and dark switch (docs/theme.js, pinned below), or say
 something the house rules (../Stonefold/HOUSE-RULES.md §4) don't allow yet.
 """
 
+import hashlib
 import re
 import sys
 import tempfile
@@ -21,7 +23,12 @@ SITE = ROOT / "docs"
 # in each page's footer and in the privacy page's "runs this website" line.
 COMPANY_FORMED = False
 
-CSP = "default-src 'none'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+
+# The site's one script: the light and dark switch (the owner, 2026-11-12). Its exact contents are pinned here,
+# so a change to it is always a decision: read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
+THEME_JS = "/theme.js"
+THEME_JS_SHA256 = "4f9a6be38fe93758bbed3a4ec58e399363a2231d0a1bd6666a909a09f7282654"
 SUPPORT = "mailto:support@stonefoldlabs.com"
 
 # Every link that leaves the site is listed here, so a new one is a decision.
@@ -30,11 +37,11 @@ OUTSIDE_LINKS = {
 }
 
 # The only files that may be published.
-ALLOWED_FILES = {".html", ".css", ".svg", ".txt"}
+ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js"}
 ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
 FORBIDDEN_TAGS = {
-    "script", "iframe", "frame", "object", "embed", "form", "input", "button", "textarea",
+    "iframe", "frame", "object", "embed", "form", "input", "textarea",
     "select", "video", "audio", "track", "canvas", "base", "style", "noscript",
 }
 
@@ -65,6 +72,9 @@ class Page(HTMLParser):
         self.words = []
         self.links = []
         self.pictures = []
+        self.scripts = 0
+        self.buttons = 0
+        self._in_script = False
         self.ids = set()
         self.headings = []
         self.h1 = 0
@@ -89,7 +99,7 @@ class Page(HTMLParser):
                 self.problems.append(f"<{tag} style=…>: no inline styles")
             if name in ("poster", "data", "action", "background", "ping"):
                 self.problems.append(f"<{tag} {name}=…>: nothing is loaded or posted")
-            if name in ("src", "srcset") and (tag, name) not in (("img", "src"), ("source", "srcset")):
+            if name in ("src", "srcset") and (tag, name) not in (("img", "src"), ("source", "srcset"), ("script", "src")):
                 self.problems.append(f"<{tag} {name}=…>: nothing is loaded or posted")
         if "id" in a:
             self.ids.add(a["id"])
@@ -121,6 +131,18 @@ class Page(HTMLParser):
                 self.problems.append(f"<link href={href!r}>: must be a file of this site")
             else:
                 self.links.append((href, a))
+        elif tag == "script":
+            # Only the switch, loaded from this site, with nothing written inside the tag.
+            self._in_script = True
+            self.scripts += 1
+            if attrs != [("src", THEME_JS)]:
+                self.problems.append(f"<script>: the only script is <script src=\"{THEME_JS}\"></script>")
+        elif tag == "button":
+            self.buttons += 1
+            if a.get("id") != "theme-toggle" or a.get("type") != "button" or not a.get("aria-label"):
+                self.problems.append("<button>: the only button is the light and dark switch")
+            if "hidden" not in a:
+                self.problems.append("the switch must start hidden, so it is never a dead button without the script")
         elif tag in ("img", "source"):
             # The company's mark, from this site only. One file per picture: no lists, no sizes.
             file = a.get("src" if tag == "img" else "srcset") or ""
@@ -149,10 +171,16 @@ class Page(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "title":
             self._in_title = False
+        elif tag == "script":
+            self._in_script = False
         elif tag == "head":
             self._in_head = False
 
     def handle_data(self, data):
+        if self._in_script:
+            if data.strip():
+                self.problems.append("a script written into the page")
+            return
         if self._in_title:
             self.title += data
         if not self._in_head or self._in_title:
@@ -205,6 +233,8 @@ def check_page(site, file):
         problems.append("no <title>")
     if not page.description:
         problems.append("no description")
+    if page.scripts != 1 or page.buttons != 1:
+        problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the switch, once")
     if page.h1 != 1:
         problems.append(f"{page.h1} <h1> headings; a page has exactly one")
     for before, after in zip(page.headings, page.headings[1:]):
@@ -254,6 +284,25 @@ def check_css(file):
     return problems
 
 
+def check_js(site, file):
+    if "/" + str(file.relative_to(site)) != THEME_JS:
+        return ["the only script is " + THEME_JS]
+    js = file.read_bytes()
+    problems = []
+    if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
+        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
+    for pattern, why in [
+        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:", "it may not reach the network"),
+        (rb"cookie|indexedDB|sessionStorage|caches", "it may keep nothing but the one word in localStorage"),
+        (rb"eval|Function\(|innerHTML|createElement|document\.write|setTimeout|setInterval", "it may not make or run code"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    if set(re.findall(rb"localStorage\.\w+Item\(\s*\"([^\"]*)\"", js)) - {b"theme"}:
+        problems.append("it may remember only \"theme\"")
+    return problems
+
+
 def check_svg(file):
     svg = file.read_text(encoding="utf-8")
     problems = []
@@ -280,6 +329,8 @@ def check_site(site):
             problems = check_css(file)
         elif file.suffix == ".svg":
             problems = check_svg(file)
+        elif file.suffix == ".js":
+            problems = check_js(site, file)
         else:
             problems = []
         if problems:
@@ -293,13 +344,16 @@ GOOD_PAGE = """<!doctype html>
 <meta http-equiv="Content-Security-Policy" content="{csp}">
 <meta name="referrer" content="no-referrer">
 <title>T</title><meta name="description" content="D">
-<link rel="stylesheet" href="/styles.css">{head}</head>
-<body><header><nav><a href="/">Home</a></nav></header>
+<link rel="stylesheet" href="/styles.css"><script src="/theme.js"></script>{head}</head>
+<body><header><nav><a href="/">Home</a></nav><button type="button" id="theme-toggle" aria-label="Dark mode" hidden></button></header>
 <main><h1>One</h1>{body}</main><footer>Stonefold Labs</footer></body></html>
 """
 
 BAD = [
     ("a script", "body", "<script>1</script>"),
+    ("a second copy of the switch's script", "body", '<script src="/theme.js"></script>'),
+    ("the switch's script, deferred to another file", "head", '<script src="/theme.js" integrity="x"></script>'),
+    ("another button", "body", '<button type="button">Buy</button>'),
     ("a script from elsewhere", "head", '<script src="https://example.com/a.js"></script>'),
     ("an event handler", "body", '<p onclick="x()">hi</p>'),
     ("an inline style", "body", '<p style="color:red">hi</p>'),
@@ -338,6 +392,8 @@ def self_test():
         site = Path(folder)
         (site / "styles.css").write_text("body { margin: 0 }\n")
         (site / "mark.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>\n')
+        theme = (SITE / "theme.js").read_bytes()
+        (site / "theme.js").write_bytes(theme)
         page = site / "index.html"
 
         page.write_text(GOOD_PAGE.format(csp=CSP, head="", body='<img src="/mark.svg" alt="" width="1" height="1">'))
@@ -377,6 +433,11 @@ def self_test():
                 missed.append(name)
         (site / "mark.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>\n')
 
+        (site / "theme.js").write_bytes(theme + b'\nfetch("/log");\n')
+        if not check_site(site):
+            missed.append("a changed theme.js")
+        (site / "theme.js").write_bytes(theme)
+
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -384,7 +445,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 8} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 9} planted faults were caught")
     return 0
 
 

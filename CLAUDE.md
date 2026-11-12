@@ -3,8 +3,9 @@
 This repo is the public website for stonefoldlabs.com. Read `README.md` first. The Stonefold house rules (`../Stonefold/HOUSE-RULES.md`) hold here: §4 (what may be claimed), §5 (the website line), §7 and §8 (names and brand).
 
 ## Non-negotiables
-- **Plain pages.** Hand-written HTML and one CSS file. No JavaScript, no build step, no framework, no generator.
-- **Nothing that could track a reader.** No analytics, no cookies, no forms, no embeds, no fonts, pictures or files from another site. Every page carries the same content-security rule; don't loosen it.
+- **Plain pages.** Hand-written HTML and one CSS file. No build step, no framework, no generator.
+- **One script, and only one.** `docs/theme.js` is the light and dark switch the owner asked for on 2026-11-12. It keeps one word in the browser and reaches no network. Its contents are pinned in `scripts/check.py`; change it only on purpose, read the diff, re-pin. Never add a second script, and never one from another site. If the script ever does more than switch the theme, the Privacy page changes first.
+- **Nothing that could track a reader.** No analytics, no cookies, no forms, no embeds, no fonts, pictures, scripts or files from another site. Every page carries the same content-security rule; don't loosen it.
 - **Claims are promises.** A page says only what house rules §4 allows on that day. Sync and end-to-end wording waits until an app's sync ships. "Data Not Collected" waits until a label is live. Apple's current pages are read before a claim is written, not remembered.
 - **No app is described as available** until it is. No prices.
 - **Names.** Only names the owner has made final appear: Bellwether Budget and Small Flock (2026-11-12). The others are named by kind. Ask before adding one.

@@ -3,7 +3,8 @@
    The shape is a sibling of longlinelabs.com, the owner's other company: a stripe along the top, the mark
    and a serif wordmark, a headline beside a picture, cards for the apps, hairlines between sections.
    The colours and the mark are Stonefold's own: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8,
-   amber #d5a96c. Light and dark follow the reader's device; there is no switch, because there is no script. */
+   amber #d5a96c. Light and dark follow the reader's device until the switch in the header is used; the switch
+   is theme.js, the site's one script, and it sets data-theme on <html>. */
 
 :root {
   color-scheme: light dark;
@@ -20,8 +21,10 @@
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* Dark, because the device is, where nobody has chosen with the switch. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
     --page: #1c2925;
     --raised: #24332e;
     --text: #f2f0e8;
@@ -31,6 +34,39 @@
     --fill: #a9b8a1;
     --on-fill: #1c2925;
   }
+
+  :root:not([data-theme="light"]) .mark-light {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .mark-dark {
+    display: block;
+  }
+}
+
+/* Light or dark, chosen with the switch. The same values as above. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --page: #1c2925;
+  --raised: #24332e;
+  --text: #f2f0e8;
+  --quiet: #b2bfb6;
+  --link: #a9b8a1;
+  --rule: #33443e;
+  --fill: #a9b8a1;
+  --on-fill: #1c2925;
+}
+
+:root[data-theme="dark"] .mark-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .mark-dark {
+  display: block;
 }
 
 *,
@@ -64,6 +100,15 @@ main {
   max-width: 68rem;
   margin: 0 auto;
   padding: 0 1.5rem;
+}
+
+img,
+svg {
+  display: block;
+}
+
+.mark-dark {
+  display: none;
 }
 
 .skip {
@@ -129,9 +174,66 @@ a:focus-visible {
 }
 
 .brand img {
-  display: block;
   width: 2.25rem;
   height: 2.25rem;
+}
+
+/* The light and dark switch. Hidden until theme.js is running, so it is never a dead button. */
+
+.theme {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  margin: 0 0 0 auto;
+  padding: 0 0.25rem;
+  background: none;
+  border: 0;
+  border-radius: 1rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.theme[hidden] {
+  display: none;
+}
+
+.theme:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+.theme-track {
+  display: flex;
+  align-items: center;
+  width: 2.75rem;
+  height: 1.5rem;
+  padding: 0.125rem;
+  background: var(--page);
+  border: 1px solid var(--quiet);
+  border-radius: 1rem;
+}
+
+.theme[aria-checked="true"] .theme-track {
+  justify-content: flex-end;
+}
+
+.theme-knob {
+  display: grid;
+  place-items: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  background: var(--fill);
+  border-radius: 50%;
+  color: var(--on-fill);
+}
+
+.theme .moon,
+.theme[aria-checked="true"] .sun {
+  display: none;
+}
+
+.theme[aria-checked="true"] .moon {
+  display: block;
 }
 
 nav ul {
@@ -261,8 +363,7 @@ ul {
   text-decoration: underline;
 }
 
-.hero-art {
-  display: block;
+.hero-art img {
   width: 100%;
   max-width: 17rem;
   height: auto;
@@ -426,6 +527,15 @@ footer {
 @media (max-width: 44rem) {
   .wrap {
     padding: 0 1.25rem;
+  }
+
+  .theme {
+    order: 2;
+  }
+
+  .bar nav {
+    order: 3;
+    flex-basis: 100%;
   }
 
   h1 {
