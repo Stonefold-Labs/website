@@ -35,7 +35,7 @@ ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
 FORBIDDEN_TAGS = {
     "script", "iframe", "frame", "object", "embed", "form", "input", "button", "textarea",
-    "select", "video", "audio", "source", "track", "canvas", "base", "style", "noscript", "img",
+    "select", "video", "audio", "track", "canvas", "base", "style", "noscript",
 }
 
 # House rules §4. Each entry: (pattern, why). Matched against the words a reader sees
@@ -64,6 +64,7 @@ class Page(HTMLParser):
         self.problems = []
         self.words = []
         self.links = []
+        self.pictures = []
         self.ids = set()
         self.headings = []
         self.h1 = 0
@@ -86,7 +87,9 @@ class Page(HTMLParser):
                 self.problems.append(f"<{tag} {name}=…>: no event handlers")
             if name == "style":
                 self.problems.append(f"<{tag} style=…>: no inline styles")
-            if name in ("src", "srcset", "poster", "data", "action", "background", "ping"):
+            if name in ("poster", "data", "action", "background", "ping"):
+                self.problems.append(f"<{tag} {name}=…>: nothing is loaded or posted")
+            if name in ("src", "srcset") and (tag, name) not in (("img", "src"), ("source", "srcset")):
                 self.problems.append(f"<{tag} {name}=…>: nothing is loaded or posted")
         if "id" in a:
             self.ids.add(a["id"])
@@ -118,6 +121,19 @@ class Page(HTMLParser):
                 self.problems.append(f"<link href={href!r}>: must be a file of this site")
             else:
                 self.links.append((href, a))
+        elif tag in ("img", "source"):
+            # The company's mark, from this site only. One file per picture: no lists, no sizes.
+            file = a.get("src" if tag == "img" else "srcset") or ""
+            if not file.startswith("/") or file.startswith("//") or " " in file or "," in file:
+                self.problems.append(f"<{tag}> {file!r}: a picture must be one file of this site")
+            else:
+                self.pictures.append(file)
+            if tag == "img" and "alt" not in a:
+                self.problems.append("<img> without alt")
+            if tag == "img" and not (a.get("width") and a.get("height")):
+                self.problems.append("<img> without width and height (the page would jump as it loads)")
+            if tag == "source" and not a.get("media"):
+                self.problems.append("<source> without media")
         elif tag == "a":
             if "href" not in a:
                 self.problems.append("<a> without href")
@@ -154,7 +170,7 @@ def resolves(site, href):
     return target.is_file()
 
 
-def check_words(text):
+def check_words(text, a_page=True):
     problems = []
     flat = " ".join(text.replace("’", "'").split())
     for pattern, why in NOT_YET:
@@ -163,7 +179,7 @@ def check_words(text):
             problems.append(f"says {found.group(0)!r}: {why}")
     if not COMPANY_FORMED and re.search(r"\bL\.?L\.?C\b|\bInc\b|©|copyright", flat, re.IGNORECASE):
         problems.append("names a legal company or a copyright before the company is formed")
-    if COMPANY_FORMED and "Stonefold Labs LLC" not in flat:
+    if COMPANY_FORMED and a_page and "Stonefold Labs LLC" not in flat:
         problems.append("the company is formed, but the page doesn't say 'Stonefold Labs LLC'")
     return problems
 
@@ -214,6 +230,10 @@ def check_page(site, file):
         else:
             problems.append(f"{href}: not a page of this site, and not on the list of outside links")
 
+    for file in page.pictures:
+        if not resolves(site, file) or not file.endswith(".svg"):
+            problems.append(f"{file}: the picture is missing, or isn't an .svg of this site")
+
     problems += check_words(" ".join(page.words) + " " + (page.description or ""))
     return problems
 
@@ -237,8 +257,9 @@ def check_css(file):
 def check_svg(file):
     svg = file.read_text(encoding="utf-8")
     problems = []
-    if re.search(r"<script|<foreignObject|<image|<use|href=|\son\w+=|<style", svg, re.IGNORECASE):
-        problems.append("the picture may hold only shapes")
+    if re.search(r"<script|<foreignObject|<image|<use|href=|\son\w+=|<style|<text|font|url\(", svg, re.IGNORECASE):
+        problems.append("the picture may hold only shapes (no scripts, links, styles, or words set in a font)")
+    problems += check_words(re.sub(r"<[^>]+>", " ", svg), a_page=False)
     return problems
 
 
@@ -282,7 +303,11 @@ BAD = [
     ("a script from elsewhere", "head", '<script src="https://example.com/a.js"></script>'),
     ("an event handler", "body", '<p onclick="x()">hi</p>'),
     ("an inline style", "body", '<p style="color:red">hi</p>'),
-    ("a picture from elsewhere", "body", '<img src="https://example.com/p.gif" alt="">'),
+    ("a picture from elsewhere", "body", '<img src="https://example.com/p.gif" alt="" width="1" height="1">'),
+    ("a picture that isn't there", "body", '<img src="/nope.svg" alt="" width="1" height="1">'),
+    ("a picture with no alt", "body", '<img src="/mark.svg" width="1" height="1">'),
+    ("a picture list", "body", '<img src="/mark.svg" srcset="/mark.svg 1x, https://example.com/p.gif 2x" alt="" width="1" height="1">'),
+    ("a source from elsewhere", "body", '<picture><source srcset="https://example.com/p.svg" media="(min-width: 1px)"></picture>'),
     ("a web font", "head", '<link rel="stylesheet" href="https://fonts.example.com/f.css">'),
     ("a preconnect", "head", '<link rel="preconnect" href="/x">'),
     ("a form", "body", "<form></form>"),
@@ -312,7 +337,13 @@ def self_test():
     with tempfile.TemporaryDirectory() as folder:
         site = Path(folder)
         (site / "styles.css").write_text("body { margin: 0 }\n")
+        (site / "mark.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>\n')
         page = site / "index.html"
+
+        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body='<img src="/mark.svg" alt="" width="1" height="1">'))
+        if check_site(site):
+            print("self-test: a page with the mark was refused:", check_site(site))
+            return 1
 
         page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
         if check_site(site):
@@ -338,6 +369,14 @@ def self_test():
                 missed.append(name)
         (site / "styles.css").write_text("body { margin: 0 }\n")
 
+        for name, svg in [("a logo that says LLC", '<svg xmlns="http://www.w3.org/2000/svg"><title>Stonefold Labs LLC</title></svg>'),
+                          ("words in a picture", '<svg xmlns="http://www.w3.org/2000/svg"><text font-family="Avenir Next">HI</text></svg>'),
+                          ("a script in a picture", '<svg xmlns="http://www.w3.org/2000/svg"><script>1</script></svg>')]:
+            (site / "mark.svg").write_text(svg)
+            if not check_site(site):
+                missed.append(name)
+        (site / "mark.svg").write_text('<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>\n')
+
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -345,7 +384,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 5} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 8} planted faults were caught")
     return 0
 
 
