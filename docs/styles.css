@@ -1,23 +1,24 @@
-/* Stonefold Labs. One stylesheet, no imports, no fonts from anywhere but the reader's own device. */
+/* Stonefold Labs. One stylesheet, no imports, no fonts from anywhere but the reader's own device.
+   Colours are the brand's: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8. Amber stays in the mark. */
 
 :root {
   color-scheme: light dark;
-  --page: #fbfaf8;
-  --text: #1f2328;
-  --quiet: #565c64;
-  --link: #2f4a6b;
-  --rule: #dcd9d3;
-  --tag: #efede8;
+  --page: #f2f0e8;
+  --text: #293b36;
+  --quiet: #4f6057;
+  --link: #1f5143;
+  --rule: #d8d5c9;
+  --tag: #e8e5da;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --page: #16181b;
-    --text: #e8e6e1;
-    --quiet: #a7abb1;
-    --link: #a9c1e0;
-    --rule: #2e3238;
-    --tag: #23262a;
+    --page: #1c2925;
+    --text: #f2f0e8;
+    --quiet: #b2bfb6;
+    --link: #a9b8a1;
+    --rule: #33443e;
+    --tag: #26352f;
   }
 }
 

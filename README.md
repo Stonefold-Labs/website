@@ -13,7 +13,8 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   support/index.html https://stonefoldlabs.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
-  favicon.svg        a plain square, a stand-in until the company has a mark
+  favicon.svg        the company's mark on a warm ivory tile, for the browser tab
+  brand/             the mark, for light and for dark, exactly as the owner supplied it
   robots.txt
   CNAME              tells GitHub Pages the site's address
   .nojekyll          tells GitHub Pages to publish the files as they are
@@ -45,3 +46,12 @@ It must say `clean`. It fails on a script, anything loaded from another site, a 
 Built and seen locally. Not published: no GitHub repo, no DNS records for the site. `PUBLISHING.md` has the steps.
 
 The company is not formed yet, so no page says "LLC" and none carries a copyright line. `PUBLISHING.md` Part 8 is the change for the day it is.
+
+## The brand
+
+The owner supplied the brand assets on 2026-11-12 (`stonefold-labs-brand-assets.zip`, made 2026-11-11): a mark, a full logo, and a palette of evergreen `#293B36`, sage `#A9B8A1`, warm ivory `#F2F0E8` and amber `#D5A96C`.
+
+- **The mark** is in the header of every page, beside the name set as ordinary text. The two files in `docs/brand/` are the owner's, unchanged; the page picks one by the reader's light or dark setting, with no script.
+- **The tab icon** (`docs/favicon.svg`) is the light mark on a warm ivory tile, so it shows on a dark tab bar too. The tile is the only thing added.
+- **The colours** in `docs/styles.css` are the palette's. Text contrast was measured: at least 5.3 to 1 everywhere, 10 to 1 or more for body text. Amber appears only in the mark.
+- **The full logo is not used yet, and is not in this repo.** It reads "STONEFOLD LABS LLC", and the company isn't formed. It also sets its words in a font (Avenir Next) that only Apple devices have, so on other devices the words would shift. Before it goes on the site its words need turning into outlines; until then the mark and typed name do the job.

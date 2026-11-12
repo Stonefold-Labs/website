@@ -119,6 +119,7 @@ Mail already points to Proton (the records were checked on 2026-11-12).
 Tell any Stonefold chat that the state has confirmed Stonefold Labs LLC. Then, in `Website/`:
 - each page's footer and the privacy page's "runs this website" line change to "Stonefold Labs LLC";
 - `COMPANY_FORMED` in `scripts/check.py` becomes `True`, after which the check fails if any page lacks the full name;
+- the full logo (the one that reads "STONEFOLD LABS LLC") may then replace the mark and typed name in the header, once its words are turned into outlines so they look the same on every device (`README.md`, "The brand");
 - the privacy page's date changes; commit, push, run `scripts/check-live.sh`.
 
 Do this **before** enrolling with Apple. Apple checks that the website belongs to the legal company: "Your organization's website must be publicly available and functional, and its domain name must be associated with your organization."
