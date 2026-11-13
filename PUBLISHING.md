@@ -1,6 +1,13 @@
 # Putting stonefoldlabs.com on the internet
 
-Written 2026-11-12. Nothing here has been done yet. The site is built and sits in `docs/` on this Mac.
+Written 2026-11-12.
+
+**Where it stands (2026-11-13): live.** https://stonefoldlabs.com serves the three pages over HTTPS from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), and `scripts/check-live.sh` passes. Parts 1 to 6 are done; Part 7 (the mailbox test) and Part 8 (the day the company exists) are still to do.
+
+What differed from the plan below:
+- **The organization.** Instead of a new one, the owner renamed his existing `Bellwether-Budget` organization to `Stonefold-Labs` (capitalised to match `Longline-Labs`). It also holds the private `bellwether` repo, now `Stonefold-Labs/bellwether`. GitHub ignores capital letters in names, so `stonefold-labs` below and `Stonefold-Labs` are the same organization; the `www` record still points at `stonefold-labs.github.io`.
+- **The verification record** GitHub asked for is `_github-pages-challenge-Stonefold-Labs`.
+- **Part 5** was done by Claude with GitHub's command-line tool on the owner's yes. The certificate was approved within a minute; **Enforce HTTPS** is on. For a few minutes some GitHub servers still showed the old certificate, and GitHub once answered with its own "503" error page; both cleared on their own.
 
 Do the parts in order. Each part says who does it. Where it says "Claude, on your yes", open the website chat and say yes to that one step; nothing is pushed or created without it.
 
@@ -10,7 +17,7 @@ Button names in **bold** were read from GitHub's, Cloudflare's and Proton's help
 
 ---
 
-## Part 1. A GitHub organization for the company (you, 3 minutes)
+## Part 1. A GitHub organization for the company (you, 3 minutes) — done 2026-11-13
 
 The site's files go in a public GitHub repo. Putting it in an organization named for the company keeps your personal user name out of the web address records. On 2026-11-12 the name `stonefold-labs` was free.
 
@@ -26,7 +33,7 @@ Then tell the website chat: "the organization exists", and what you named it if 
 
 **The author on each commit (settled 2026-11-13).** Each saved change (commit) in a public repo shows its author. The owner chose "Stonefold Labs" with `support@stonefoldlabs.com`, the address already on the site. It is set for this repo only (`git config user.name` and `user.email` in this folder), and the commits made before the first push were rewritten to say the same.
 
-## Part 2. Create the repo and push (Claude, on your yes)
+## Part 2. Create the repo and push (Claude, on your yes) — done 2026-11-13
 
 I run, from `Website/`:
 
@@ -36,7 +43,7 @@ gh repo create stonefold-labs/website --public --source . --remote origin --push
 
 That creates one public repo, `stonefold-labs/website`, and uploads this folder. Nothing else on your Mac is touched. Anyone can then read these files on GitHub, which is fine: they are the public website and its notes.
 
-## Part 3. Prove the domain is yours (you, 5 minutes)
+## Part 3. Prove the domain is yours (you, 5 minutes) — done 2026-11-13
 
 This stops anyone else on GitHub from claiming stonefoldlabs.com.
 
@@ -57,7 +64,7 @@ On Cloudflare, in a second tab:
 
 Back on GitHub: wait a minute, then click **Verify**. If it says not yet, wait ten minutes and use the three-dot menu beside the domain, **Continue verifying**, then **Verify**. Keep the TXT record for good.
 
-## Part 4. Point the domain at GitHub (you, 10 minutes)
+## Part 4. Point the domain at GitHub (you, 10 minutes) — done 2026-11-13
 
 Still on Cloudflare ▸ stonefoldlabs.com ▸ **DNS** ▸ **Records**. You add nine records. For each: click **Add record**, fill in the row from the table, and click **Save**.
 
@@ -79,7 +86,7 @@ Still on Cloudflare ▸ stonefoldlabs.com ▸ **DNS** ▸ **Records**. You add n
 
 **Do not touch** the records already there: two MX records, the TXT records starting `v=spf1` and `protonmail-verification`, `_dmarc`, and the three `protonmail…_domainkey` CNAMEs. Those are your mail.
 
-## Part 5. Turn on the site (you, or Claude on your yes; 3 minutes)
+## Part 5. Turn on the site (you, or Claude on your yes; 3 minutes) — done 2026-11-13
 
 On GitHub, in the repo `stonefold-labs/website`:
 1. Click the **Settings** tab.
@@ -91,7 +98,7 @@ On GitHub, in the repo `stonefold-labs/website`:
 
 I can do steps 3 and 4 from here with one command if you prefer; say so.
 
-## Part 6. Check the live site (Claude, then you)
+## Part 6. Check the live site (Claude, then you) — Claude's half done 2026-11-13
 
 I run:
 

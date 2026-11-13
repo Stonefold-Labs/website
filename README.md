@@ -42,9 +42,9 @@ python3 -I scripts/check.py
 
 It must say `clean`. It fails on any script but `theme.js` (whose exact contents are pinned in the check), anything loaded from another site, a dead link, or a claim the house rules (`../Stonefold/HOUSE-RULES.md` §4) don't allow yet. `python3 -I scripts/check.py --self-test` proves each rule can fail.
 
-## Where it stands (2026-11-12)
+## Where it stands (2026-11-13)
 
-Built and seen locally. Not published: no GitHub repo, no DNS records for the site. `PUBLISHING.md` has the steps.
+Live at https://stonefoldlabs.com since 2026-11-13, served by GitHub Pages from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), with Cloudflare on "DNS only". Commits are authored "Stonefold Labs". `PUBLISHING.md` says which parts are done; the mailbox test and the day the company exists are still to do. Any change: edit, `python3 -I scripts/check.py`, commit, push (on the owner's yes), then `scripts/check-live.sh`.
 
 The company is not formed yet, so no page says "LLC" and none carries a copyright line. `PUBLISHING.md` Part 8 is the change for the day it is.
 
