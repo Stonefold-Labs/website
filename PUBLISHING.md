@@ -24,7 +24,7 @@ The site's files go in a public GitHub repo. Putting it in an organization named
 
 Then tell the website chat: "the organization exists", and what you named it if not `stonefold-labs`. The name is used in Parts 3 and 4.
 
-**One thing to know first.** Each saved change (commit) in a public repo shows its author. Yours show your own name and GitHub's private address for your account, not your real e-mail. If you would rather they say "Stonefold Labs", say so before Part 2 and I will set that for this repo.
+**The author on each commit (settled 2026-11-13).** Each saved change (commit) in a public repo shows its author. The owner chose "Stonefold Labs" with `support@stonefoldlabs.com`, the address already on the site. It is set for this repo only (`git config user.name` and `user.email` in this folder), and the commits made before the first push were rewritten to say the same.
 
 ## Part 2. Create the repo and push (Claude, on your yes)
 
