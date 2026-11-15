@@ -1,33 +1,43 @@
 # CLAUDE.md — rules for the Stonefold Labs website
 
-This repo is the public website for stonefoldlabs.com. Read `README.md` first. The Stonefold house rules (`../Stonefold/HOUSE-RULES.md`) hold here: §4 (what may be claimed), §5 (the website line), §7 and §8 (names and brand).
+This repo is the public website for stonefoldlabs.com. Read `README.md` first. The Stonefold house rules (`../Stonefold/HOUSE-RULES.md`) hold here: §4 (what may be claimed), §5 (the website line), §7 and §8 (names and brand), §11 (the game). For what the app does, `../StonefoldApp/SPEC.md` is the record: §4 (three files, one lock), §6 (what may be claimed) and §21.2 (the app's own "What Leaves This Device").
 
 ## Non-negotiables
 - **Plain pages.** Hand-written HTML and one CSS file. No build step, no framework, no generator.
-- **One script, and only one.** `docs/theme.js` is the light and dark switch the owner asked for on 2026-11-12. It keeps one word in the browser and reaches no network. Its contents are pinned in `scripts/check.py`; change it only on purpose, read the diff, re-pin. Never add a second script, and never one from another site. If the script ever does more than switch the theme, the Privacy page changes first.
+- **One script, and only one.** `docs/theme.js` is the light and dark switch the owner asked for on 2026-11-12. It keeps one word in the browser and reaches no network. Its contents are pinned in `scripts/check.py`; change it only on purpose, read the diff, re-pin. Never add a second script, and never one from another site. If a page seems to need one (an animation, say), don't add it: describe exactly what it would do and put it to the owner. If the script ever does more than switch the theme, the Privacy page changes first.
 - **Nothing that could track a reader.** No analytics, no cookies, no forms, no embeds, no fonts, pictures, scripts or files from another site. Every page carries the same content-security rule; don't loosen it.
-- **Claims are promises.** A page says only what house rules §4 allows on that day. Sync and end-to-end wording waits until an app's sync ships. "Data Not Collected" waits until a label is live. Apple's current pages are read before a claim is written, not remembered.
-- **No app is described as available** until it is. No prices.
-- **Names.** Only names the owner has made final appear: Bellwether Budget and Small Flock (2026-11-12). The others are named by kind. Ask before adding one.
-- **The company's legal name** is written only once it is true. Until the owner says the LLC is formed, pages say "Stonefold Labs", with no "LLC" and no copyright line (`PUBLISHING.md` Part 8).
-- **The brand is the owner's.** The mark in `docs/brand/` is used exactly as supplied; don't redraw or recolour it. Colours come from his palette (`README.md`, "The brand"). The full logo says "LLC" and sets words in a font, so it stays off the site until the company exists and its words are outlines. A picture is one `.svg` of this site, with `alt`, `width` and `height`.
+- **Claims are promises.** A page says only what house rules §4 and the app's `SPEC.md` §6 allow on that day. Read both again before a sentence about privacy, encryption or security is written or changed. In particular:
+  - Nothing about sync or sharing until they ship. "Data Not Collected" waits until a label is live.
+  - Nothing about a passphrase, or that only the person can open it, said of the app as a whole. By default anyone who can unlock the device can open the app, and the page says so wherever the lock is described. A passphrase is mentioned only as something a person may add to the budget or the notes, and nothing is said of what it withstands.
+  - Nothing says the device's hardware guards a key (`SPEC.md` §4, "True only once builds are signed").
+  - Nothing suggests we can get back what a person has lost the key to. "Recovery sheet" is the app's own name for the page a person prints, and is the only use of that word.
+  - A feature is described only once it is built and in `SPEC.md`. On 2026-11-15 that left out Export Everything and the one Help (A8).
+  - Apple's current pages are read before a claim is written, not remembered. No iPhone or Mac is named by model; the lowest systems are iOS 26 and macOS 26.
+- **The app is not described as available** until it is. No link to a store, and no price: it is paid once, and the price is not decided.
+- **Names.** The app is **Stonefold**, the bare word, and the company is **Stonefold Labs** (the owner, 2026-11-13). The five apps' names (Bellwether Budget and the rest) are retired and appear nowhere. The game inside the app is mentioned only by the owner's line, word for word: "There is a small flock in here somewhere."
+- **The company's legal name** is written only once it is true. Until the owner says the LLC is formed, pages say "Stonefold Labs", with no "LLC" and no copyright line (`PUBLISHING.md` Part 8). On 2026-11-15 the filing was not complete.
+- **The brand is the owner's.** The mark in `docs/brand/` is used exactly as supplied; don't redraw or recolour it. It is the company's mark. Whether it is also the app's icon is not decided, so no page presents it as the app's icon. Colours come from his palette (`README.md`, "The brand"). The full logo says "LLC" and sets words in a font, so it stays off the site until the company exists and its words are outlines. A picture is one `.svg` of this site, with `alt`, `width` and `height`; the one exception is pictures of the app (below).
 - **A sibling of longlinelabs.com, not a twin.** The owner wants the two companies' sites to look made by the same person (`README.md`, "The brand"). Keep the shared shape; never borrow Longline's scripts, its Google fonts, or its colours.
 - **The host adds nothing.** GitHub Pages, with Cloudflare set to "DNS only". If hosting ever changes, `scripts/check-live.sh` must still pass and the privacy page must still be true.
-- **The privacy page is true or it is changed.** If anything about hosting, mail or the apps changes what we know about a person, the page changes first, with its date.
+- **The privacy page is true or it is changed.** If anything about hosting, mail or the app changes what we know about a person, the page changes first, with its date.
 
-## The shape of the site (the owner, 2026-11-12)
-- **One company site, three pages.** Home lists the apps; Privacy and Support are the two small pages every App Store listing links to. No app gets its own domain or its own page.
-- **App Store links arrive with each release.** Until an app is released it reads "In development" with no link. On release it gets one link to its App Store page (iPhone and Mac are planned as one store record; confirm against Apple's page when the first listing exists), and `scripts/check.py` is loosened for that wording only.
-- `bellwetherbudget.com` is meant to forward here. Bellwether's `SPEC.md` §4.9 still says it carries Bellwether's own pages; that line is Bellwether's to change.
+## The shape of the site (the owner, 2026-11-15)
+- **One company, one app.** On 2026-11-13 the owner decided to make one app, Stonefold, from the five the site used to list. On 2026-11-15 he asked for the site to match: "a really cool way to show what the app is capable of while highlighting the encryption, privacy, and security focus of it."
+- **Home is the app.** In order: what it is; its four sections (Calendar, Reminders, Notes, Budget, the app's own order), each with what it can do beside a picture; how the sections work together; the band on encryption, privacy and security; what can leave with you and where the app stands; the company and contact. Privacy and Support are the two small pages the App Store listing links to. There are no per-app pages and no app gets its own domain.
+- **Every page carries** the Stonefold mark in the top-left corner and a rail below it, as longlinelabs.com does. The rail's five signs lead to the four sections and to the band on encryption. They are simple line drawings made for the site, not the app's icon or its symbols.
+- **Pictures of the app.** Until the app's own pictures are made, each section's picture is a drawing: shapes only, no words, in a `<figure class="slot" id="picture-…">`. A real picture replaces the `<svg class="drawing">` in that figure with an `<img>` and keeps a caption. Pictures are `.jpg` files in `docs/pictures/`, from made-up data only, light appearance, normal text size. Each is run through `scripts/strip-jpeg.py` first (`scripts/check.py` refuses a `.jpg` that carries Exif, XMP or a comment, or sits outside `docs/pictures/`). Look at every one before it goes up: no real names, no old app name, no price, no "LLC", no stand-in icon, no warning left over from a test. Each gets `alt` text saying what is on screen. The pictures wanted are listed in `README.md`. They come from the app's build chat; never build or run the app from here.
+- **The store link arrives with the release.** Until then the page says the app is still being built, with no link. On release it gets one link to its App Store page (iPhone and Mac are planned as one store record; confirm against Apple's page when the listing exists), and `scripts/check.py` is loosened for that wording only.
+- `bellwetherbudget.com` was meant to forward here. Whether it still should is the owner's to say.
 
 ## How to work
 1. Plan first for anything beyond a wording fix, and wait for the owner's yes.
-2. `python3 -I scripts/check.py` must say `clean` before every commit. A new outside link is added to `OUTSIDE_LINKS` there on purpose, not to quiet the check.
+2. `python3 -I scripts/check.py` must say `clean` before every commit. A new outside link is added to `OUTSIDE_LINKS` there on purpose, not to quiet the check. The same goes for a word the check refuses: change the rule only when the house rules have changed.
 3. After a push, run `scripts/check-live.sh`.
 4. Look at every changed page in a browser, wide and at phone width, light and dark, before saying it is done.
 5. Pushing, DNS changes and anything in the owner's GitHub, Cloudflare or Proton accounts are his to approve, one at a time.
 6. Don't write outside this folder. The app folders beside it are read-only from here.
 7. The owner is new to web hosting: give exact clicks for anything he does himself.
+8. The owner asked on 2026-11-13 that Sonnet write the words. A Sonnet subagent drafts from a brief of allowed facts, and every sentence is then checked against the rules above before it goes in.
 
-## Adding an app's pages at its release
-Its privacy policy becomes a section of `docs/privacy/index.html` and its help a section of `docs/support/index.html`, each under a heading with the app's name and an `id` (so a listing can link to `…/privacy/#bellwether-budget`). The words come from that app's approved draft and must match the copy inside the app. The App Store URLs stay `https://stonefoldlabs.com/privacy` and `https://stonefoldlabs.com/support` for every app.
+## Adding the app's policy and help at its release
+Its privacy policy becomes a section of `docs/privacy/index.html` and its help a section of `docs/support/index.html`, each under a heading with the app's name and `id="stonefold"` (so the listing can link to `…/privacy/#stonefold`). The words come from the app's approved draft and must match the copy inside the app. The App Store URLs are `https://stonefoldlabs.com/privacy` and `https://stonefoldlabs.com/support`.
