@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="no-referrer">
 <meta name="color-scheme" content="light dark">
-<title>Stonefold Labs</title>
-<meta name="description" content="Stonefold Labs makes apps for iPhone and Mac, each for one everyday job. You pay once, and none of them needs an account, shows ads, tracks you or uses AI.">
+<title>Stonefold · Stonefold Labs</title>
+<meta name="description" content="Stonefold is one app for iPhone and Mac that keeps a household’s calendar, reminders, notes and budget, stored on your devices and encrypted.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <script src="/theme.js"></script>
 <link rel="stylesheet" href="/styles.css">
@@ -15,11 +15,13 @@
 <body>
 <a class="skip" href="#main">Skip to the page</a>
 <header class="top">
+<a class="corner" href="/" title="Stonefold Labs"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="36" height="36"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="36" height="36"><span class="sr">Stonefold Labs, home</span></a>
 <div class="wrap bar">
-<a class="brand" href="/"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="36" height="36"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="36" height="36">Stonefold Labs</a>
+<a class="brand" href="/"><span class="brand-marks"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="36" height="36"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="36" height="36"></span>Stonefold Labs</a>
 <nav aria-label="Pages">
 <ul>
-<li><a href="#apps">Apps</a></li>
+<li><a href="#sections">What it does</a></li>
+<li><a href="#security">Security</a></li>
 <li><a href="#about">About</a></li>
 <li><a href="/privacy/">Privacy</a></li>
 <li><a href="/support/">Support</a></li>
@@ -33,77 +35,163 @@
 </button>
 </div>
 </header>
+<div class="frame">
+<nav class="rail" aria-label="Stonefold, the app">
+<ul>
+<li><a href="#calendar" title="Calendar"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></svg><span>Calendar</span></a></li>
+<li><a href="#reminders" title="Reminders"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></svg><span>Reminders</span></a></li>
+<li><a href="#notes" title="Notes"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><path class="accent" d="M18 22h13M18 28h13M18 34h8"/></svg><span>Notes</span></a></li>
+<li><a href="#budget" title="Budget"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></svg><span>Budget</span></a></li>
+<li><a href="#security" title="Encryption and privacy"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="26" height="26" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="21" width="26" height="20" rx="4"/><path class="accent" d="M16 21v-6a8 8 0 0 1 16 0v6"/><circle class="accent-fill" cx="24" cy="31" r="2.8" stroke="none"/></svg><span>Encryption and privacy</span></a></li>
+</ul>
+</nav>
+<div class="column">
 <main id="main">
 <section class="wrap hero">
 <div>
-<p class="kicker">Five apps, all still being built</p>
-<h1>Apps that each do one everyday job.</h1>
-<p class="lede">We make apps for iPhone and Mac. Each one takes on a job you already do, like keeping a household budget or remembering a birthday.</p>
-<p class="actions"><a class="button" href="#apps">See the apps</a> <a href="#about">About Stonefold Labs</a></p>
+<p class="kicker">In development, for iPhone and Mac</p>
+<h1>Stonefold keeps your household’s calendar, reminders, notes and budget.</h1>
+<p class="lede">It’s one app for iPhone and Mac. What you put in it is stored on your devices, encrypted. There’s no account and no sign-up, and we can’t see what’s in it.</p>
+<p class="actions"><a class="button" href="#sections">See what it does</a> <a href="#security">How it’s kept private</a></p>
 </div>
-<div class="hero-art"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="256" height="256"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="256" height="256"></div>
+<div class="hero-art"><svg viewBox="0 0 340 134" width="340" height="134" aria-hidden="true" focusable="false"><g transform="translate(44 46)" class="glyph glyph-amber" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></g><g transform="translate(112 46)" class="glyph glyph-sage" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></g><g transform="translate(180 46)" class="glyph glyph-amber" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><path class="accent" d="M18 22h13M18 28h13M18 34h8"/></g><g transform="translate(248 46)" class="glyph glyph-sage" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></g><g class="stones"><rect x="18" y="98" width="56" height="14" rx="7"/><rect x="80" y="98" width="56" height="14" rx="7"/><rect x="142" y="98" width="56" height="14" rx="7"/><rect x="204" y="98" width="56" height="14" rx="7"/><rect x="266" y="98" width="56" height="14" rx="7"/><rect x="18" y="117" width="25" height="14" rx="7"/><rect x="49" y="117" width="56" height="14" rx="7"/><rect x="111" y="117" width="56" height="14" rx="7"/><rect x="173" y="117" width="56" height="14" rx="7"/><rect x="235" y="117" width="56" height="14" rx="7"/><rect x="297" y="117" width="25" height="14" rx="7"/></g></svg></div>
 </section>
 
-<section id="apps" class="wrap section">
-<h2>The apps</h2>
-<ul class="cards">
-<li class="card">
-<h3>Bellwether Budget</h3>
-<p>A household budget you keep by hand, on iPhone and Mac. Typing in each purchase takes a few seconds, and you see the money leave. It tells you what’s safe to spend and whether the bills are covered. It never connects to your bank, so there’s no bank login.</p>
-<p class="label">In development</p>
-</li>
-<li class="card">
-<h3>Small Flock</h3>
-<p>A calm game where you’re the border collie, gathering a small flock into the stone fold. There’s no clock and no score, and you can’t lose.</p>
-<p class="label">In development</p>
-</li>
-<li class="card">
-<h3>A notes app</h3>
-<p>A plain place to write things down. You open it and start typing, with no account to make first, and what you write is yours.</p>
-<p class="label">In development</p>
-</li>
-<li class="card">
-<h3>A reminders app</h3>
-<p>Write down what needs doing and keep it in a few lists. Give a reminder a day and a time, and the app gives you a nudge when it’s due.</p>
-<p class="label">In development</p>
-</li>
-<li class="card">
-<h3>A household calendar</h3>
-<p>A private calendar for a household: birthdays, appointments, and who’s away and when. You see the month at a glance and each day in order.</p>
-<p class="label">In development</p>
-</li>
+<section id="sections" class="wrap section">
+<h2>Four sections, one app</h2>
+<div class="prose">
+<p class="intro">Stonefold has four sections: Calendar, Reminders, Notes and Budget. When you first open it, it asks which you’d like to keep, and you can change your mind later in Settings. Each section starts small. Anything more is a feature you turn on yourself.</p>
+<p class="quiet">The pictures on this page are drawings for now. Pictures of the app itself will take their place when it’s finished.</p>
+</div>
+
+<div class="part" id="calendar">
+<div class="part-words">
+<h3 class="part-name"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></svg>Calendar</h3>
+<p class="part-lede">Calendar holds a household’s dates: birthdays, appointments, and who’s away and when. You see the month, with today circled, and each day’s events in order.</p>
+<ul class="points">
+<li><h4>Month and day</h4><p>The month shows where the busy days are. Choose a day to see its events in order.</p></li>
+<li><h4>Plain events</h4><p>An event has a title, a place and notes. It lasts all day, or it starts and ends at times you set.</p></li>
+<li><h4>Times that stay put</h4><p>An event at 9:00 stays at 9:00 wherever your device is. With Time Zones turned on, you can fix an event to a place’s own time, which helps when you travel.</p></li>
+<li><h4>Features you choose</h4><p>Repeating events, alerts, more calendars, a week view and time zones are each a switch in Settings. When you change one day of a repeating event, Stonefold asks whether you mean only that one or that one and all the later ones.</p></li>
 </ul>
-<p class="quiet">None of these is released yet. The notes, reminders and calendar apps don’t have their names yet, so for now they go by what they do. When an app is out, a link will appear on its card.</p>
+</div>
+<figure class="slot" id="picture-calendar"><svg class="drawing" viewBox="0 0 320 220" width="320" height="220" aria-hidden="true" focusable="false"><rect class="d-panel" x="1" y="1" width="318" height="218" rx="12"/><rect class="d-soft" x="26.0" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="67.7" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="109.4" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="151.1" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="192.8" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="234.5" y="18" width="18" height="6" rx="3"/><rect class="d-soft" x="276.2" y="18" width="18" height="6" rx="3"/><path class="d-rule" d="M14 40H305.9"/><path class="d-rule" d="M14 74H305.9"/><path class="d-rule" d="M14 108H305.9"/><path class="d-rule" d="M14 142H305.9"/><path class="d-rule" d="M14 176H305.9"/><path class="d-rule" d="M14 210H305.9"/><path class="d-rule" d="M55.7 40V210"/><path class="d-rule" d="M97.4 40V210"/><path class="d-rule" d="M139.1 40V210"/><path class="d-rule" d="M180.8 40V210"/><path class="d-rule" d="M222.5 40V210"/><path class="d-rule" d="M264.2 40V210"/><rect class="d-soft" x="40.7" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="82.4" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="124.1" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="165.8" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="207.5" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="249.2" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="290.9" y="46" width="9" height="5" rx="2.5"/><rect class="d-soft" x="40.7" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="82.4" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="124.1" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="165.8" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="207.5" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="249.2" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="290.9" y="80" width="9" height="5" rx="2.5"/><rect class="d-soft" x="40.7" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="82.4" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="124.1" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="165.8" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="207.5" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="249.2" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="290.9" y="114" width="9" height="5" rx="2.5"/><rect class="d-soft" x="40.7" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="82.4" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="124.1" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="165.8" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="207.5" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="249.2" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="290.9" y="148" width="9" height="5" rx="2.5"/><rect class="d-soft" x="40.7" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="82.4" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="124.1" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="165.8" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="207.5" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="249.2" y="182" width="9" height="5" rx="2.5"/><rect class="d-soft" x="290.9" y="182" width="9" height="5" rx="2.5"/><rect class="d-today" x="182.3" y="109.5" width="38.7" height="31" rx="5"/><circle class="d-event" cx="107.4" cy="63" r="3.2"/><circle class="d-event" cx="232.5" cy="63" r="3.2"/><circle class="d-event" cx="242.5" cy="63" r="3.2"/><path class="d-bill" d="M24.0 58.8l4.2 4.2-4.2 4.2-4.2-4.2z"/><circle class="d-event" cx="65.7" cy="97" r="3.2"/><circle class="d-ring" cx="75.7" cy="97" r="3.1"/><circle class="d-event" cx="190.8" cy="97" r="3.2"/><path class="d-bill" d="M274.2 92.8l4.2 4.2-4.2 4.2-4.2-4.2z"/><circle class="d-event" cx="190.8" cy="131" r="3.2"/><circle class="d-ring" cx="200.8" cy="131" r="3.1"/><path class="d-bill" d="M210.8 126.8l4.2 4.2-4.2 4.2-4.2-4.2z"/><circle class="d-event" cx="24.0" cy="131" r="3.2"/><circle class="d-ring" cx="107.4" cy="165" r="3.1"/><circle class="d-event" cx="149.1" cy="165" r="3.2"/><circle class="d-event" cx="159.1" cy="165" r="3.2"/><circle class="d-event" cx="274.2" cy="165" r="3.2"/><path class="d-bill" d="M65.7 194.8l4.2 4.2-4.2 4.2-4.2-4.2z"/><circle class="d-event" cx="190.8" cy="199" r="3.2"/><circle class="d-ring" cx="232.5" cy="199" r="3.1"/></svg><figcaption>The month. A dot is an event, a ring is a reminder and a diamond is a bill.</figcaption></figure>
+</div>
+
+<div class="part" id="reminders">
+<div class="part-words">
+<h3 class="part-name"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></svg>Reminders</h3>
+<p class="part-lede">Reminders keeps lists of things to do, with alerts. It starts with one list, called To Do, and you can add as many more as you like. A reminder can have a day, or a day and a time.</p>
+<ul class="points">
+<li><h4>Today</h4><p>Today shows what’s overdue and what’s due today, from all of your lists.</p></li>
+<li><h4>Repeats that wait for you</h4><p>A repeating reminder moves on only when you mark it done. An overdue reminder never changes by itself.</p></li>
+<li><h4>Features you choose</h4><p>Repeating, typed dates, flags and early alerts are off until you turn them on. A repeat can be as plain as every week or as particular as the second Tuesday of the month. With typed dates on, you can write “tomorrow 5pm” in a title and Stonefold reads it by plain rules.</p></li>
+<li><h4>Alerts with two buttons</h4><p>A reminder’s alert has two buttons, Done and Snooze for 10 Minutes, so you can deal with it without opening the app.</p></li>
+</ul>
+</div>
+<figure class="slot" id="picture-reminders"><svg class="drawing" viewBox="0 0 320 220" width="320" height="220" aria-hidden="true" focusable="false"><rect class="d-panel" x="1" y="1" width="318" height="218" rx="12"/><rect class="d-ink" x="22" y="20" width="44" height="8" rx="4"/><path class="d-bill" d="M30 46l6 6-6 6-6-6z"/><rect class="d-soft" x="46" y="44" width="92" height="7" rx="3.5"/><rect class="d-soft" x="146" y="44" width="40" height="7" rx="3.5"/><rect class="d-pill" x="46" y="60" width="44" height="18" rx="9"/><rect class="d-pill" x="96" y="60" width="86" height="18" rx="9"/><rect class="d-pill" x="188" y="60" width="52" height="18" rx="9"/><rect class="d-quietfill" x="57" y="66" width="22" height="6" rx="3"/><rect class="d-quietfill" x="107" y="66" width="64" height="6" rx="3"/><rect class="d-quietfill" x="199" y="66" width="30" height="6" rx="3"/><path class="d-rule" d="M22 92H298"/><rect class="d-ink" x="22" y="104" width="70" height="8" rx="4"/><circle class="d-ring" cx="31" cy="132" r="7"/><rect class="d-soft" x="50" y="126" width="120" height="7" rx="3.5"/><rect class="d-faint" x="50" y="138" width="54" height="5" rx="2.5"/><circle class="d-done" cx="31" cy="162" r="7"/><path class="d-tick" d="M27.5 162.2l2.6 2.6 4.6-5"/><rect class="d-soft" x="50" y="156" width="86" height="7" rx="3.5"/><rect class="d-faint" x="50" y="168" width="70" height="5" rx="2.5"/><circle class="d-ring" cx="31" cy="192" r="7"/><rect class="d-soft" x="50" y="186" width="140" height="7" rx="3.5"/><rect class="d-faint" x="50" y="198" width="40" height="5" rx="2.5"/></svg><figcaption>Today, with a bill from the budget waiting above the day’s reminders.</figcaption></figure>
+</div>
+
+<div class="part" id="notes">
+<div class="part-words">
+<h3 class="part-name"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><path class="accent" d="M18 22h13M18 28h13M18 34h8"/></svg>Notes</h3>
+<p class="part-lede">Notes is for plain notes. A new one is a tap away on the iPhone, or Command-N on the Mac, and you start typing. The first line is the title.</p>
+<ul class="points">
+<li><h4>Pinned, then recent</h4><p>Pinned notes come first, then the notes you changed most recently.</p></li>
+<li><h4>Search every word</h4><p>Search looks through every word of every note as you type, and highlights what it found. The search index is kept inside the notes’ encrypted file.</p></li>
+<li><h4>Features you choose</h4><p>Folders, checklists and simple formatting are off until you turn them on. Formatting is kept as plain Markdown marks in the text, so a note stays readable anywhere.</p></li>
+<li><h4>Links only when you ask</h4><p>A link in a note opens in your browser only when you ask. Stonefold fetches no previews and no pictures from the web.</p></li>
+</ul>
+</div>
+<figure class="slot" id="picture-notes"><svg class="drawing" viewBox="0 0 320 220" width="320" height="220" aria-hidden="true" focusable="false"><rect class="d-panel" x="1" y="1" width="318" height="218" rx="12"/><path class="d-rule" d="M132 1V219"/><rect class="d-pill" x="14" y="14" width="104" height="22" rx="11"/><circle class="d-ring" cx="28" cy="24.5" r="4"/><path class="d-rule2" d="M31 27.5l3.5 3.5"/><rect class="d-sel" x="10" y="46" width="112" height="42" rx="8"/><rect class="d-ink" x="20" y="56" width="70" height="7" rx="3.5"/><rect class="d-faint" x="20" y="70" width="88" height="5" rx="2.5"/><rect class="d-ink" x="20" y="98" width="56" height="7" rx="3.5"/><rect class="d-faint" x="20" y="112" width="64" height="5" rx="2.5"/><rect class="d-ink" x="20" y="140" width="78" height="7" rx="3.5"/><rect class="d-faint" x="20" y="154" width="50" height="5" rx="2.5"/><rect class="d-ink" x="20" y="182" width="48" height="7" rx="3.5"/><rect class="d-faint" x="20" y="196" width="82" height="5" rx="2.5"/><rect class="d-ink" x="150" y="22" width="96" height="10" rx="5"/><rect class="d-soft" x="150" y="48" width="148" height="6" rx="3"/><rect class="d-soft" x="150" y="64" width="132" height="6" rx="3"/><rect class="d-soft" x="150" y="80" width="150" height="6" rx="3"/><rect class="d-soft" x="150" y="96" width="90" height="6" rx="3"/><rect class="d-done" x="150" y="122" width="13" height="13" rx="3.5"/><path class="d-tick" d="M153 128.8l2.6 2.6 4.4-4.8"/><rect class="d-soft" x="172" y="125.5" width="104" height="6" rx="3"/><rect class="d-done" x="150" y="144" width="13" height="13" rx="3.5"/><path class="d-tick" d="M153 150.8l2.6 2.6 4.4-4.8"/><rect class="d-soft" x="172" y="147.5" width="86" height="6" rx="3"/><rect class="d-ring" x="150" y="166" width="13" height="13" rx="3.5"/><rect class="d-soft" x="172" y="169.5" width="120" height="6" rx="3"/><rect class="d-ring" x="150" y="188" width="13" height="13" rx="3.5"/><rect class="d-soft" x="172" y="191.5" width="70" height="6" rx="3"/></svg><figcaption>The list of notes with search above it, and a note with a checklist.</figcaption></figure>
+</div>
+
+<div class="part" id="budget">
+<div class="part-words">
+<h3 class="part-name"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="30" height="30" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></svg>Budget</h3>
+<p class="part-lede">Budget is a household budget that you type by hand. It never connects to a bank, so there’s no bank login to hand over. Nothing is imported and nothing posts by itself.</p>
+<ul class="points">
+<li><h4>Where you stand</h4><p>Home gives three answers: what’s safe to spend and about how much a day, whether the bills are covered, and whether you’re on pace for the month. Every figure can show how it was worked out, because it’s arithmetic and not AI.</p></li>
+<li><h4>Can I afford it</h4><p>Type an amount and Stonefold says yes, yes but from other everyday money, or not without touching bill money.</p></li>
+<li><h4>Quick to add</h4><p>Adding a purchase starts with the amount. Then comes who you paid, suggested as you type, and the category, which shows what it has left.</p></li>
+<li><h4>Bills and paydays ask</h4><p>On its due day a bill asks to be confirmed, with Paid, Different Amount or Not Yet. A payday asks the same way.</p></li>
+<li><h4>A plan and charts</h4><p>There’s a plan for each month, which you can change any month, and charts of where the money went. A made-up sample budget lets you look around before you start your own.</p></li>
+<li><h4>A spreadsheet to keep</h4><p>Your budget exports as a working spreadsheet, with your own figures and its formulas in place. If you stop using the app, you can carry on in the spreadsheet.</p></li>
+</ul>
+</div>
+<figure class="slot" id="picture-budget"><svg class="drawing" viewBox="0 0 320 220" width="320" height="220" aria-hidden="true" focusable="false"><rect class="d-panel" x="1" y="1" width="318" height="218" rx="12"/><rect class="d-amberfill" x="22" y="20" width="58" height="10" rx="5"/><rect class="d-faint" x="22" y="38" width="150" height="6" rx="3"/><rect class="d-tile" x="22" y="56" width="86" height="56" rx="8"/><rect class="d-faint" x="32" y="66" width="40" height="5" rx="2.5"/><rect class="d-ink" x="32" y="79" width="52" height="10" rx="5"/><rect class="d-linkfill" x="32" y="97" width="58" height="5" rx="2.5"/><rect class="d-tile" x="117" y="56" width="86" height="56" rx="8"/><rect class="d-faint" x="127" y="66" width="40" height="5" rx="2.5"/><rect class="d-ink" x="127" y="79" width="66" height="10" rx="5"/><rect class="d-linkfill" x="127" y="97" width="58" height="5" rx="2.5"/><rect class="d-tile" x="212" y="56" width="86" height="56" rx="8"/><rect class="d-faint" x="222" y="66" width="40" height="5" rx="2.5"/><rect class="d-ink" x="222" y="79" width="46" height="10" rx="5"/><rect class="d-linkfill" x="222" y="97" width="58" height="5" rx="2.5"/><path class="d-rule" d="M22 200H298"/><rect class="d-sagefill" x="32" y="148" width="13" height="52" rx="3"/><rect class="d-soft" x="48" y="160" width="13" height="40" rx="3"/><rect class="d-sagefill" x="77" y="142" width="13" height="58" rx="3"/><rect class="d-soft" x="93" y="150" width="13" height="50" rx="3"/><rect class="d-sagefill" x="122" y="152" width="13" height="48" rx="3"/><rect class="d-soft" x="138" y="156" width="13" height="44" rx="3"/><rect class="d-sagefill" x="167" y="140" width="13" height="60" rx="3"/><rect class="d-amberfill" x="183" y="138" width="13" height="62" rx="3"/><rect class="d-sagefill" x="212" y="144" width="13" height="56" rx="3"/><rect class="d-soft" x="228" y="162" width="13" height="38" rx="3"/><rect class="d-sagefill" x="257" y="136" width="13" height="64" rx="3"/><rect class="d-soft" x="273" y="170" width="13" height="30" rx="3"/></svg><figcaption>The budget’s three answers about where you stand, with a chart of the months below.</figcaption></figure>
+</div>
+
+<p class="aside">There is a small flock in here somewhere.</p>
+</section>
+
+<section id="together" class="wrap section">
+<h2>How the sections work together</h2>
+<p class="intro prose">Each section works by itself. Two switches in Settings let the sections show each other’s things, and both start off.</p>
+<ul class="flows">
+<li><p class="flow-signs"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></svg><svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></svg></p><h3>Bills on the calendar</h3><p>Each bill from the budget shows on its due day. The month marks the day with a small diamond. The day’s list shows the bill’s name, its amount and whether it’s paid, due or overdue.</p></li>
+<li><p class="flow-signs"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></svg><svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></svg></p><h3>Bills in Reminders</h3><p>The bills that are waiting sit at the head of Today, each with Paid, Different Amount and Not Yet. Choosing Paid records the payment in the budget.</p></li>
+<li><p class="flow-signs"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></svg><svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="28" height="28" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></svg></p><h3>Reminders on the calendar</h3><p>A reminder with a day shows on that day, under the day’s events, with a ring beside it. You can mark it done from there.</p></li>
+</ul>
+<p class="prose">A bill is never copied out of the budget. The calendar and the reminders read it while the budget is open and keep it only in memory, so no name, no amount and no due day is written into their file.</p>
+</section>
+
+<section id="security" class="band">
+<div class="wrap">
+<h2>Encryption, privacy and security</h2>
+<p class="intro prose">Everything you put into Stonefold is stored on your devices, encrypted. There’s no account, and there are no ads, no tracking and no analytics. We run no server for the app to talk to, and we can’t see what’s in it.</p>
+
+<figure class="vault">
+<p class="vault-lock"><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="21" width="26" height="20" rx="4"/><path class="accent" d="M16 21v-6a8 8 0 0 1 16 0v6"/><circle class="accent-fill" cx="24" cy="31" r="2.8" stroke="none"/></svg><span><strong>One unlock</strong> Face ID or Touch ID, or your device’s passcode or password</span></p>
+<ul class="vault-files">
+<li><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><rect class="accent-fill" x="18.5" y="27" width="11" height="8.5" rx="1.5" stroke="none"/><path class="accent" d="M21 27v-2.5a3 3 0 0 1 6 0V27"/></svg><strong>Calendar and Reminders</strong><span class="vault-key"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="24" r="7.5"/><path class="accent" d="M21.5 24H42M35 24v7M42 24v5"/></svg>Its own key</span></li>
+<li><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><rect class="accent-fill" x="18.5" y="27" width="11" height="8.5" rx="1.5" stroke="none"/><path class="accent" d="M21 27v-2.5a3 3 0 0 1 6 0V27"/></svg><strong>Notes</strong><span class="vault-key"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="24" r="7.5"/><path class="accent" d="M21.5 24H42M35 24v7M42 24v5"/></svg>Its own key</span></li>
+<li><svg class="glyph glyph-amber" viewBox="0 0 48 48" width="34" height="34" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><rect class="accent-fill" x="18.5" y="27" width="11" height="8.5" rx="1.5" stroke="none"/><path class="accent" d="M21 27v-2.5a3 3 0 0 1 6 0V27"/></svg><strong>Budget</strong><span class="vault-key"><svg class="glyph glyph-sage" viewBox="0 0 48 48" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="14" cy="24" r="7.5"/><path class="accent" d="M21.5 24H42M35 24v7M42 24v5"/></svg>Its own key</span></li>
+</ul>
+<figcaption>Three encrypted files, each with its own key, opened by one unlock.</figcaption>
+</figure>
+
+<ul class="keeps">
+<li><h3>Three encrypted files</h3><p>What you keep is in three encrypted files on your device. One holds the calendar and the reminders, one holds the notes, and one holds the budget. Each file has its own random key, kept on your device. Nothing you type into the notes or the budget is written into the calendar and reminders’ file.</p></li>
+<li><h3>One unlock</h3><p>One unlock opens all three: Face ID or Touch ID, or your device’s passcode or password when that fails. By default, anyone who can unlock your device can open the app. If you want more than that, you can lock the budget, the notes or both with a passphrase of your own, which is never stored.</p></li>
+<li><h3>What locking does</h3><p>When the app locks, the notes and the budget are closed and their keys are forgotten, and the lock screen shows no words and no numbers. The calendar and the reminders are locked on screen, and the app can still read them in the background to set your alerts.</p></li>
+<li><h3>Nothing of ours to run</h3><p>There’s no account and no sign-up. We run nothing that the app talks to, so there’s no server of ours holding anything of yours. The app works without the internet.</p></li>
+<li><h3>No ads, tracking or AI</h3><p>Stonefold has no ads, no tracking and no analytics, and it uses no outside service of any kind. There’s no AI in it. What it works out is arithmetic or a plain rule, and it can show how it got there.</p></li>
+<li><h3>Alerts that say little</h3><p>Alerts are set on your device and ring from it. They don’t pass through anyone’s push servers. One setting makes the alert for a reminder or an event say only “Reminder” or “Event” in place of its title. A bill reminder never shows a name or an amount.</p></li>
+<li><h3>The recovery sheet</h3><p>The recovery sheet is one page you print, with a code for each file. It’s the way back in if a device’s keys are lost, for example on a new iPhone. Stonefold never stores a code and never writes the page to a file. Keep the sheet where you would keep a key. If you lose every device and the sheet, nobody can open what you kept, and that includes us. That is the price of the privacy.</p></li>
+<li><h3>A page that tells you</h3><p>In Settings there’s a page named What Leaves This Device. It says in plain sentences, section by section, what stays on your device, what goes somewhere only because you saved it there, and what Apple can see.</p></li>
+<li><h3>We can’t see what’s in it</h3><p>The app sends us nothing. We hold no copy of what you keep and no key to it.</p></li>
+</ul>
+</div>
+</section>
+
+<section id="yours" class="wrap section">
+<div class="split">
+<div class="prose">
+<h2>What you keep can leave with you</h2>
+<p>Each of the three files is backed up automatically on your device, and each backup is encrypted with that file’s own key. Save a Copy makes a copy sealed with a passphrase you type for that copy, and it goes where you save it.</p>
+<p>Exports come in formats that other software opens: a standard calendar file, a CSV file of your reminders, a folder of plain text notes and a working spreadsheet of your budget. Those files aren’t encrypted, so Stonefold asks first every time.</p>
+</div>
+<div class="prose">
+<h2>Still being built</h2>
+<p>Stonefold isn’t out yet. The four sections are built for iPhone and Mac, and we’re still finishing and testing them. When it’s out, a link will be on this page. It will need iOS 26 or macOS 26, or newer.</p>
+<h3 class="minor">You pay once</h3>
+<p>There’s no subscription and there are no in-app purchases. The price isn’t decided yet.</p>
+</div>
+</div>
 </section>
 
 <section id="about" class="wrap section">
 <div class="split">
 <div class="prose">
 <h2>About Stonefold Labs</h2>
-<p>Stonefold Labs is small. We make apps for iPhone and Mac, and each one does one everyday job.</p>
-<p>A fold is a pen with stone walls, built to keep a flock together, and that’s where our name comes from. The apps follow the same idea: what you put in one is yours. You never make an account, nothing about you is tracked, and you pay once.</p>
+<p>Stonefold Labs is a small company. A fold is a pen with stone walls, built to keep a flock together, and that’s where our name comes from. The app follows the same idea: what you put in it is yours.</p>
 <p>This website keeps the same promises. It uses no cookies and no analytics, and it loads nothing from anyone else. The <a href="/privacy/">Privacy</a> page has the details.</p>
 </div>
-<ul class="promises">
-<li><h3>No account</h3><p>There’s nothing to sign up for. You open an app and use it.</p></li>
-<li><h3>No ads or tracking</h3><p>The apps show no ads, and they don’t track you or collect analytics.</p></li>
-<li><h3>On your devices</h3><p>If an app keeps something of yours, it’s stored on your devices, encrypted. We can’t see what’s in it.</p></li>
-<li><h3>Works offline</h3><p>The apps work without an internet connection.</p></li>
-<li><h3>Pay once</h3><p>You pay one time. There’s no subscription and there are no in-app purchases.</p></li>
-<li><h3>No AI</h3><p>There’s no AI in the apps. No language model runs anywhere in them.</p></li>
-</ul>
-</div>
-</section>
-
-<section id="contact" class="wrap section">
-<div class="split">
-<div class="prose">
+<div class="prose" id="contact">
 <h2>Contact</h2>
 <p>Write to <a href="mailto:support@stonefoldlabs.com">support@stonefoldlabs.com</a>. We read every message.</p>
-</div>
-<div class="prose">
-<h2>Help with an app</h2>
-<p>No app is released yet. When one is, its help will be on the <a href="/support/">Support</a> page.</p>
+<p>Stonefold isn’t released yet. When it is, its help will be on the <a href="/support/">Support</a> page.</p>
 </div>
 </div>
 </section>
@@ -112,7 +200,8 @@
 <div class="wrap foot">
 <a class="brand" href="/"><img class="mark-light" src="/brand/stonefold-labs-mark-light.svg" alt="" width="24" height="24"><img class="mark-dark" src="/brand/stonefold-labs-mark-dark.svg" alt="" width="24" height="24">Stonefold Labs</a>
 <ul>
-<li><a href="#apps">Apps</a></li>
+<li><a href="#sections">What it does</a></li>
+<li><a href="#security">Security</a></li>
 <li><a href="#about">About</a></li>
 <li><a href="/privacy/">Privacy</a></li>
 <li><a href="/support/">Support</a></li>
@@ -120,5 +209,7 @@
 <a href="mailto:support@stonefoldlabs.com">support@stonefoldlabs.com</a>
 </div>
 </footer>
+</div>
+</div>
 </body>
 </html>

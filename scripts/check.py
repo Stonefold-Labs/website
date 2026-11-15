@@ -36,8 +36,10 @@ OUTSIDE_LINKS = {
     "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
 }
 
-# The only files that may be published.
-ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js"}
+# The only files that may be published. A .jpg is a picture of the app (the owner, 2026-11-13),
+# and lives only under /pictures/. There are none until the app's own pictures are made.
+ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg"}
+SCREENSHOTS = "/pictures/"
 ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
 FORBIDDEN_TAGS = {
@@ -52,17 +54,25 @@ NOT_YET = [
     (r"never leaves?", "house rules §4: 'never leaves your device' is false once sync is on"),
     (r"apple can.?t see", "house rules §4: may not be claimed"),
     (r"bank.level|military.grade|unhackable|100 ?% secure|audited|anonymous", "house rules §4: may not be claimed"),
-    (r"\brecover|\breset\b|\brestore", "house rules §4: nothing may suggest we can recover what a person lost"),
+    # "Recovery sheet" is the app's own name for the page a person prints (SPEC §4); nothing else may start "recover".
+    (r"\brecover(?!y sheet)|\breset\b|\brestore", "house rules §4: nothing may suggest we can recover what a person lost"),
+    (r"\bonly you\b", "house rules §4: by default anyone who can unlock the device can open the app"),
+    (r"secure enclave|secure hardware", "SPEC §4: no claim about the device's hardware until builds are signed"),
     (r"free updates|lifetime|forever", "house rules §4: may not be claimed"),
     # Allowed only after an app's sync ships, or its privacy label is live.
-    (r"\bsync|end.to.end|icloud", "house rules §4: sync wording waits until an app's sync ships"),
+    (r"\bsync|end.to.end|icloud|\bsharing\b", "house rules §4: sync and sharing wording waits until they ship"),
     (r"data not collected", "house rules §4: waits until a privacy label is live"),
-    # No app is released.
-    (r"download|available (on|now|in|for)|app store|testflight|\bbuy\b|get it|pre.?order", "no app is released; nothing may read as available"),
+    # The app is not released.
+    (r"download|available (on|now|in|for)|app store|testflight|\bbuy\b|\bget it\b|pre.?order|coming soon", "the app is not released; nothing may read as available"),
     (r"[$€£]\s?\d", "no prices on the site"),
-    # Working titles and names not yet decided.
-    (r"teasel|croft", "a name that isn't final"),
+    # Apple's page of which iPhones run iOS 26 has not been read in full (SPEC §7).
+    (r"iphone (\d|se\b|air\b|pro\b)|macbook|\bimac\b|mac (mini|pro|studio)", "no iPhone or Mac is named by model"),
+    # The five apps' names went with the five apps (the owner, 2026-11-13). The app is Stonefold.
+    (r"bellwether|teasel|croft", "a retired name: the app is Stonefold"),
 ]
+
+# The game inside the app is named on the site only by the owner's own line (house rules §11).
+FLOCK_LINE = "There is a small flock in here somewhere."
 
 
 class Page(HTMLParser):
@@ -201,6 +211,8 @@ def resolves(site, href):
 def check_words(text, a_page=True):
     problems = []
     flat = " ".join(text.replace("’", "'").split())
+    if re.search(r"small flock", flat.replace(FLOCK_LINE, ""), re.IGNORECASE):
+        problems.append(f"names the game: it is mentioned only by the line {FLOCK_LINE!r}")
     for pattern, why in NOT_YET:
         found = re.search(pattern, flat, re.IGNORECASE)
         if found:
@@ -261,8 +273,9 @@ def check_page(site, file):
             problems.append(f"{href}: not a page of this site, and not on the list of outside links")
 
     for file in page.pictures:
-        if not resolves(site, file) or not file.endswith(".svg"):
-            problems.append(f"{file}: the picture is missing, or isn't an .svg of this site")
+        screenshot = file.endswith(".jpg") and file.startswith(SCREENSHOTS)
+        if not resolves(site, file) or not (file.endswith(".svg") or screenshot):
+            problems.append(f"{file}: the picture is missing, or isn't an .svg of this site or a screenshot under {SCREENSHOTS}")
 
     problems += check_words(" ".join(page.words) + " " + (page.description or ""))
     return problems
@@ -312,6 +325,27 @@ def check_svg(file):
     return problems
 
 
+def check_jpg(site, file):
+    """A picture of the app: under /pictures/, and carrying nothing but the picture and its colour profile.
+    Exif and XMP (APP1) can hold the device, the software, dates and places; comments can hold anything."""
+    if not ("/" + str(file.relative_to(site))).startswith(SCREENSHOTS):
+        return [f"a .jpg is published only under {SCREENSHOTS}"]
+    data = file.read_bytes()
+    if data[:2] != b"\xff\xd8":
+        return ["not a JPEG"]
+    i = 2
+    while i + 4 <= len(data):
+        if data[i] != 0xFF:
+            return ["a damaged JPEG"]
+        marker = data[i + 1]
+        if marker == 0xDA:
+            return []
+        if marker in (0xE1, 0xFE):
+            return ["it carries Exif, XMP or a comment: strip it before publishing"]
+        i += 2 + int.from_bytes(data[i + 2:i + 4], "big")
+    return ["a damaged JPEG"]
+
+
 def check_site(site):
     failures = {}
     files = sorted(p for p in site.rglob("*") if p.is_file())
@@ -331,6 +365,8 @@ def check_site(site):
             problems = check_svg(file)
         elif file.suffix == ".js":
             problems = check_js(site, file)
+        elif file.suffix == ".jpg":
+            problems = check_jpg(site, file)
         else:
             problems = []
         if problems:
@@ -383,6 +419,14 @@ BAD = [
     ("LLC too early", "body", "<p>Stonefold Labs LLC</p>"),
     ("a working title", "body", "<p>Teasel Notes</p>"),
     ("recovery", "body", "<p>We can recover your passphrase.</p>"),
+    ("recovering, beside the sheet", "body", "<p>Print the recovery sheet. We can do the recovery for you.</p>"),
+    ("only you", "body", "<p>Only you can open it.</p>"),
+    ("hardware", "body", "<p>The Secure Enclave guards the key.</p>"),
+    ("sharing", "body", "<p>Sharing is by invitation.</p>"),
+    ("a model", "body", "<p>It runs on iPhone 11 and later.</p>"),
+    ("a retired name", "body", "<p>Bellwether Budget</p>"),
+    ("the game by name", "body", "<p>Small Flock is a herding game.</p>"),
+    ("the game's line, reworded", "body", "<p>There is a small flock of sheep in here.</p>"),
 ]
 
 
@@ -404,6 +448,12 @@ def self_test():
         page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
         if check_site(site):
             print("self-test: the good page was refused:", check_site(site))
+            return 1
+
+        allowed = f"<p>The recovery sheet is a page you print.</p><p>{FLOCK_LINE}</p>"
+        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=allowed))
+        if check_site(site):
+            print("self-test: the recovery sheet or the game's line was refused:", check_site(site))
             return 1
 
         for name, where, snippet in BAD:
@@ -438,6 +488,26 @@ def self_test():
             missed.append("a changed theme.js")
         (site / "theme.js").write_bytes(theme)
 
+        # A clean picture under /pictures/ passes; with Exif, or anywhere else, it doesn't.
+        clean_jpg = b"\xff\xd8\xff\xe0\x00\x04JF\xff\xda\x00\x02\xff\xd9"
+        exif_jpg = b"\xff\xd8\xff\xe1\x00\x08Exif\x00\x00\xff\xda\x00\x02\xff\xd9"
+        (site / "pictures").mkdir()
+        (site / "pictures" / "1.jpg").write_bytes(clean_jpg)
+        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body='<img src="/pictures/1.jpg" alt="" width="1" height="1">'))
+        if check_site(site):
+            print("self-test: a clean screenshot was refused:", check_site(site))
+            return 1
+        for name, where, data, body in [
+            ("a picture with Exif", "pictures/1.jpg", exif_jpg, '<img src="/pictures/1.jpg" alt="" width="1" height="1">'),
+            ("a .jpg outside /pictures/", "1.jpg", clean_jpg, '<img src="/1.jpg" alt="" width="1" height="1">'),
+        ]:
+            (site / where).write_bytes(data)
+            page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=body))
+            if not check_site(site):
+                missed.append(name)
+            (site / where).unlink()
+        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
+
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -445,7 +515,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 9} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 11} planted faults were caught")
     return 0
 
 

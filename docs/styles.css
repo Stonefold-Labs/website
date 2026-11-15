@@ -1,7 +1,9 @@
 /* Stonefold Labs. One stylesheet, no imports, no fonts from anywhere but the reader's own device.
 
    The shape is a sibling of longlinelabs.com, the owner's other company: a stripe along the top, the mark
-   and a serif wordmark, a headline beside a picture, cards for the apps, hairlines between sections.
+   and a serif wordmark, a rail down the left, a headline beside a picture, hairlines between sections.
+   Stonefold's own: the four sections of the one app each beside a drawing, and an evergreen band for
+   encryption, privacy and security.
    The colours and the mark are Stonefold's own: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8,
    amber #d5a96c. Light and dark follow the reader's device until the switch in the header is used; the switch
    is theme.js, the site's one script, and it sets data-theme on <html>. */
@@ -17,6 +19,14 @@
   --fill: #293b36;
   --on-fill: #f2f0e8;
   --stripe: #d5a96c;
+  --amber-mark: #9c6b2b;
+  --sage-mark: #5b7a57;
+  --stone: #293b36;
+  --band: #293b36;
+  --band-card: #31463f;
+  --band-rule: #40564e;
+  --event: #1f5143;
+  --rail: 3.5rem;
   --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
@@ -33,6 +43,13 @@
     --rule: #33443e;
     --fill: #a9b8a1;
     --on-fill: #1c2925;
+    --amber-mark: #d5a96c;
+    --sage-mark: #a9b8a1;
+    --stone: #a9b8a1;
+    --band: #24332e;
+    --band-card: #2c3d37;
+    --band-rule: #3a4c45;
+    --event: #a9b8a1;
   }
 
   :root:not([data-theme="light"]) .mark-light {
@@ -59,6 +76,13 @@
   --rule: #33443e;
   --fill: #a9b8a1;
   --on-fill: #1c2925;
+  --amber-mark: #d5a96c;
+  --sage-mark: #a9b8a1;
+  --stone: #a9b8a1;
+  --band: #24332e;
+  --band-card: #2c3d37;
+  --band-rule: #3a4c45;
+  --event: #a9b8a1;
 }
 
 :root[data-theme="dark"] .mark-light {
@@ -111,6 +135,16 @@ svg {
   display: none;
 }
 
+/* Words for screen readers only. */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 .skip {
   position: absolute;
   left: 1rem;
@@ -148,9 +182,37 @@ a:focus-visible {
 /* The top of every page */
 
 .top {
+  display: grid;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
   background: var(--raised);
   border-top: 3px solid var(--stripe);
   border-bottom: 1px solid var(--rule);
+}
+
+/* The mark in its own corner, above the rail, as Longline's sits above its own. */
+
+.corner {
+  display: grid;
+  place-items: center;
+  border-right: 1px solid var(--rule);
+}
+
+.corner img {
+  width: 2.25rem;
+  height: 2.25rem;
+}
+
+.corner:focus-visible {
+  outline-offset: -4px;
+}
+
+/* Beside the wordmark the mark shows only on phones, where there is no corner. */
+.brand-marks {
+  display: none;
+}
+
+.foot .brand-marks {
+  display: inline-flex;
 }
 
 .bar {
@@ -264,6 +326,101 @@ nav a[aria-current="page"] {
   text-underline-offset: 0.4em;
 }
 
+/* Under the header: a rail down the left for the app's four sections and its lock, the page beside it. */
+
+.frame {
+  display: grid;
+  flex: 1 0 auto;
+  grid-template-columns: var(--rail) minmax(0, 1fr);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.rail {
+  position: relative;
+  z-index: 2;
+  background: var(--raised);
+  border-right: 1px solid var(--rule);
+}
+
+/* Narrow, the rail shows each section's sign. Pointed at or tabbed into, it opens over the page to show the names. */
+.rail ul {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  width: var(--rail);
+  height: 100vh;
+  max-height: 100%;
+  margin: 0;
+  padding: 0.75rem 0.375rem;
+  overflow: hidden;
+  background: var(--raised);
+  list-style: none;
+}
+
+.rail:hover ul,
+.rail:focus-within ul {
+  width: 15.5rem;
+  border-right: 1px solid var(--rule);
+  box-shadow: 0.5rem 0 1.5rem rgba(20, 30, 27, 0.12);
+}
+
+.rail a {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 2.75rem;
+  padding: 0 0.5rem;
+  border-radius: 0.5rem;
+  color: var(--text);
+  font: 500 1.0625rem/1.25 var(--display);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.rail a:hover,
+.rail a[aria-current="page"] {
+  background: var(--page);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.rail a:focus-visible {
+  outline-offset: -2px;
+}
+
+.rail .glyph {
+  flex: none;
+}
+
+/* The signs: line drawings made for the site, in the text's colour, with one part in amber or sage. */
+
+.glyph {
+  color: var(--text);
+}
+
+.glyph .accent {
+  stroke: var(--accent);
+}
+
+.glyph .accent-fill {
+  fill: var(--accent);
+}
+
+.glyph-amber {
+  --accent: var(--amber-mark);
+}
+
+.glyph-sage {
+  --accent: var(--sage-mark);
+}
+
 /* Headings and text */
 
 h1,
@@ -287,7 +444,8 @@ h2 {
   letter-spacing: -0.005em;
 }
 
-h3 {
+h3,
+h4 {
   margin: 0;
   font-size: 1rem;
   line-height: 1.5;
@@ -363,11 +521,15 @@ ul {
   text-decoration: underline;
 }
 
-.hero-art img {
+.hero-art svg {
   width: 100%;
-  max-width: 17rem;
+  max-width: 24rem;
   height: auto;
   margin: 0 auto;
+}
+
+.hero-art .stones {
+  fill: var(--stone);
 }
 
 /* Sections, parted by a hairline */
@@ -378,33 +540,376 @@ ul {
   border-top: 1px solid var(--rule);
 }
 
-.cards {
+.intro {
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+/* One section of the app: its words beside a drawing. Every other one is turned round. */
+
+.part {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 1.25rem;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 2rem 3.5rem;
+  align-items: center;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 1rem;
+}
+
+.part:nth-of-type(even) .part-words {
+  order: 2;
+}
+
+.part-name {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 0.75rem;
+  font: 500 1.75rem/1.2 var(--display);
+  letter-spacing: -0.005em;
+}
+
+.part-lede {
+  color: var(--quiet);
+  font-size: 1.0625rem;
+  line-height: 1.55;
+}
+
+.points {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem 1.75rem;
+  margin: 1.5rem 0 0;
   padding: 0;
   list-style: none;
 }
 
-.card {
+.points p {
+  margin: 0.125rem 0 0;
+  color: var(--quiet);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* Where a picture of the app goes. Until the app's own pictures are made, a drawing stands there:
+   shapes only, no words. A picture is an <img> in the same figure, and keeps the caption. */
+
+.slot {
+  margin: 0;
+}
+
+.slot .drawing,
+.slot img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 0.75rem 2rem rgba(20, 30, 27, 0.08);
+}
+
+.slot img {
+  background: var(--raised);
+  border: 1px solid var(--rule);
+}
+
+.slot figcaption,
+.vault figcaption {
+  margin-top: 0.75rem;
+  color: var(--quiet);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.d-panel {
+  fill: var(--raised);
+  stroke: var(--rule);
+}
+
+.d-rule,
+.d-rule2 {
+  fill: none;
+  stroke: var(--rule);
+}
+
+.d-rule2 {
+  stroke: var(--quiet);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.d-ink {
+  fill: var(--text);
+}
+
+.d-soft {
+  fill: var(--quiet);
+  opacity: 0.45;
+}
+
+.d-faint {
+  fill: var(--quiet);
+  opacity: 0.25;
+}
+
+.d-quietfill {
+  fill: var(--quiet);
+  opacity: 0.7;
+}
+
+.d-linkfill {
+  fill: var(--link);
+  opacity: 0.6;
+}
+
+.d-pill,
+.d-tile {
+  fill: var(--page);
+  stroke: var(--rule);
+}
+
+.d-sel {
+  fill: var(--page);
+}
+
+.d-today {
+  fill: none;
+  stroke: var(--amber-mark);
+  stroke-width: 1.5;
+}
+
+.d-event {
+  fill: var(--event);
+}
+
+.d-ring {
+  fill: none;
+  stroke: var(--quiet);
+  stroke-width: 1.5;
+}
+
+.d-bill {
+  fill: none;
+  stroke: var(--amber-mark);
+  stroke-width: 1.6;
+  stroke-linejoin: round;
+}
+
+.d-done,
+.d-sagefill {
+  fill: var(--sage-mark);
+}
+
+.d-amberfill {
+  fill: var(--amber-mark);
+}
+
+.d-tick {
+  fill: none;
+  stroke: var(--raised);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.aside {
+  margin: 3rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  color: var(--quiet);
+  font: italic 1.0625rem/1.5 var(--display);
+  text-align: center;
+}
+
+/* How the sections work together: three cards, each headed by the two signs it joins. */
+
+.flows {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.flows li {
   padding: 1.125rem;
   background: var(--raised);
   border: 1px solid var(--rule);
   border-radius: 0.5rem;
 }
 
-.card h3 {
+.flow-signs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.75rem;
+}
+
+.arrow {
+  color: var(--quiet);
+}
+
+.flows h3 {
   font: 500 1.25rem/1.75rem var(--display);
 }
 
-.card p {
-  margin: 0;
+.flows li > p:last-child {
+  margin: 0.375rem 0 0;
   color: var(--quiet);
   font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+/* Encryption, privacy and security: an evergreen band from edge to edge. Inside it the page's
+   colours are set again, so text, signs, links and outlines all read on the dark ground. */
+
+.band {
+  --text: #f2f0e8;
+  --quiet: #c5d0be;
+  --link: #f2f0e8;
+  --rule: var(--band-rule);
+  --raised: var(--band-card);
+  --amber-mark: #d5a96c;
+  --sage-mark: #a9b8a1;
+  padding: 3.5rem 0 4rem;
+  background: var(--band);
+  border-top: 3px solid var(--stripe);
+  color: var(--text);
+  scroll-margin-top: 0;
+}
+
+.band .intro {
+  color: var(--quiet);
+}
+
+.vault {
+  max-width: 46rem;
+  margin: 2.5rem auto;
+  text-align: center;
+}
+
+.vault-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.75rem 1.25rem 0.75rem 1rem;
+  background: var(--raised);
+  border: 1px solid var(--stripe);
+  border-radius: 2rem;
+  text-align: left;
+}
+
+.vault-lock strong {
+  display: block;
+  font: 500 1.125rem/1.3 var(--display);
+}
+
+.vault-lock span {
+  color: var(--quiet);
+  font-size: 0.875rem;
+}
+
+.vault-lock strong {
+  color: var(--text);
+}
+
+/* The lines from the lock down to the three files. */
+.vault-files {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 2.5rem 0 0;
+  list-style: none;
+}
+
+.vault-files::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 1.25rem;
+  border-left: 1px solid var(--stripe);
+}
+
+.vault-files::after {
+  content: "";
+  position: absolute;
+  top: 1.25rem;
+  left: calc((100% - 2rem) / 6);
+  right: calc((100% - 2rem) / 6);
+  border-top: 1px solid var(--stripe);
+}
+
+.vault-files li {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 0.375rem;
+  padding: 1.125rem 0.75rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+}
+
+.vault-files li::before {
+  content: "";
+  position: absolute;
+  top: -1.25rem;
+  left: 50%;
+  height: 1.25rem;
+  border-left: 1px solid var(--stripe);
+}
+
+.vault-files strong {
+  font: 500 1.125rem/1.3 var(--display);
+}
+
+.vault-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: var(--quiet);
+  font-size: 0.875rem;
+}
+
+.keeps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.keeps li {
+  padding: 1.125rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+}
+
+.keeps h3 {
+  font: 500 1.25rem/1.75rem var(--display);
+}
+
+.keeps p {
+  margin: 0.375rem 0 0;
+  color: var(--quiet);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.minor {
+  margin-top: 1.75rem;
+  font: 500 1.25rem/1.75rem var(--display);
+}
+
+.minor + p {
+  margin-top: 0.375rem;
 }
 
 .split {
@@ -416,29 +921,6 @@ ul {
 
 .prose {
   max-width: 40rem;
-}
-
-.promises {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.promises li {
-  padding: 0.875rem 1rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.5rem;
-}
-
-.promises p {
-  margin: 0.125rem 0 0;
-  color: var(--quiet);
-  font-size: 0.875rem;
-  line-height: 1.5;
 }
 
 /* Privacy, Support and the "not here" page */
@@ -514,17 +996,55 @@ footer {
 
 /* Narrower screens */
 
-@media (max-width: 56rem) {
-  .cards {
+@media (max-width: 62rem) {
+  .keeps {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .split {
+  .points {
     grid-template-columns: minmax(0, 1fr);
   }
 }
 
+@media (max-width: 56rem) {
+  .split,
+  .part {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .part:nth-of-type(even) .part-words {
+    order: 0;
+  }
+
+  .points {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .slot {
+    max-width: 30rem;
+  }
+
+  .flows {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Phones: no corner and no rail. The mark sits beside the wordmark, and the page is read from the top. */
 @media (max-width: 44rem) {
+  .top,
+  .frame {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .corner,
+  .rail {
+    display: none;
+  }
+
+  .brand-marks {
+    display: inline-flex;
+  }
+
   .wrap {
     padding: 0 1.25rem;
   }
@@ -556,13 +1076,48 @@ footer {
     display: none;
   }
 
-  .cards {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
   .section {
     padding-top: 2.25rem;
     padding-bottom: 2.5rem;
+  }
+
+  .part {
+    margin-top: 2.25rem;
+    padding-top: 2.25rem;
+  }
+
+  .part-name {
+    font-size: 1.5rem;
+  }
+
+  .points,
+  .keeps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .band {
+    padding: 2.5rem 0 3rem;
+  }
+
+  /* The three files stand in a column, joined down the left. */
+  .vault-files {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.75rem;
+    padding-top: 1.25rem;
+    text-align: left;
+  }
+
+  .vault-files::after,
+  .vault-files li::before {
+    display: none;
+  }
+
+  .vault-files li {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    justify-items: start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
   }
 
   .page {
@@ -572,7 +1127,11 @@ footer {
 }
 
 @media (max-width: 26rem) {
-  .promises {
-    grid-template-columns: minmax(0, 1fr);
+  .vault-files li {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .vault-key {
+    grid-column: 2;
   }
 }
