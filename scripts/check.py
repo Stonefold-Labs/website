@@ -19,9 +19,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 SITE = ROOT / "docs"
 
-# Change to True on the day the state confirms the company, and put "Stonefold Labs LLC"
-# in each page's footer and in the privacy page's "runs this website" line.
-COMPANY_FORMED = False
+# True since 2026-11-17 (Florida approved the company): every page needs
+# "Stonefold Labs LLC" in its footer, and the privacy page says it runs the website.
+COMPANY_FORMED = True
 
 CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
 

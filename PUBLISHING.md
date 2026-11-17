@@ -2,7 +2,7 @@
 
 Written 2026-11-12.
 
-**Where it stands (2026-11-13): live.** https://stonefoldlabs.com serves the three pages over HTTPS from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), and `scripts/check-live.sh` passes. Parts 1 to 6 are done; Part 7 (the mailbox test) and Part 8 (the day the company exists) are still to do.
+**Where it stands (2026-11-13): live.** https://stonefoldlabs.com serves the three pages over HTTPS from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), and `scripts/check-live.sh` passes. Parts 1 to 6 are done, and Part 8 (the day the company exists) was done on 2026-11-17; Part 7 (the mailbox test) is still to do.
 
 What differed from the plan below:
 - **The organization.** Instead of a new one, the owner renamed his existing `Bellwether-Budget` organization to `Stonefold-Labs` (capitalised to match `Longline-Labs`). It also holds the private `bellwether` repo, now `Stonefold-Labs/bellwether`. GitHub ignores capital letters in names, so `stonefold-labs` below and `Stonefold-Labs` are the same organization; the `www` record still points at `stonefold-labs.github.io`.
@@ -121,13 +121,13 @@ Mail already points to Proton (the records were checked on 2026-11-12).
 
 **Your own address for Apple.** Apple's enrollment page says: "Your work email address needs to be associated with your organization's domain name." Use an address of your own at the domain (for example your first name), not `support@`, for the Apple Account that enrolls. To add one in Proton: open Proton Mail's settings, find **Addresses**, click **Add address**, choose your existing user, pick the domain `stonefoldlabs.com`, type the address and a display name, and click **Save address**.
 
-## Part 8. The day the company exists (Claude, on your word)
+## Part 8. The day the company exists (Claude, on your word) — done 2026-11-17
 
-Tell any Stonefold chat that the state has confirmed Stonefold Labs LLC. Then, in `Website/`:
-- each page's footer gains a line with the year and "Stonefold Labs LLC" beside the wordmark (as longlinelabs.com's footer has), and the privacy page's "runs this website" line changes to "Stonefold Labs LLC";
+Florida approved Stonefold Labs LLC (document number L26000574352, filed 2026-11-12, status Active); the owner reported it on 2026-11-17 and said yes to this change. Done that day, in `Website/`:
+- each page's footer gains a line with the year and "Stonefold Labs LLC" beside the wordmark (as longlinelabs.com's footer has), and the privacy page's "runs this website" line says "Stonefold Labs LLC";
 - `COMPANY_FORMED` in `scripts/check.py` becomes `True`, after which the check fails if any page lacks the full name;
-- the full logo (the one that reads "STONEFOLD LABS LLC") may then replace the mark and typed name in the header, once its words are turned into outlines so they look the same on every device (`README.md`, "The brand");
-- the privacy page's date changes; commit, push, run `scripts/check-live.sh`.
+- **not done:** the full logo (the one that reads "STONEFOLD LABS LLC") may replace the mark and typed name in the header, once its words are turned into outlines so they look the same on every device (`README.md`, "The brand");
+- the privacy page's date became 17 November 2026; commit, push, run `scripts/check-live.sh`.
 
 Do this **before** enrolling with Apple. Apple checks that the website belongs to the legal company: "Your organization's website must be publicly available and functional, and its domain name must be associated with your organization."
 
