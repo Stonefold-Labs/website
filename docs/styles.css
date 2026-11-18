@@ -2,14 +2,27 @@
 
    The shape is a sibling of longlinelabs.com, the owner's other company: a stripe along the top, the mark
    and a serif wordmark, a rail down the left, a headline beside a picture, hairlines between sections.
-   Stonefold's own: the four sections of the one app each beside a drawing, and an evergreen band for
+   Stonefold's own: the four sections of the one app each beside a drawing, and a band for
    encryption, privacy and security.
-   The colours and the mark are Stonefold's own: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8,
-   amber #d5a96c. Light and dark follow the reader's device until the switch in the header is used; the switch
-   is theme.js, the site's one script, and it sets data-theme on <html>. */
+   The brand colours are Stonefold's own: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8, amber #d5a96c.
+   The page wears one of the app's eight themes. Until a reader picks one it follows the device's light or dark
+   setting; the picker is theme.js, the site's one script, and it sets data-theme on <html>. */
 
 :root {
-  color-scheme: light dark;
+  --rail: 3.5rem;
+  --f-system: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-rounded: ui-rounded, "SF Pro Rounded", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --f-serif: ui-serif, "New York", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --f-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --f-book: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+}
+
+/* Every theme the app has. The colours are the app's own (LookThemes.swift) turned into the site's roles, and each theme's
+   face is a font that comes with the reader's device: nothing is loaded. Where nobody has chosen, the page follows the device:
+   Sage when it is dark, Linen when it is light. */
+
+:root {
+  color-scheme: light;
   --page: #f2f0e8;
   --raised: #f9f7f1;
   --text: #293b36;
@@ -25,15 +38,18 @@
   --band: #293b36;
   --band-card: #31463f;
   --band-rule: #40564e;
+  --band-text: #f2f0e8;
+  --band-quiet: #c5d0be;
+  --band-amber: #d5a96c;
+  --band-sage: #a9b8a1;
   --event: #1f5143;
-  --rail: 3.5rem;
-  --display: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --sans: var(--f-system);
+  --display: var(--f-book);
 }
 
-/* Dark, because the device is, where nobody has chosen with the switch. */
+/* Dark, because the device is, where nobody has chosen a theme and the script has not run. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root:not([data-theme]) {
     color-scheme: dark;
     --page: #1c2925;
     --raised: #24332e;
@@ -43,30 +59,33 @@
     --rule: #33443e;
     --fill: #a9b8a1;
     --on-fill: #1c2925;
+    --stripe: #d5a96c;
     --amber-mark: #d5a96c;
     --sage-mark: #a9b8a1;
     --stone: #a9b8a1;
     --band: #24332e;
     --band-card: #2c3d37;
     --band-rule: #3a4c45;
+    --band-text: #f2f0e8;
+    --band-quiet: #c5d0be;
+    --band-amber: #d5a96c;
+    --band-sage: #a9b8a1;
     --event: #a9b8a1;
-  }
+    --sans: var(--f-system);
+    --display: var(--f-book);
+}
 
-  :root:not([data-theme="light"]) .mark-light {
+  :root:not([data-theme]) .mark-light {
     display: none;
   }
 
-  :root:not([data-theme="light"]) .mark-dark {
+  :root:not([data-theme]) .mark-dark {
     display: block;
   }
 }
 
-/* Light or dark, chosen with the switch. The same values as above. */
-:root[data-theme="light"] {
-  color-scheme: light;
-}
-
-:root[data-theme="dark"] {
+/* Sage */
+:root[data-theme="sage"] {
   color-scheme: dark;
   --page: #1c2925;
   --raised: #24332e;
@@ -76,21 +95,301 @@
   --rule: #33443e;
   --fill: #a9b8a1;
   --on-fill: #1c2925;
+  --stripe: #d5a96c;
   --amber-mark: #d5a96c;
   --sage-mark: #a9b8a1;
   --stone: #a9b8a1;
   --band: #24332e;
   --band-card: #2c3d37;
   --band-rule: #3a4c45;
+  --band-text: #f2f0e8;
+  --band-quiet: #c5d0be;
+  --band-amber: #d5a96c;
+  --band-sage: #a9b8a1;
   --event: #a9b8a1;
+  --sans: var(--f-system);
+  --display: var(--f-book);
 }
 
-:root[data-theme="dark"] .mark-light {
+/* Linen */
+:root[data-theme="linen"] {
+  color-scheme: light;
+  --page: #f2f0e8;
+  --raised: #f9f7f1;
+  --text: #293b36;
+  --quiet: #4f6057;
+  --link: #1f5143;
+  --rule: #d8d5c9;
+  --fill: #293b36;
+  --on-fill: #f2f0e8;
+  --stripe: #d5a96c;
+  --amber-mark: #9c6b2b;
+  --sage-mark: #5b7a57;
+  --stone: #293b36;
+  --band: #293b36;
+  --band-card: #31463f;
+  --band-rule: #40564e;
+  --band-text: #f2f0e8;
+  --band-quiet: #c5d0be;
+  --band-amber: #d5a96c;
+  --band-sage: #a9b8a1;
+  --event: #1f5143;
+  --sans: var(--f-system);
+  --display: var(--f-book);
+}
+
+/* Night */
+:root[data-theme="night"] {
+  color-scheme: dark;
+  --page: #141518;
+  --raised: #1a1b1f;
+  --text: #e9ebee;
+  --quiet: #a4a9b3;
+  --link: #6aa3ff;
+  --rule: #2a2c33;
+  --fill: #2f6fe0;
+  --on-fill: #ffffff;
+  --stripe: #3381fa;
+  --amber-mark: #6aa3ff;
+  --sage-mark: #7fb8c9;
+  --stone: #6aa3ff;
+  --band: #1a1b1f;
+  --band-card: #22242a;
+  --band-rule: #32353d;
+  --band-text: #e9ebee;
+  --band-quiet: #b4b9c2;
+  --band-amber: #6aa3ff;
+  --band-sage: #7fb8c9;
+  --event: #6aa3ff;
+  --sans: var(--f-system);
+  --display: var(--f-system);
+}
+
+/* Ember */
+:root[data-theme="ember"] {
+  color-scheme: dark;
+  --page: #17140f;
+  --raised: #201c16;
+  --text: #efe6d6;
+  --quiet: #b3a58f;
+  --link: #e0903a;
+  --rule: #342d22;
+  --fill: #cc7722;
+  --on-fill: #17140f;
+  --stripe: #cc7722;
+  --amber-mark: #e0903a;
+  --sage-mark: #b3a58f;
+  --stone: #cc7722;
+  --band: #201c16;
+  --band-card: #29241c;
+  --band-rule: #3b3428;
+  --band-text: #efe6d6;
+  --band-quiet: #bfb199;
+  --band-amber: #e0903a;
+  --band-sage: #c8b894;
+  --event: #e0903a;
+  --sans: var(--f-mono);
+  --display: var(--f-mono);
+}
+
+/* Paper */
+:root[data-theme="paper"] {
+  color-scheme: light;
+  --page: #f6f3ec;
+  --raised: #fbf9f4;
+  --text: #1f2d2f;
+  --quiet: #4e5f60;
+  --link: #1f6f78;
+  --rule: #d9d3c4;
+  --fill: #1f6f78;
+  --on-fill: #ffffff;
+  --stripe: #1f6f78;
+  --amber-mark: #9c6b2b;
+  --sage-mark: #1f6f78;
+  --stone: #1f6f78;
+  --band: #1c4a50;
+  --band-card: #255a61;
+  --band-rule: #32707a;
+  --band-text: #f6f3ec;
+  --band-quiet: #c3d6d6;
+  --band-amber: #e3bc7c;
+  --band-sage: #9fd0d0;
+  --event: #1f6f78;
+  --sans: var(--f-serif);
+  --display: var(--f-serif);
+}
+
+/* Dusk */
+:root[data-theme="dusk"] {
+  color-scheme: dark;
+  --page: #1b1a26;
+  --raised: #23212f;
+  --text: #ece8f5;
+  --quiet: #aaa6bd;
+  --link: #c4a7f0;
+  --rule: #34314a;
+  --fill: #c4a7f0;
+  --on-fill: #1b1a26;
+  --stripe: #c4a7f0;
+  --amber-mark: #e6b99a;
+  --sage-mark: #c4a7f0;
+  --stone: #c4a7f0;
+  --band: #23212f;
+  --band-card: #2c2a3c;
+  --band-rule: #3b3850;
+  --band-text: #ece8f5;
+  --band-quiet: #bab6cd;
+  --band-amber: #e6b99a;
+  --band-sage: #c4a7f0;
+  --event: #c4a7f0;
+  --sans: var(--f-rounded);
+  --display: var(--f-rounded);
+}
+
+/* Clay */
+:root[data-theme="clay"] {
+  color-scheme: light;
+  --page: #f5eee6;
+  --raised: #faf5ee;
+  --text: #3a2a22;
+  --quiet: #6a5548;
+  --link: #9e4426;
+  --rule: #ddd0c2;
+  --fill: #9e4426;
+  --on-fill: #ffffff;
+  --stripe: #9e4426;
+  --amber-mark: #9e4426;
+  --sage-mark: #6b7a52;
+  --stone: #9e4426;
+  --band: #4a2a1e;
+  --band-card: #5a3626;
+  --band-rule: #70463a;
+  --band-text: #f5eee6;
+  --band-quiet: #dcc6b8;
+  --band-amber: #e0a07a;
+  --band-sage: #b5c29a;
+  --event: #9e4426;
+  --sans: var(--f-serif);
+  --display: var(--f-serif);
+}
+
+/* Plain: the system's own colours, light or dark as the device is set. */
+:root[data-theme="plain"] {
+  color-scheme: light;
+  --page: #ffffff;
+  --raised: #f5f5f7;
+  --text: #1d1d1f;
+  --quiet: #6e6e73;
+  --link: #0066cc;
+  --rule: #d2d2d7;
+  --fill: #0066cc;
+  --on-fill: #ffffff;
+  --stripe: #0071e3;
+  --amber-mark: #0071e3;
+  --sage-mark: #6e6e73;
+  --stone: #1d1d1f;
+  --band: #1d1d1f;
+  --band-card: #2c2c2e;
+  --band-rule: #3a3a3c;
+  --band-text: #f5f5f7;
+  --band-quiet: #c7c7cc;
+  --band-amber: #64d2ff;
+  --band-sage: #8e8e93;
+  --event: #0066cc;
+  --sans: var(--f-system);
+  --display: var(--f-system);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="plain"] {
+    color-scheme: dark;
+    --page: #1c1c1e;
+    --raised: #2c2c2e;
+    --text: #f5f5f7;
+    --quiet: #a1a1a6;
+    --link: #2997ff;
+    --rule: #3a3a3c;
+    --fill: #2997ff;
+    --on-fill: #000000;
+    --stripe: #2997ff;
+    --amber-mark: #64d2ff;
+    --sage-mark: #a1a1a6;
+    --stone: #a1a1a6;
+    --band: #2c2c2e;
+    --band-card: #3a3a3c;
+    --band-rule: #48484a;
+    --band-text: #f5f5f7;
+    --band-quiet: #c7c7cc;
+    --band-amber: #64d2ff;
+    --band-sage: #a1a1a6;
+    --event: #2997ff;
+    --sans: var(--f-system);
+    --display: var(--f-system);
+}
+
+  :root[data-theme="plain"] .mark-light {
+    display: none;
+  }
+
+  :root[data-theme="plain"] .mark-dark {
+    display: block;
+  }
+}
+
+/* The dark themes show the pale mark. */
+:root[data-theme="sage"] .mark-light,
+:root[data-theme="night"] .mark-light,
+:root[data-theme="ember"] .mark-light,
+:root[data-theme="dusk"] .mark-light {
   display: none;
 }
 
-:root[data-theme="dark"] .mark-dark {
+:root[data-theme="sage"] .mark-dark,
+:root[data-theme="night"] .mark-dark,
+:root[data-theme="ember"] .mark-dark,
+:root[data-theme="dusk"] .mark-dark {
   display: block;
+}
+
+/* Each theme's swatch in the menu: its page and its accent. */
+.theme-option[data-look="sage"] {
+  --sw-page: #1c2925;
+  --sw-accent: #a9b8a1;
+}
+
+.theme-option[data-look="linen"] {
+  --sw-page: #f2f0e8;
+  --sw-accent: #293b36;
+}
+
+.theme-option[data-look="night"] {
+  --sw-page: #141518;
+  --sw-accent: #2f6fe0;
+}
+
+.theme-option[data-look="ember"] {
+  --sw-page: #17140f;
+  --sw-accent: #cc7722;
+}
+
+.theme-option[data-look="paper"] {
+  --sw-page: #f6f3ec;
+  --sw-accent: #1f6f78;
+}
+
+.theme-option[data-look="dusk"] {
+  --sw-page: #1b1a26;
+  --sw-accent: #c4a7f0;
+}
+
+.theme-option[data-look="clay"] {
+  --sw-page: #f5eee6;
+  --sw-accent: #9e4426;
+}
+
+.theme-option[data-look="plain"] {
+  --sw-page: #ffffff;
+  --sw-accent: #0066cc;
 }
 
 *,
@@ -240,62 +539,118 @@ a:focus-visible {
   height: 2.25rem;
 }
 
-/* The light and dark switch. Hidden until theme.js is running, so it is never a dead button. */
+/* The theme picker: one button that opens a short list of the app's eight themes. Hidden until theme.js is
+   running, so it is never a dead button. */
+
+.top {
+  position: relative;
+  z-index: 3;
+}
+
+.themes {
+  position: relative;
+  margin: 0 0 0 auto;
+}
 
 .theme {
   display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
   min-height: 2.75rem;
-  margin: 0 0 0 auto;
-  padding: 0 0.25rem;
-  background: none;
-  border: 0;
-  border-radius: 1rem;
+  padding: 0 0.75rem;
+  background: var(--page);
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
   color: var(--text);
+  font: 500 0.9375rem/1.25 var(--sans);
   cursor: pointer;
 }
 
-.theme[hidden] {
+.theme[hidden],
+.theme-menu[hidden] {
   display: none;
 }
 
-.theme:focus-visible {
+.theme:hover,
+.theme[aria-expanded="true"] {
+  border-color: var(--quiet);
+}
+
+.theme:focus-visible,
+.theme-option:focus-visible {
   outline: 2px solid var(--link);
   outline-offset: 2px;
 }
 
-.theme-track {
-  display: flex;
-  align-items: center;
-  width: 2.75rem;
-  height: 1.5rem;
-  padding: 0.125rem;
-  background: var(--page);
-  border: 1px solid var(--quiet);
-  border-radius: 1rem;
-}
-
-.theme[aria-checked="true"] .theme-track {
-  justify-content: flex-end;
-}
-
-.theme-knob {
-  display: grid;
-  place-items: center;
+.swatch {
+  flex: none;
   width: 1.125rem;
   height: 1.125rem;
-  background: var(--fill);
+  background: linear-gradient(135deg, var(--sw-page, var(--page)) 50%, var(--sw-accent, var(--fill)) 50%);
+  border: 1px solid var(--quiet);
   border-radius: 50%;
-  color: var(--on-fill);
 }
 
-.theme .moon,
-.theme[aria-checked="true"] .sun {
-  display: none;
+.chevron {
+  flex: none;
+  color: var(--quiet);
 }
 
-.theme[aria-checked="true"] .moon {
+.theme[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  display: grid;
+  gap: 0.125rem;
+  width: 17.5rem;
+  max-width: calc(100vw - 2.5rem);
+  padding: 0.375rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.75rem 2rem rgba(20, 30, 27, 0.2);
+}
+
+.theme-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 0.625rem;
+  background: none;
+  border: 0;
+  border-radius: 0.5rem;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.theme-option:hover {
+  background: var(--page);
+}
+
+.theme-option[aria-pressed="true"] {
+  background: var(--page);
+  box-shadow: inset 0 0 0 1px var(--link);
+}
+
+.theme-option strong {
   display: block;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.theme-option .theme-note {
+  display: block;
+  color: var(--quiet);
+  font-size: 0.8125rem;
+  line-height: 1.3;
 }
 
 nav ul {
@@ -545,6 +900,38 @@ ul {
   line-height: 1.55;
 }
 
+/* The reasons: each a belief, in the display face, with one plain sentence about what the app does. */
+
+.reasons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reasons li {
+  padding: 1.25rem 1.375rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--stripe);
+  border-radius: 0.5rem;
+}
+
+.reasons h3 {
+  font: 500 1.375rem/1.3 var(--display);
+  letter-spacing: -0.005em;
+  text-wrap: balance;
+}
+
+.reasons p {
+  margin: 0.5rem 0 0;
+  color: var(--quiet);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
 /* One section of the app: its words beside a drawing. Every other one is turned round. */
 
 .part {
@@ -765,13 +1152,13 @@ ul {
    colours are set again, so text, signs, links and outlines all read on the dark ground. */
 
 .band {
-  --text: #f2f0e8;
-  --quiet: #c5d0be;
-  --link: #f2f0e8;
+  --text: var(--band-text);
+  --quiet: var(--band-quiet);
+  --link: var(--band-text);
   --rule: var(--band-rule);
   --raised: var(--band-card);
-  --amber-mark: #d5a96c;
-  --sage-mark: #a9b8a1;
+  --amber-mark: var(--band-amber);
+  --sage-mark: var(--band-sage);
   padding: 3.5rem 0 4rem;
   background: var(--band);
   border-top: 3px solid var(--stripe);
@@ -1007,6 +1394,10 @@ footer {
 }
 
 @media (max-width: 56rem) {
+  .reasons {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
   .split,
   .part {
     grid-template-columns: minmax(0, 1fr);
@@ -1049,7 +1440,7 @@ footer {
     padding: 0 1.25rem;
   }
 
-  .theme {
+  .themes {
     order: 2;
   }
 

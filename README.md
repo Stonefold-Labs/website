@@ -1,6 +1,6 @@
 # Stonefold Labs — the website
 
-The public site for stonefoldlabs.com: a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the light and dark switch.
+The public site for stonefoldlabs.com: a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the theme picker.
 
 It exists for three reasons, in order: Apple requires an organization to have a public website and an e-mail address on its own domain before it can enroll in the Developer Program; the app's App Store listing needs a privacy policy URL and a support URL; and people should be able to see what Stonefold Labs makes.
 
@@ -14,7 +14,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   support/index.html https://stonefoldlabs.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
-  theme.js           the light and dark switch: the site's only script
+  theme.js           the theme picker: the site's only script
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
@@ -75,14 +75,18 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 The same six in dark appearance would let the page show a dark picture to a reader in dark mode; that is a nice extra, not needed. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, and replaces the `<svg class="drawing">` in its figure (`CLAUDE.md`, "Pictures of the app"). When the last drawing is replaced, the line on Home that says the pictures are drawings goes too.
 
-## The light and dark switch
+## The theme picker
 
-The owner asked for it on 2026-11-12, and chose a switch that remembers over keeping the pages free of any script. `docs/theme.js` is that script, about fifty lines, served from this site.
+The owner asked for a light and dark switch on 2026-11-12, and chose a switch that remembers over keeping the pages free of any script. On 2026-11-18 he asked for the site to offer every theme the app has: "Make stonefold website have a toggle to be able to switch to any theme that is also in the app." `docs/theme.js` is that script, about a hundred lines, served from this site.
 
-- Until someone uses the switch, a page follows the device's light or dark setting, exactly as before.
-- Using it saves one word, "light" or "dark", in that browser's storage for this site, under the name `theme`. It is not a cookie and is never sent anywhere; the Privacy page says so.
-- Without the script (blocked, or not loaded) the switch stays hidden and the page still follows the device.
-- Every page's content-security rule allows scripts from this site only. `scripts/check.py` allows exactly one `<script src="/theme.js">` and one button per page, and pins the script's SHA-256, so any change to it has to be read and re-pinned on purpose.
+- **The eight themes** are the app's (`../StonefoldApp/Packages/ShellRules/Sources/ShellRules/LookThemes.swift`, read only): Sage, Linen, Night, Ember, Paper, Dusk, Clay and Plain. Each theme's background, pane and accent are the app's own, turned into the site's roles in `docs/styles.css` (page, raised, text, link, fill, and a band for the encryption section). Sage and Linen are the site's old dark and light, so a first-time reader sees what they saw before. Body text and contrast were measured for every theme: 4.5 to 1 at least for words, 3 to 1 for the drawings' two accent colours.
+- **The faces** are system font stacks only, matching the app's faces: System is the system sans, Rounded is `ui-rounded`, Serif is `ui-serif` (New York on Apple devices), Monospace is `ui-monospace` (SF Mono). Ember is set in monospace, Paper and Clay in serif, Dusk in rounded, Night and Plain in the system sans; Sage and Linen keep the site's own Iowan Old Style headings, as the app does for them (`booksHeadings`). Nothing is loaded from anyone else.
+- **Until someone picks a theme**, a page follows the device: Sage when it is dark, Linen when it is light. The script sets the page's theme as it loads, so there is no flash, and it follows the device if the device changes.
+- **Picking one** saves one word, such as "sage" or "linen", in that browser's storage for this site, under the name `theme`. It is not a cookie and is never sent anywhere; the Privacy page says so. A reader who had saved "light" or "dark" with the old switch gets Linen or Sage.
+- **Plain** is the app's "system's own colours": neutral colours that follow the device's light or dark setting, in the system sans.
+- Without the script (blocked, or not loaded) the picker stays hidden and the page follows the device as Sage or Linen, from CSS alone.
+- Every page's content-security rule allows scripts from this site only. `scripts/check.py` allows exactly one `<script src="/theme.js">`, one picker button and one button for each of the eight themes (no other), and pins the script's SHA-256, so any change to it has to be read and re-pinned on purpose.
+- A new theme in the app is added by hand: its colours in `styles.css`, its button in each page, its name in `LOOKS` in `scripts/check.py` and in `theme.js`.
 
 ## The brand
 
@@ -90,6 +94,6 @@ The owner supplied the brand assets on 2026-11-12 (`stonefold-labs-brand-assets.
 
 - **The mark** is in the header of every page, beside the name set as ordinary text. The two files in `docs/brand/` are the owner's, with one change he approved on 2026-11-17 (asked "Use the centred mark on the website?": "Yes, use it"). As supplied, the stones sat 5 to the right and 6 low in the 256 square, and the ring, the star and its dot sat 8 above the middle of the stones. Now the whole mark shifts by (2 2) instead of (8 8), and the ring, the star and the dot move down 8 in a group of their own, so the stones are 38 clear above and below and the star is level with their middle. The star stays on x 127, in line with the gaps in the top and bottom rows; the side stones are centred on x 125, so the stones sit 1 left of the middle and the star 1 right. No shape, colour or opacity was changed, and the tab icon got the same move. The page picks one by the reader's light or dark setting, with no script. Since 2026-11-15 the mark is the app's icon as well as the company's (the owner: "Yes, use it"). No page says so yet, and the app's own drawing of it for small sizes is not final, so it is not on the site.
 - **The tab icon** (`docs/favicon.svg`) is the light mark on a warm ivory tile, so it shows on a dark tab bar too. The tile is the only thing added.
-- **The colours** in `docs/styles.css` are the palette's. Text contrast was measured: at least 5.3 to 1 everywhere, 10 to 1 or more for body text. In the evergreen band on Home the text is ivory or a pale sage, measured at 6.3 to 1 or more. Amber appears in the mark and as the thin stripe along the top of every page.
+- **The colours** in `docs/styles.css` start from the palette (Sage and Linen are it; the other six themes are the app's). Text contrast was measured: at least 5.3 to 1 everywhere, 10 to 1 or more for body text. In the evergreen band on Home the text is ivory or a pale sage, measured at 6.3 to 1 or more. Amber appears in the mark and as the thin stripe along the top of every page.
 - **A sibling of longlinelabs.com** (the owner, 2026-11-12: the two sites should look like companies made by the same person, without looking identical). Shared with Longline: the stripe along the top, the mark in its own corner at the top left with a rail below it that opens to show names (the owner, 2026-11-13, asking for the site to work like longlinelabs.com), a serif wordmark, a short line above a large serif headline, a filled button, cards, hairlines between sections, a one-row footer. Stonefold's own: its mark, its greens and ivory, the four sections' signs standing on a stone wall in place of Longline's line of hooks, a rail that leads to the one app's sections where Longline's leads to its apps, an evergreen band for encryption, privacy and security, and no downloaded fonts. The rail opens with CSS alone, so it needs no second script. Longline's headings are set in Fraunces from Google; here they use a serif already on the reader's device (Iowan Old Style on Apple devices, which is also Longline's own fallback).
 - **The full logo is not used yet, and is not in this repo.** It reads "STONEFOLD LABS LLC", and the company isn't formed. It also sets its words in a font (Avenir Next) that only Apple devices have, so on other devices the words would shift. Before it goes on the site its words need turning into outlines; until then the mark and typed name do the job.

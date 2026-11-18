@@ -27,12 +27,19 @@
 <li><a href="/support/">Support</a></li>
 </ul>
 </nav>
-<button type="button" id="theme-toggle" class="theme" role="switch" aria-checked="false" aria-label="Dark mode" hidden>
-<span class="theme-track"><span class="theme-knob">
-<svg class="sun" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="8" cy="8" r="2.8" fill="currentColor" stroke="none"/><path d="M8 1.2v1.6M8 13.2v1.6M1.2 8h1.6M13.2 8h1.6M3.2 3.2l1.1 1.1M11.7 11.7l1.1 1.1M3.2 12.8l1.1-1.1M11.7 4.3l1.1-1.1"/></svg>
-<svg class="moon" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false"><path d="M13 9.6A5.6 5.6 0 0 1 6.4 3a5.6 5.6 0 1 0 6.6 6.6Z" fill="currentColor"/></svg>
-</span></span>
-</button>
+<div class="themes">
+<button type="button" id="theme-toggle" class="theme" aria-label="Choose a theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-menu" hidden><span class="swatch" aria-hidden="true"></span><span class="theme-name">Theme</span><svg class="chevron" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg></button>
+<div id="theme-menu" class="theme-menu" role="group" aria-label="Themes" hidden>
+<button type="button" class="theme-option" data-look="sage" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Sage</strong><span class="theme-note">Dark green, the app’s start</span></span></button>
+<button type="button" class="theme-option" data-look="linen" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Linen</strong><span class="theme-note">Warm ivory</span></span></button>
+<button type="button" class="theme-option" data-look="night" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Night</strong><span class="theme-note">Near black, blue</span></span></button>
+<button type="button" class="theme-option" data-look="ember" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Ember</strong><span class="theme-note">Warm black, monospace</span></span></button>
+<button type="button" class="theme-option" data-look="paper" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Paper</strong><span class="theme-note">Paper and teal, serif</span></span></button>
+<button type="button" class="theme-option" data-look="dusk" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Dusk</strong><span class="theme-note">Violet, rounded</span></span></button>
+<button type="button" class="theme-option" data-look="clay" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Clay</strong><span class="theme-note">Plaster and terracotta, serif</span></span></button>
+<button type="button" class="theme-option" data-look="plain" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Plain</strong><span class="theme-note">Follows your device</span></span></button>
+</div>
+</div>
 </div>
 </header>
 <div class="frame">
@@ -55,6 +62,21 @@
 <p class="actions"><a class="button" href="#sections">See what it does</a> <a href="#security">How it’s kept private</a></p>
 </div>
 <div class="hero-art"><svg viewBox="0 0 340 134" width="340" height="134" aria-hidden="true" focusable="false"><g transform="translate(44 46)" class="glyph glyph-amber" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="11" width="32" height="29" rx="4"/><path d="M8 19h32M17 7v7M31 7v7"/><rect class="accent-fill" x="26" y="26" width="8" height="8" rx="1.5" stroke="none"/></g><g transform="translate(112 46)" class="glyph glyph-sage" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path class="accent" d="M8 12l3.5 3.5L18 8.5"/><circle cx="12.5" cy="24" r="3.6"/><circle cx="12.5" cy="36" r="3.6"/><path d="M24 12h16M24 24h16M24 36h11"/></g><g transform="translate(180 46)" class="glyph glyph-amber" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M13 7h16l7 7v27H13z"/><path d="M29 7v7h7"/><path class="accent" d="M18 22h13M18 28h13M18 34h8"/></g><g transform="translate(248 46)" class="glyph glyph-sage" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40h32"/><path d="M14 40V27M34 40V21"/><path class="accent" d="M24 40V11"/></g><g class="stones"><rect x="18" y="98" width="56" height="14" rx="7"/><rect x="80" y="98" width="56" height="14" rx="7"/><rect x="142" y="98" width="56" height="14" rx="7"/><rect x="204" y="98" width="56" height="14" rx="7"/><rect x="266" y="98" width="56" height="14" rx="7"/><rect x="18" y="117" width="25" height="14" rx="7"/><rect x="49" y="117" width="56" height="14" rx="7"/><rect x="111" y="117" width="56" height="14" rx="7"/><rect x="173" y="117" width="56" height="14" rx="7"/><rect x="235" y="117" width="56" height="14" rx="7"/><rect x="297" y="117" width="25" height="14" rx="7"/></g></svg></div>
+</section>
+
+<section id="because" class="wrap section">
+<h2>Why we made it this way</h2>
+<p class="intro prose">These are the beliefs behind Stonefold, each with what the app does about it.</p>
+<ul class="reasons">
+<li><h3>Because you should only pay once.</h3><p>A budget app shouldn’t be a subscription. Stonefold has no subscription and no in-app purchases, so there’s nothing to renew.</p></li>
+<li><h3>Because you should own your data.</h3><p>What you keep is stored in encrypted files on your own devices, each with its own key kept there. We hold no copy of it and no key to it.</p></li>
+<li><h3>Because you should be able to leave, and take your data with you.</h3><p>Your events, reminders, notes and budget can be exported in formats other apps open, and your budget as a working spreadsheet.</p></li>
+<li><h3>Because a third party shouldn’t have your data.</h3><p>There’s no account and no server of ours for the app to talk to. It has no ads, no tracking and no analytics, and it uses no outside service. We can’t see what’s in it.</p></li>
+<li><h3>Because your life shouldn’t be spread across several apps.</h3><p>Calendar, Reminders, Notes and Budget are one app with one unlock. Bills from your budget can show up on the calendar and in Reminders, too.</p></li>
+<li><h3>Because you should have the freedom to customize and make it yours.</h3><p>Choose from eight themes and four typefaces. Keep only the sections you want, and turn on only the features you want. They stay off until you do.</p></li>
+<li><h3>Because a number should show its work.</h3><p>Every figure in the budget can show how it was worked out. What Stonefold works out is arithmetic or a plain rule, and it has no AI in it.</p></li>
+<li><h3>Because you shouldn’t have to take our word for it.</h3><p>In Settings, a page called What Leaves This Device says, section by section and in plain sentences, what stays on your device, what goes somewhere only because you saved it there, and what Apple can see.</p></li>
+</ul>
 </section>
 
 <section id="sections" class="wrap section">

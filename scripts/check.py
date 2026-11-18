@@ -5,7 +5,7 @@
     python3 -I scripts/check.py --self-test  prove each rule can fail
 
 It fails if a page could track a reader, load anything from another site, run any
-script but the light and dark switch (docs/theme.js, pinned below), or say
+script but the theme picker (docs/theme.js, pinned below), or say
 something the house rules (../Stonefold/HOUSE-RULES.md §4) don't allow yet.
 """
 
@@ -25,10 +25,14 @@ COMPANY_FORMED = True
 
 CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
 
-# The site's one script: the light and dark switch (the owner, 2026-11-12). Its exact contents are pinned here,
-# so a change to it is always a decision: read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
+# The site's one script: the theme picker (the owner, 2026-11-12 for the light and dark switch; 2026-11-18 for
+# every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
+# read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
-THEME_JS_SHA256 = "4f9a6be38fe93758bbed3a4ec58e399363a2231d0a1bd6666a909a09f7282654"
+THEME_JS_SHA256 = "d2b177f3c3c9d6a06274d04951be1fbe8389c97a8894b9266bbb4eb6a3b27a34"
+# The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
+# that opens a menu with one button for each; no other button is allowed.
+LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
 
 # Every link that leaves the site is listed here, so a new one is a decision.
@@ -84,6 +88,8 @@ class Page(HTMLParser):
         self.pictures = []
         self.scripts = 0
         self.buttons = 0
+        self.looks = []
+        self.menu_hidden = None
         self._in_script = False
         self.ids = set()
         self.headings = []
@@ -147,12 +153,19 @@ class Page(HTMLParser):
             self.scripts += 1
             if attrs != [("src", THEME_JS)]:
                 self.problems.append(f"<script>: the only script is <script src=\"{THEME_JS}\"></script>")
+        elif tag == "div" and a.get("id") == "theme-menu":
+            self.menu_hidden = "hidden" in a
         elif tag == "button":
             self.buttons += 1
-            if a.get("id") != "theme-toggle" or a.get("type") != "button" or not a.get("aria-label"):
-                self.problems.append("<button>: the only button is the light and dark switch")
-            if "hidden" not in a:
-                self.problems.append("the switch must start hidden, so it is never a dead button without the script")
+            if a.get("id") == "theme-toggle":
+                if a.get("type") != "button" or not a.get("aria-label") or a.get("aria-controls") != "theme-menu":
+                    self.problems.append("<button id=theme-toggle> needs type=button, an aria-label and aria-controls=theme-menu")
+                if "hidden" not in a:
+                    self.problems.append("the picker must start hidden, so it is never a dead button without the script")
+            elif a.get("data-look") in LOOKS and a.get("type") == "button":
+                self.looks.append(a["data-look"])
+            else:
+                self.problems.append("<button>: the only buttons are the theme picker and one for each of the app's themes")
         elif tag in ("img", "source"):
             # The company's mark, from this site only. One file per picture: no lists, no sizes.
             file = a.get("src" if tag == "img" else "srcset") or ""
@@ -245,8 +258,10 @@ def check_page(site, file):
         problems.append("no <title>")
     if not page.description:
         problems.append("no description")
-    if page.scripts != 1 or page.buttons != 1:
-        problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the switch, once")
+    if page.scripts != 1 or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
+        problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
+    if page.menu_hidden is not True:
+        problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:
         problems.append(f"{page.h1} <h1> headings; a page has exactly one")
     for before, after in zip(page.headings, page.headings[1:]):
@@ -381,15 +396,19 @@ GOOD_PAGE = """<!doctype html>
 <meta name="referrer" content="no-referrer">
 <title>T</title><meta name="description" content="D">
 <link rel="stylesheet" href="/styles.css"><script src="/theme.js"></script>{head}</head>
-<body><header><nav><a href="/">Home</a></nav><button type="button" id="theme-toggle" aria-label="Dark mode" hidden></button></header>
-<main><h1>One</h1>{body}</main><footer>Stonefold Labs</footer></body></html>
+<body><header><nav><a href="/">Home</a></nav><button type="button" id="theme-toggle" aria-label="Choose a theme" aria-controls="theme-menu" hidden></button><div id="theme-menu" hidden>{looks}</div></header>
+<main><h1>One</h1>{body}</main><footer>© 2026 Stonefold Labs LLC</footer></body></html>
 """
+
+LOOK_BUTTONS = "".join(f'<button type="button" data-look="{name}"></button>' for name in LOOKS)
 
 BAD = [
     ("a script", "body", "<script>1</script>"),
     ("a second copy of the switch's script", "body", '<script src="/theme.js"></script>'),
     ("the switch's script, deferred to another file", "head", '<script src="/theme.js" integrity="x"></script>'),
     ("another button", "body", '<button type="button">Buy</button>'),
+    ("a ninth theme", "body", '<button type="button" data-look="neon"></button>'),
+    ("a look button that submits", "body", '<button data-look="sage"></button>'),
     ("a script from elsewhere", "head", '<script src="https://example.com/a.js"></script>'),
     ("an event handler", "body", '<p onclick="x()">hi</p>'),
     ("an inline style", "body", '<p style="color:red">hi</p>'),
@@ -416,7 +435,6 @@ BAD = [
     ("download", "body", "<p>Download it today.</p>"),
     ("the store", "body", "<p>Soon on the App Store.</p>"),
     ("a price", "body", "<p>$9.99 once.</p>"),
-    ("LLC too early", "body", "<p>Stonefold Labs LLC</p>"),
     ("a working title", "body", "<p>Teasel Notes</p>"),
     ("recovery", "body", "<p>We can recover your passphrase.</p>"),
     ("recovering, beside the sheet", "body", "<p>Print the recovery sheet. We can do the recovery for you.</p>"),
@@ -440,18 +458,18 @@ def self_test():
         (site / "theme.js").write_bytes(theme)
         page = site / "index.html"
 
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body='<img src="/mark.svg" alt="" width="1" height="1">'))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<img src="/mark.svg" alt="" width="1" height="1">'))
         if check_site(site):
             print("self-test: a page with the mark was refused:", check_site(site))
             return 1
 
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
         if check_site(site):
             print("self-test: the good page was refused:", check_site(site))
             return 1
 
         allowed = f"<p>The recovery sheet is a page you print.</p><p>{FLOCK_LINE}</p>"
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=allowed))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=allowed))
         if check_site(site):
             print("self-test: the recovery sheet or the game's line was refused:", check_site(site))
             return 1
@@ -459,14 +477,17 @@ def self_test():
         for name, where, snippet in BAD:
             parts = {"head": "", "body": ""}
             parts[where] = snippet
-            page.write_text(GOOD_PAGE.format(csp=CSP, **parts))
+            page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, **parts))
             if not check_site(site):
                 missed.append(name)
 
-        page.write_text(GOOD_PAGE.format(csp="default-src *", head="", body=""))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body="").replace("Stonefold Labs LLC", "Stonefold Labs"))
+        if not check_site(site):
+            missed.append("a page that leaves out the company's full name")
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp="default-src *", head="", body=""))
         if not check_site(site):
             missed.append("a loosened content-security rule")
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
 
         for name, css in [("a css import", '@import "x.css";'), ("a css font", "@font-face { }"),
                           ("a css url", "body { background: url(https://example.com/x.png) }")]:
@@ -475,8 +496,7 @@ def self_test():
                 missed.append(name)
         (site / "styles.css").write_text("body { margin: 0 }\n")
 
-        for name, svg in [("a logo that says LLC", '<svg xmlns="http://www.w3.org/2000/svg"><title>Stonefold Labs LLC</title></svg>'),
-                          ("words in a picture", '<svg xmlns="http://www.w3.org/2000/svg"><text font-family="Avenir Next">HI</text></svg>'),
+        for name, svg in [("words in a picture", '<svg xmlns="http://www.w3.org/2000/svg"><text font-family="Avenir Next">HI</text></svg>'),
                           ("a script in a picture", '<svg xmlns="http://www.w3.org/2000/svg"><script>1</script></svg>')]:
             (site / "mark.svg").write_text(svg)
             if not check_site(site):
@@ -493,7 +513,7 @@ def self_test():
         exif_jpg = b"\xff\xd8\xff\xe1\x00\x08Exif\x00\x00\xff\xda\x00\x02\xff\xd9"
         (site / "pictures").mkdir()
         (site / "pictures" / "1.jpg").write_bytes(clean_jpg)
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body='<img src="/pictures/1.jpg" alt="" width="1" height="1">'))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<img src="/pictures/1.jpg" alt="" width="1" height="1">'))
         if check_site(site):
             print("self-test: a clean screenshot was refused:", check_site(site))
             return 1
@@ -502,11 +522,11 @@ def self_test():
             ("a .jpg outside /pictures/", "1.jpg", clean_jpg, '<img src="/1.jpg" alt="" width="1" height="1">'),
         ]:
             (site / where).write_bytes(data)
-            page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=body))
+            page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=body))
             if not check_site(site):
                 missed.append(name)
             (site / where).unlink()
-        page.write_text(GOOD_PAGE.format(csp=CSP, head="", body=""))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
 
         (site / "tracker.js").write_text("1")
         if not check_site(site):
