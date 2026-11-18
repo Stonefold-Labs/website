@@ -15,7 +15,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   404.html           shown for any address that doesn't exist
   styles.css
   theme.js           the theme picker: one of the site's two scripts, with demo.js
-  demo.js            the demo on Home (proposed 2026-11-18, waiting on the owner's yes; see "The demo")
+  demo.js            the demo on Home (allowed 2026-11-18; see "The demo")
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
@@ -78,9 +78,9 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 The same six in dark appearance would let the page show a dark picture to a reader in dark mode; that is a nice extra, not needed. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, and replaces the `<svg class="drawing">` in its figure (`CLAUDE.md`, "Pictures of the app"). When the last drawing is replaced, the line on Home that says the pictures are drawings goes too.
 
-## The demo (proposed 2026-11-18, not yet allowed)
+## The demo (allowed 2026-11-18)
 
-On 2026-11-18 the owner asked whether the site could be a working copy of the app, since there is no free trial (it will cost $24.99 up front). A private prototype was made that morning and held, on his word, until the app's movable panels were installed on his Mac (14:20 that day, app commit `f596a5c`). This branch builds it into Home. It is **not allowed yet**: `CLAUDE.md` permits one script, and any second one, with the Privacy page change that must come first, is his to approve. The prototype is https://claude.ai/artifact/9z4HKcgpMGwSKRxHGhBHUc (private).
+On 2026-11-18 the owner asked whether the site could be a working copy of the app, since there is no free trial (it will cost $24.99 up front). A private prototype was made that morning and held, on his word, until the app's movable panels were installed on his Mac (14:20 that day, app commit `f596a5c`). It is built into Home. The owner allowed the second script, its Privacy paragraph and the push on 2026-11-18 ("Yes, allow and push"); `CLAUDE.md` now names both scripts. The prototype is https://claude.ai/artifact/9z4HKcgpMGwSKRxHGhBHUc (private).
 
 - **Where:** Home's section `#try`, "Try the window", right after the headline, whose button now leads there. The rest of Home is unchanged, so the page reads the same to search engines and to anyone with scripts off; the section then shows one line saying the demo needs scripts and that everything in it is also written further down.
 - **What it is:** `docs/demo.js` builds a copy of the Mac window into `<div id="demo">`: the rail of the four sections, each section's sidebar (at 980 px and wider), the section on screen or Today, the status line, a Lock, a theme menu, and the panels. Its words are the site's own, as notes, reminders, events and budget rows; the new sentences were drafted by Sonnet from a list of allowed facts and checked against the rules. A "Try these" list of eight ticks itself off. The window says Demo in its title bar.
