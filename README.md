@@ -62,6 +62,8 @@ The company is not formed yet, so no page says "LLC" and none carries a copyrigh
 
 The app's own tests write pictures of its screens, but on 2026-11-15 none was fit for a public page: the Mac's are drawn without a window around them, show a black bar where the selected row is, carry a warning that the test Mac has no password, use data named "Made-up…", and Welcome shows a stand-in icon. So each section on Home has a drawing where its picture will go: shapes only, no words, in a `<figure class="slot">`. The page says the pictures are drawings for now.
 
+**Update 2026-11-18:** the owner asked for real screenshots throughout. The pictures from 2026-11-15/16 (kept in `~/Library/Developer/Xcode/DerivedData/Stonefold-pictures.noindex/website`) predate the app's themes and the Mac's are not real windows, so none is used. A fresh brief for an app chat, with Linen and Sage of each and a `<picture>` plan for light and dark, is in the dispatch notes folder (`website-screenshots-brief.md`).
+
 **The pictures wanted,** to be made by the app's build chat at the end of milestone A8, from a made-up household that reads like a real one (no "Made-up" in any name), light appearance, normal text size, a real window on the Mac, no test warnings, and no stand-in icon in view:
 
 | Goes in | Picture | Device |
