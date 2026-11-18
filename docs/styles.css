@@ -970,8 +970,8 @@ ul {
 
 .points {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.25rem 1.75rem;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
   margin: 1.5rem 0 0;
   padding: 0;
   list-style: none;
@@ -1392,9 +1392,6 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .points {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 @media (max-width: 56rem) {
@@ -1409,10 +1406,6 @@ footer {
 
   .part:nth-of-type(even) .part-words {
     order: 0;
-  }
-
-  .points {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .slot {
