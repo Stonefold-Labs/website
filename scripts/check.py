@@ -32,6 +32,12 @@ THEME_JS = "/theme.js"
 THEME_JS_SHA256 = "ead365ea7423be0a80080e667ef6a66da1c1b32409934c9d39713026233c5bfa"
 # The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
+# The demo on the home page: a second script, proposed 2026-11-18 for the owner's yes (the live-demo chat), as the
+# owner's rule asks of any second script. It is allowed on the home page alone, once, at the foot of the page, and
+# its exact contents are pinned the same way: read it, then put its SHA-256 here (shasum -a 256 docs/demo.js).
+DEMO_JS = "/demo.js"
+DEMO_JS_SHA256 = "d9e9512671bada9ec38f2dacc25d882e4033a318fae531363be3a617e5cc295d"
+DEMO_PAGE = "index.html"
 LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
 
@@ -90,6 +96,7 @@ class Page(HTMLParser):
         self.links = []
         self.pictures = []
         self.scripts = 0
+        self.demo_scripts = 0
         self.buttons = 0
         self.looks = []
         self.menu_hidden = None
@@ -153,9 +160,12 @@ class Page(HTMLParser):
         elif tag == "script":
             # Only the switch, loaded from this site, with nothing written inside the tag.
             self._in_script = True
-            self.scripts += 1
-            if attrs != [("src", THEME_JS)]:
-                self.problems.append(f"<script>: the only script is <script src=\"{THEME_JS}\"></script>")
+            if attrs == [("src", DEMO_JS)] and not self._in_head:
+                self.demo_scripts += 1
+            else:
+                self.scripts += 1
+                if attrs != [("src", THEME_JS)]:
+                    self.problems.append(f"<script>: the only scripts are <script src=\"{THEME_JS}\"></script> and, on the home page, <script src=\"{DEMO_JS}\"></script>")
         elif tag == "div" and a.get("id") == "theme-menu":
             self.menu_hidden = "hidden" in a
         elif tag == "button":
@@ -263,6 +273,8 @@ def check_page(site, file):
         problems.append("no description")
     if page.scripts != 1 or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
         problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
+    if page.demo_scripts and (str(file.relative_to(site)) != DEMO_PAGE or page.demo_scripts != 1):
+        problems.append(f"{DEMO_JS} is loaded once, on the home page alone")
     if page.menu_hidden is not True:
         problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:
@@ -315,9 +327,30 @@ def check_css(file):
     return problems
 
 
+def check_demo_js(file):
+    """The demo: pinned, reaching no network, keeping nothing, and saying only what a page may say."""
+    js = file.read_bytes()
+    problems = []
+    if hashlib.sha256(js).hexdigest() != DEMO_JS_SHA256:
+        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
+    for pattern, why in [
+        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:|postMessage|window\.open", "it may not reach the network"),
+        (rb"cookie|indexedDB|sessionStorage|localStorage|caches|history\.", "it may keep nothing at all"),
+        (rb"eval|Function\(|document\.write", "it may not run code it makes"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    text = js.decode("utf-8")
+    words = " ".join(re.findall(r'"((?:[^"\\]|\\.)*)"', text))
+    problems += check_words(re.sub(r"<[^>]+>", " ", words), a_page=False)
+    return problems
+
+
 def check_js(site, file):
+    if "/" + str(file.relative_to(site)) == DEMO_JS:
+        return check_demo_js(file)
     if "/" + str(file.relative_to(site)) != THEME_JS:
-        return ["the only script is " + THEME_JS]
+        return ["the only scripts are " + THEME_JS + " and " + DEMO_JS]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -615,6 +648,32 @@ def self_test():
                 missed.append(name)
             (site / where).unlink()
 
+        demo = (SITE / "demo.js").read_bytes()
+        (site / "demo.js").write_bytes(demo)
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<script src="/demo.js"></script>'))
+        if check_site(site):
+            print("self-test: the demo on the home page was refused:", check_site(site))
+            return 1
+        for name, where, data, body in [
+            ("a changed demo.js", "demo.js", demo + b"\n", '<script src="/demo.js"></script>'),
+            ("a demo.js that keeps something", "demo.js", demo + b"\nlocalStorage.x=1;\n", '<script src="/demo.js"></script>'),
+            ("a demo.js that says a word the rules refuse", "demo.js", demo + b'\n"Download it";\n', '<script src="/demo.js"></script>'),
+            ("the demo twice", "demo.js", demo, '<script src="/demo.js"></script><script src="/demo.js"></script>'),
+        ]:
+            (site / where).write_bytes(data)
+            page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=body))
+            if not check_site(site):
+                missed.append(name)
+        (site / "demo.js").write_bytes(demo)
+        other = site / "other"
+        other.mkdir()
+        (other / "index.html").write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<script src="/demo.js"></script>'))
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
+        if not check_site(site):
+            missed.append("the demo on another page")
+        (other / "index.html").unlink()
+        (site / "demo.js").unlink()
+
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -622,7 +681,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 17} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 22} planted faults were caught")
     return 0
 
 

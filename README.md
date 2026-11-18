@@ -15,6 +15,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   404.html           shown for any address that doesn't exist
   styles.css
   theme.js           the theme picker: the site's only script
+  demo.js            the demo on Home (proposed 2026-11-18, waiting on the owner's yes; see "The demo")
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
@@ -76,6 +77,19 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 | The band on encryption | The recovery sheet as the app shows it, with made-up codes | Mac |
 
 The same six in dark appearance would let the page show a dark picture to a reader in dark mode; that is a nice extra, not needed. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, and replaces the `<svg class="drawing">` in its figure (`CLAUDE.md`, "Pictures of the app"). When the last drawing is replaced, the line on Home that says the pictures are drawings goes too.
+
+## The demo (proposed 2026-11-18, not yet allowed)
+
+On 2026-11-18 the owner asked whether the site could be a working copy of the app, since there is no free trial (it will cost $24.99 up front). A private prototype was made that morning and held, on his word, until the app's movable panels were installed on his Mac (14:20 that day, app commit `f596a5c`). This branch builds it into Home. It is **not allowed yet**: `CLAUDE.md` permits one script, and any second one, with the Privacy page change that must come first, is his to approve. The prototype is https://claude.ai/artifact/9z4HKcgpMGwSKRxHGhBHUc (private).
+
+- **Where:** Home's section `#try`, "Try the window", right after the headline, whose button now leads there. The rest of Home is unchanged, so the page reads the same to search engines and to anyone with scripts off; the section then shows one line saying the demo needs scripts and that everything in it is also written further down.
+- **What it is:** `docs/demo.js` builds a copy of the Mac window into `<div id="demo">`: the rail of the four sections, each section's sidebar (at 980 px and wider), the section on screen or Today, the status line, a Lock, a theme menu, and the panels. Its words are the site's own, as notes, reminders, events and budget rows; the new sentences were drafted by Sonnet from a list of allowed facts and checked against the rules. A "Try these" list of eight ticks itself off. The window says Demo in its title bar.
+- **The panels** follow the app's record 0040 and `SPEC.md` §33: Events, Reminders, Notes and Money (Today's four parts), two lists and two folders, and a picture panel with a drawing standing in; docked left, right or along the bottom of the centre; tabs; the pin, the strip and the slide-out; dragging a tab or a title bar, with the place lit; the line between a dock and the centre drags (or takes the arrow keys); a title bar's Control-click menu (or Shift-F10 on a tab) docks, collapses and closes; View ▸ Panels with Hide Panels (⌃⌘P), Next and Previous Panel (⌃⌘] and ⌃⌘[), Layout 1 to 3, Save and Forget. The app's Reset Layout is called "Put All Panels Away" here, because `check.py` refuses the word "reset" anywhere a reader sees it.
+- **The phone's shape:** under 720 px wide the window becomes the iPhone's: one section at a time and a tab bar of the four, no panels and no Today, as the iPhone app has none.
+- **Themes:** the window wears its own theme (`.sfd[data-look]` in `styles.css`), the page's until a reader picks one in the window; picking one there changes the window only and is not kept. The numbers are `LookThemes.swift`'s, with the site's measured word colours; each theme's face, headings (Iowan in Sage and Linen), figures and density are its draft's. Words on the accent use a fill that is the accent, except Night's (`#2f6fe0`), as white on Night's accent measures 3.7 to 1.
+- **It keeps nothing:** no storage of any kind, no requests, no cookies; reload and it starts fresh. `scripts/check.py` pins its SHA-256 like `theme.js`'s, allows it once and on Home alone, refuses any network, storage or `eval` word in it, and runs the house rules' word checks over its strings; `--self-test` plants five faults to prove it. The Privacy page has a paragraph on it, to go live with it.
+- **Picked, for the owner to change:** rounded page headings on all eight themes, and the window keeping the app's serif headings in Sage and Linen. The "Lowercase, rounded" page look itself is in the prototype only; this branch doesn't carry it.
+- **Not in it:** the Clock (on the app's `main`, not installed), anything about sync or sharing, and any picture of the app.
 
 ## The theme picker
 
