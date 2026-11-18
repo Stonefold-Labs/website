@@ -297,7 +297,7 @@
   --band-amber: #64d2ff;
   --band-sage: #8e8e93;
   --event: #0066cc;
-  --mark: #293b36;
+  --mark: #0066cc;
   --sans: var(--f-system);
   --display: var(--f-system);
 }
@@ -325,7 +325,7 @@
     --band-amber: #64d2ff;
     --band-sage: #a1a1a6;
     --event: #2997ff;
-    --mark: #a9b8a1;
+    --mark: #2997ff;
     --sans: var(--f-system);
     --display: var(--f-system);
 }
