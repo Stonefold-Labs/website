@@ -1,6 +1,6 @@
 # Stonefold Labs — the website
 
-The public site for stonefoldlabs.com: a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the theme picker.
+The public site for stonefoldapp.com (before 2026-11-18, stonefoldlabs.com, which now redirects here): a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the theme picker.
 
 It exists for three reasons, in order: Apple requires an organization to have a public website and an e-mail address on its own domain before it can enroll in the Developer Program; the app's App Store listing needs a privacy policy URL and a support URL; and people should be able to see what Stonefold Labs makes.
 
@@ -10,8 +10,8 @@ It exists for three reasons, in order: Apple requires an organization to have a 
 docs/              the published pages (GitHub Pages only publishes a folder with this name)
   index.html         Home: Stonefold, the app
   pictures/          pictures of the app, once they are made (none yet; see "Pictures of the app")
-  privacy/index.html https://stonefoldlabs.com/privacy/
-  support/index.html https://stonefoldlabs.com/support/
+  privacy/index.html https://stonefoldapp.com/privacy/
+  support/index.html https://stonefoldapp.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
   theme.js           the theme picker: the site's only script
@@ -46,7 +46,7 @@ It must say `clean`. It fails on any script but `theme.js` (whose exact contents
 
 ## Where it stands (2026-11-15)
 
-Live at https://stonefoldlabs.com since 2026-11-13, served by GitHub Pages from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), with Cloudflare on "DNS only". Commits are authored "Stonefold Labs". `PUBLISHING.md` says which parts are done; the mailbox test and the day the company exists are still to do. Any change: edit, `python3 -I scripts/check.py`, commit, push (on the owner's yes), then `scripts/check-live.sh`.
+Live at https://stonefoldlabs.com since 2026-11-13, and at https://stonefoldapp.com once `PUBLISHING.md` Part 9 is done (the owner chose it as the main address on 2026-11-18; stonefoldlabs.com then redirects to it and stays the mail domain). Served by GitHub Pages from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), with Cloudflare on "DNS only". Commits are authored "Stonefold Labs". `PUBLISHING.md` says which parts are done; the mailbox test and the day the company exists are still to do. Any change: edit, `python3 -I scripts/check.py`, commit, push (on the owner's yes), then `scripts/check-live.sh`.
 
 The company is not formed yet, so no page says "LLC" and none carries a copyright line. `PUBLISHING.md` Part 8 is the change for the day it is.
 

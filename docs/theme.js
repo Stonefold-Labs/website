@@ -1,4 +1,4 @@
-/* The theme picker. This is the only script on stonefoldlabs.com.
+/* The theme picker. This is the only script on stonefoldapp.com.
 
    The page can wear any of the app's eight themes. This script sets one word on the page, such as "sage" or "linen",
    and keeps that word in this browser, and only after a theme has been picked. Until then the page follows the

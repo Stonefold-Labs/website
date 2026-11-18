@@ -3,12 +3,13 @@
 #
 #     scripts/check-live.sh
 #
-# It asks stonefoldlabs.com for each page and nothing else. It changes nothing.
+# It asks stonefoldapp.com for each page, and the old address stonefoldlabs.com where it redirects. It changes nothing.
 
 set -u
 cd "$(dirname "$0")/.."
 
-SITE="https://stonefoldlabs.com"
+SITE="https://stonefoldapp.com"
+OLD="https://stonefoldlabs.com"
 failed=0
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
@@ -50,8 +51,9 @@ else
   say_bad "a missing page answered $code, or not with 404.html"
 fi
 
-# 3. Plain http and www both end at https://stonefoldlabs.com/.
-for start in "http://stonefoldlabs.com/" "http://www.stonefoldlabs.com/" "https://www.stonefoldlabs.com/"; do
+# 3. Plain http and www, and the old address stonefoldlabs.com, all end at https://stonefoldapp.com/.
+for start in "http://stonefoldapp.com/" "http://www.stonefoldapp.com/" "https://www.stonefoldapp.com/" \
+             "http://stonefoldlabs.com/" "https://stonefoldlabs.com/" "http://www.stonefoldlabs.com/" "https://www.stonefoldlabs.com/"; do
   end="$(curl -sS --max-time 20 -L -o /dev/null -w '%{url_effective}' "$start")"
   if [ "$end" = "$SITE/" ]; then
     say_ok "$start ends at $SITE/"
@@ -59,6 +61,21 @@ for start in "http://stonefoldlabs.com/" "http://www.stonefoldlabs.com/" "https:
     say_bad "$start ends at ${end:-nothing}"
   fi
 done
+
+# 4. The old address keeps the path and the query: a link to the old privacy page still arrives.
+end="$(curl -sS --max-time 20 -L -o /dev/null -w '%{url_effective}' "$OLD/privacy/?a=1")"
+if [ "$end" = "$SITE/privacy/?a=1" ]; then
+  say_ok "$OLD/privacy/?a=1 ends at $SITE/privacy/?a=1"
+else
+  say_bad "$OLD/privacy/?a=1 ends at ${end:-nothing}"
+fi
+
+# 5. The old address never answers with a cookie of its own.
+if curl -sSI --max-time 20 "$OLD/" | grep -qi '^set-cookie:'; then
+  say_bad "$OLD/ sets a cookie"
+else
+  say_ok "$OLD/ sets no cookie"
+fi
 
 echo
 if [ "$failed" = 0 ]; then

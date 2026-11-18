@@ -29,7 +29,7 @@ CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; 
 # every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
 # read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
-THEME_JS_SHA256 = "d2b177f3c3c9d6a06274d04951be1fbe8389c97a8894b9266bbb4eb6a3b27a34"
+THEME_JS_SHA256 = "ead365ea7423be0a80080e667ef6a66da1c1b32409934c9d39713026233c5bfa"
 # The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]

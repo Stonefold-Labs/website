@@ -1,4 +1,6 @@
-# Putting stonefoldlabs.com on the internet
+# Putting the site on the internet
+
+Stonefold Labs' website was put up at stonefoldlabs.com on 2026-11-13. On 2026-11-18 the owner chose stonefoldapp.com as its main address (Part 9 is the move, and is not done yet). Mail stays at stonefoldlabs.com.
 
 Written 2026-11-12.
 
@@ -131,28 +133,77 @@ Florida approved Stonefold Labs LLC (document number L26000574352, filed 2026-11
 
 Do this **before** enrolling with Apple. Apple checks that the website belongs to the legal company: "Your organization's website must be publicly available and functional, and its domain name must be associated with your organization."
 
-## Part 9. Forward stonefoldapp.com to the site (you, 10 minutes; Claude only prepares) — not done, drafted 2026-11-18
+## Part 9. Move the site to stonefoldapp.com (you, in one sitting; Claude pushes one change on your yes) — not done, planned 2026-11-18
 
-The owner bought `stonefoldapp.com` on 2026-11-18. The plan, if he says yes: anyone who types `stonefoldapp.com` or `www.stonefoldapp.com` lands on `https://stonefoldlabs.com` with the rest of the address kept (`stonefoldapp.com/privacy/` goes to `stonefoldlabs.com/privacy/`). **Nothing about stonefoldlabs.com changes:** its CNAME file and its DNS records are not touched, and the site still carries the one address. (If the owner would rather make `stonefoldapp.com` the main address, that is a different job: the `docs/CNAME` file, the GitHub Pages custom domain, the DNS records and the privacy page all change. Ask first.)
+On 2026-11-18 the owner bought `stonefoldapp.com` and said "Make it the main". After this part, https://stonefoldapp.com is the site, `stonefoldlabs.com` and `www.stonefoldlabs.com` send readers on to it (the same page, with the path kept), and **mail stays at `support@stonefoldlabs.com`**. The mail records (the two MX records, the `v=spf1` and `protonmail-verification` TXT records, `_dmarc` and the three `protonmail…_domainkey` CNAMEs) are never touched.
 
-**Say this on the privacy page first.** Cloudflare can only redirect an address whose records are "Proxied" (the orange cloud), so a reader who visits `stonefoldapp.com` reaches Cloudflare's servers for that one redirect, and Cloudflare can see their address as any web host can. That is not true of stonefoldlabs.com, which stays on "DNS only". `CLAUDE.md` says the privacy page changes before hosting does. Suggested words, for the owner's yes: "If you type stonefoldapp.com, that address is answered by Cloudflare, which sends you straight on to this site. Cloudflare sees that request, as any web host would, and we don't." The check's word list needs nothing new.
+Parts 1 to 8 above say `stonefoldlabs.com` because that is the address they set up; they stay as the record of what was done.
 
-Where the domain is registered decides step 1. Ask the owner which: **Cloudflare Registrar** (then the domain is already in the Cloudflare account) or another registrar.
+### How long it takes, and what you will see
 
-1. **Put the domain in Cloudflare (skip if it was bought at Cloudflare).** In the Cloudflare dashboard go to **Domains**, click **Onboard a domain**, type `stonefoldapp.com`, choose how to add the DNS records, click **Continue**, and pick the **Free** plan. Cloudflare shows two nameservers. At the registrar, find the domain's nameserver setting and replace the nameservers with those two. If the registrar shows DNSSEC as on, turn it off first and re-enable it from Cloudflare once the domain is active. It can take minutes to hours until Cloudflare says the domain is **Active**.
-2. **Give both names an address that Cloudflare answers.** Open **stonefoldapp.com** ▸ **DNS** ▸ **Records** ▸ **Add record**, twice:
-   - Type `A`, Name `@`, IPv4 address `192.0.2.1`, Proxy status **Proxied** (orange cloud).
-   - Type `A`, Name `www`, IPv4 address `192.0.2.1`, Proxy status **Proxied**.
-   `192.0.2.1` is a reserved address that goes nowhere; it only gives the redirect something to attach to. Click **Save** each time.
-3. **Make the redirect.** In **stonefoldapp.com** go to **Rules** ▸ **Overview** ▸ **Create rule** ▸ **Redirect Rule**. Do it twice:
-   - Rule name `apex to stonefoldlabs`. **When incoming requests match**: **Wildcard pattern**, **Request URL** `https://stonefoldapp.com/*`. **Then**: **Target URL** `https://stonefoldlabs.com/${1}`, **Status code** `301`, **Preserve query string** on. Click **Deploy**.
-   - Rule name `www to stonefoldlabs`. Same, with **Request URL** `https://www.stonefoldapp.com/*`.
-   If the wildcard option is not where this says, choose **Custom filter expression** with `(http.host eq "stonefoldapp.com") or (http.host eq "www.stonefoldapp.com")`, a dynamic **Target URL** of `concat("https://stonefoldlabs.com", http.request.uri.path)`, `301`, and **Preserve query string** on.
-4. **Turn on HTTPS for the redirect.** In **SSL/TLS** ▸ **Overview** the mode may stay on its default, since nothing is fetched from an origin; in **SSL/TLS** ▸ **Edge Certificates** turn on **Always Use HTTPS**, so `http://stonefoldapp.com` also ends at the site.
-5. **Test.** From a terminal: `curl -sI https://stonefoldapp.com/privacy/` should say `301` and `location: https://stonefoldlabs.com/privacy/`; so should `https://www.stonefoldapp.com/privacy/` and `http://stonefoldapp.com/privacy/`. Then tell the website chat, and add a check for it to `scripts/check-live.sh`.
-6. **Mail.** `stonefoldapp.com` has no mailbox. If the registrar or Cloudflare offers to add mail records, say no.
+- **Steps 1 to 4 (you, about 40 minutes of clicking).** Nothing you can see changes. The old site keeps working the whole time. If `stonefoldapp.com` is registered somewhere other than Cloudflare, add the time the nameserver change takes: usually minutes, up to a few hours.
+- **Steps 5 to 7 are the part you will see, and it has a gap.** GitHub serves a site at one custom domain only. The moment the new domain is switched on (step 5), `stonefoldlabs.com` stops being served; it very likely shows GitHub's "There isn't a GitHub Pages site here" page until the redirect works (step 7). `stonefoldapp.com` itself works over plain `http://` at once, but its padlock (HTTPS) waits for GitHub's certificate: usually 5 to 30 minutes, and GitHub says it can take up to 24 hours. Until the padlock is there, `https://stonefoldapp.com` shows the browser's "not secure" warning. So expect **about 30 minutes, possibly a few hours, where the site is half-down.** Nothing is lost and no data is involved: the site has no accounts and no readers' data.
+- **Pick the hour well.** Do not do it while Apple is checking the website for the Developer Program enrollment (Part 8's reason): ask the website chat if that is happening. Apple's enrollment page asks for an email address associated with the organization's domain and a website associated with the organization; the email will be at `stonefoldlabs.com` and the website at `stonefoldapp.com`. Whether Apple accepts that is not confirmed from Apple's page; read it again before enrolling.
 
-Button names are from Cloudflare's help pages read on 2026-11-18 (Single Redirects, "Create a redirect rule in the dashboard"; "Add a site"; "Redirect all requests to a different hostname"), which say a Single Redirect applies only to a proxied hostname. Cloudflare renames things: if a button isn't there, stop and ask in the website chat. Not confirmed from a help page: the wording of the free-plan button, and the `192.0.2.1` placeholder address (a reserved address that is conventionally used for this; Cloudflare's dashboard may offer to create the proxied record itself when the rule is saved, which does the same job).
+### Step 1. Put stonefoldapp.com in Cloudflare (you, 5 minutes plus any wait)
+
+Ask yourself where you bought it. **At Cloudflare:** skip to step 2; it is already in the account. **Elsewhere:**
+1. In Cloudflare, click **Domains**, then **Onboard a domain**. Type `stonefoldapp.com`, choose how to add the DNS records, and click **Continue**. Pick the **Free** plan.
+2. Cloudflare lists the records it found. **Delete every record on `@` and `www` that the registrar added for a parked page**; they are replaced in step 3. Add no mail records. Click **Continue**.
+3. Cloudflare shows two nameservers. Go to the registrar, find the domain's nameserver setting, and replace the registrar's nameservers with those two. If it shows DNSSEC on, turn it off first; Cloudflare can turn it on again once the domain is **Active**.
+4. Wait until Cloudflare says the domain is **Active** (an email also arrives).
+
+### Step 2. Prove to GitHub that the domain is yours (you, 5 minutes)
+
+GitHub's own advice is to add the domain here **before** pointing its DNS at GitHub, so nobody else can claim it.
+1. On GitHub, click your profile picture, **Your organizations**, **Stonefold-Labs**. Under the name click **Settings** (or the **...** menu, then **Settings**).
+2. In the left column, under "Code, planning, and automation", click **Pages**. On the right, click **Add a domain**.
+3. Type `stonefoldapp.com` and click **Add domain**. GitHub shows a TXT record: a name starting `_github-pages-challenge-Stonefold-Labs` and a code. Leave this tab open.
+4. In Cloudflare, open **stonefoldapp.com**, then **DNS**, **Records**, **Add record**. **Type** `TXT`, **Name** `_github-pages-challenge-Stonefold-Labs` (Cloudflare adds `.stonefoldapp.com`), **Content** the code from GitHub, **TTL** Auto. Click **Save**.
+5. Back on GitHub, wait a minute and click **Verify** (if it says not yet, use the **...** beside the domain, **Continue verifying**, then **Verify**). **Keep the TXT record for good.**
+
+### Step 3. Point stonefoldapp.com at GitHub (you, 10 minutes)
+
+Cloudflare, **stonefoldapp.com**, **DNS**, **Records**. Add nine records, each with **Proxy status** set to **DNS only** (grey cloud), exactly the table in Part 4 with this domain:
+
+| # | Type | Name | Address or target | Proxy status |
+|---|---|---|---|---|
+| 1 to 4 | A | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` (one record each) | DNS only |
+| 5 to 8 | AAAA | `@` | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` (one each) | DNS only |
+| 9 | CNAME | `www` | `stonefold-labs.github.io` | DNS only |
+
+No wildcard (`*`) record, ever: GitHub warns it is a takeover risk. No mail records on this domain. At this point `stonefoldapp.com` points at GitHub but GitHub does not serve it yet, and the old site still works.
+
+### Step 4. Tell the website chat "step 3 is done" (you, 1 minute)
+
+Claude checks the records from here (`dig`, read only) and the TXT record, and says whether to go on.
+
+### Step 5. Switch on the new address (Claude, on your yes; the gap starts here)
+
+This is the one push, and it is yours to say yes to. Claude pushes one commit that changes `docs/CNAME` to `stonefoldapp.com`, and carries the other changes prepared in the repo: the live check's address, the docs, and one sentence on the Privacy page saying the old address is answered by Cloudflare, which only sends readers on (the page changes before the hosting does). It has been run through `scripts/check.py`.
+Then you, on GitHub, in the repo **Stonefold-Labs/website**, **Settings**, **Pages**: **Custom domain** should show `stonefoldapp.com`. If it still shows `stonefoldlabs.com`, type `stonefoldapp.com` over it and click **Save**. Wait for the **DNS check successful** tick.
+
+### Step 6. Wait for the padlock, then turn on HTTPS (you, a wait of minutes to hours)
+
+Reload the Pages settings every few minutes. When **Enforce HTTPS** is no longer greyed out, tick it. If it is greyed out, GitHub has not finished the certificate; come back later (it says up to 24 hours; the first time, on 2026-11-13, it took a minute). Then open https://stonefoldapp.com and check that it shows a padlock and the site.
+
+### Step 7. Send the old address on (you, 15 minutes; do it only once step 6 shows the padlock)
+
+Redirecting before then would send readers to a "not secure" warning.
+1. Cloudflare, **stonefoldlabs.com**, **DNS**, **Records**. **For the nine web records only** (the four A, four AAAA and the `www` CNAME from Part 4), click the grey cloud so it turns orange (**Proxied**), and **Save**. **Do not touch** the two MX records, the TXT records, `_dmarc`, the three `protonmail…_domainkey` CNAMEs, or the `_github-pages-challenge-Stonefold-Labs` / `…stonefold-labs` TXT record. Mail records are never proxied; a mail record turned orange would break the mail.
+2. **Rules**, **Overview**, **Create rule**, **Redirect Rule**. Make two, each with **When incoming requests match** on **Wildcard pattern**:
+   - Rule name `old address to stonefoldapp.com`. **Request URL** `http*://stonefoldlabs.com/*`. **Target URL** `https://stonefoldapp.com/${2}`. **Status code** `301`. **Preserve query string** on. Click **Deploy**.
+   - Rule name `old www to stonefoldapp.com`. **Request URL** `http*://www.stonefoldlabs.com/*`. Everything else the same.
+   If the wildcard option is not where this says, choose **Custom filter expression** with `(http.host eq "stonefoldlabs.com") or (http.host eq "www.stonefoldlabs.com")`, a dynamic **Target URL** of `concat("https://stonefoldapp.com", http.request.uri.path)`, status `301`, **Preserve query string** on.
+3. Tell the website chat. Claude runs `scripts/check-live.sh`, which now checks that `stonefoldapp.com` serves every page exactly, that `http://`, `www.` and the old address all end at `https://stonefoldapp.com/`, that the old address keeps the path and the query, and that no cookie is set. Then you open https://stonefoldapp.com and https://stonefoldlabs.com/privacy/ on your Mac and iPhone.
+
+### After it
+
+- Send the app chat the new address for Help, About and the App Store URLs: `https://stonefoldapp.com/privacy` and `https://stonefoldapp.com/support`. Until the app is released nothing public points at them.
+- The old GitHub verification of `stonefoldlabs.com` and its TXT record stay as they are: they keep that domain from being claimed by anyone else.
+- If something goes wrong in step 5 or 6 and you want the old address back at once: change `docs/CNAME` back to `stonefoldlabs.com` (ask the website chat), and re-save the old domain under **Custom domain**. Nothing in the DNS for `stonefoldlabs.com` was changed before step 7.
+
+Button names are from GitHub's and Cloudflare's help pages read on 2026-11-18 (the sources below). A site can rename a button; if one isn't where this says, stop and ask in the website chat rather than guess. Not confirmed from a help page: what GitHub shows on the old address during the gap, the wording of Cloudflare's free-plan button, and whether Apple accepts mail on one domain and the website on another.
 
 ## Later changes
 
@@ -171,6 +222,7 @@ When an app is released, its privacy policy goes on `/privacy/` and its help on 
 - Cloudflare, create DNS records: https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/
 - Cloudflare, zone apex records: https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-zone-apex/
 - Cloudflare, single redirects: https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/ (read 2026-11-18)
+- GitHub, managing a custom domain and verifying a domain (the two pages above, read again 2026-11-18)
 - Cloudflare, add a site: https://developers.cloudflare.com/fundamentals/manage-domains/add-site/ (read 2026-11-18)
 - Proton, custom domains: https://proton.me/support/custom-domain
 
