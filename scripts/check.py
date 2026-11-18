@@ -42,7 +42,9 @@ OUTSIDE_LINKS = {
 
 # The only files that may be published. A .jpg is a picture of the app (the owner, 2026-11-13),
 # and lives only under /pictures/. There are none until the app's own pictures are made.
-ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg"}
+# .png and .ico are the company's mark as pictures (the owner, 2026-11-18: "add the PNG and icon set"): the tab icon,
+# the home-screen icon and the mark at a few sizes, from the app's docs/brand, with nothing but the picture in them.
+ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg", ".png", ".ico"}
 SCREENSHOTS = "/pictures/"
 ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
@@ -142,8 +144,8 @@ class Page(HTMLParser):
         elif tag == "link":
             rel = (a.get("rel") or "").lower()
             href = a.get("href") or ""
-            if rel not in ("stylesheet", "icon"):
-                self.problems.append(f"<link rel={rel!r}>: only the stylesheet and the icon")
+            if rel not in ("stylesheet", "icon", "apple-touch-icon"):
+                self.problems.append(f"<link rel={rel!r}>: only the stylesheet and the icons")
             if not href.startswith("/") or href.startswith("//"):
                 self.problems.append(f"<link href={href!r}>: must be a file of this site")
             else:
@@ -332,6 +334,57 @@ def check_js(site, file):
     return problems
 
 
+PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
+# The picture and its colour tag. Exif, text and dates (eXIf, tEXt, zTXt, iTXt, tIME) can hold the device, the
+# software, dates and places, so anything not listed here is refused.
+PNG_CHUNKS = {b"IHDR", b"PLTE", b"IDAT", b"IEND", b"sRGB", b"gAMA", b"cHRM", b"tRNS"}
+
+
+def png_problems(data):
+    if data[:8] != PNG_SIGNATURE:
+        return ["not a PNG"]
+    i = 8
+    seen_end = False
+    while i + 12 <= len(data):
+        length = int.from_bytes(data[i:i + 4], "big")
+        kind = data[i + 4:i + 8]
+        if kind not in PNG_CHUNKS:
+            return [f"it carries a {kind.decode('latin-1')} chunk: strip it with scripts/strip-png.py"]
+        i += 12 + length
+        if kind == b"IEND":
+            seen_end = True
+            break
+    if not seen_end or i != len(data):
+        return ["a damaged PNG, or something after its end"]
+    return []
+
+
+def check_png(file):
+    return png_problems(file.read_bytes())
+
+
+def check_ico(file):
+    """An .ico of PNGs: its directory in order, every picture a clean PNG, nothing left over."""
+    data = file.read_bytes()
+    if data[:4] != b"\x00\x00\x01\x00":
+        return ["not an .ico"]
+    count = int.from_bytes(data[4:6], "little")
+    end = 6 + 16 * count
+    for n in range(count):
+        entry = data[6 + 16 * n:22 + 16 * n]
+        size = int.from_bytes(entry[8:12], "little")
+        offset = int.from_bytes(entry[12:16], "little")
+        if offset != end or offset + size > len(data):
+            return ["a damaged .ico"]
+        problems = png_problems(data[offset:offset + size])
+        if problems:
+            return problems
+        end = offset + size
+    if end != len(data):
+        return ["something after the pictures in the .ico"]
+    return []
+
+
 def check_svg(file):
     svg = file.read_text(encoding="utf-8")
     problems = []
@@ -383,6 +436,10 @@ def check_site(site):
             problems = check_js(site, file)
         elif file.suffix == ".jpg":
             problems = check_jpg(site, file)
+        elif file.suffix == ".png":
+            problems = check_png(file)
+        elif file.suffix == ".ico":
+            problems = check_ico(file)
         else:
             problems = []
         if problems:
@@ -420,6 +477,9 @@ BAD = [
     ("a source from elsewhere", "body", '<picture><source srcset="https://example.com/p.svg" media="(min-width: 1px)"></picture>'),
     ("a web font", "head", '<link rel="stylesheet" href="https://fonts.example.com/f.css">'),
     ("a preconnect", "head", '<link rel="preconnect" href="/x">'),
+    ("a manifest", "head", '<link rel="manifest" href="/mark.svg">'),
+    ("an icon from elsewhere", "head", '<link rel="apple-touch-icon" href="https://example.com/i.png">'),
+    ("an icon that isn't there", "head", '<link rel="apple-touch-icon" href="/nope.png">'),
     ("a form", "body", "<form></form>"),
     ("an iframe", "body", "<iframe></iframe>"),
     ("a refresh", "head", '<meta http-equiv="refresh" content="0;url=https://example.com">'),
@@ -531,6 +591,30 @@ def self_test():
             (site / where).unlink()
         page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
 
+        # A clean PNG and .ico pass; a PNG with Exif or text, or an .ico holding one, does not.
+        def chunk(kind, body=b""):
+            return len(body).to_bytes(4, "big") + kind + body + b"\x00\x00\x00\x00"
+        clean_png = PNG_SIGNATURE + chunk(b"IHDR", b"\x00" * 13) + chunk(b"sRGB", b"\x00") + chunk(b"IDAT", b"x") + chunk(b"IEND")
+        exif_png = PNG_SIGNATURE + chunk(b"IHDR", b"\x00" * 13) + chunk(b"eXIf", b"MM") + chunk(b"IDAT", b"x") + chunk(b"IEND")
+        text_png = PNG_SIGNATURE + chunk(b"IHDR", b"\x00" * 13) + chunk(b"tEXt", b"a\x00b") + chunk(b"IDAT", b"x") + chunk(b"IEND")
+
+        def ico_of(png):
+            return b"\x00\x00\x01\x00\x01\x00" + b"\x10\x10\x00\x00\x01\x00\x20\x00" + len(png).to_bytes(4, "little") + (22).to_bytes(4, "little") + png
+
+        for name, where, data in [("a clean PNG", "icon.png", clean_png), ("a clean .ico", "favicon.ico", ico_of(clean_png))]:
+            (site / where).write_bytes(data)
+            if check_site(site):
+                print(f"self-test: {name} was refused:", check_site(site))
+                return 1
+            (site / where).unlink()
+        for name, where, data in [("a PNG with Exif", "icon.png", exif_png), ("a PNG with text", "icon.png", text_png),
+                                  ("a PNG with a tail", "icon.png", clean_png + b"x"), ("an .ico holding a PNG with Exif", "favicon.ico", ico_of(exif_png)),
+                                  ("an .ico with a tail", "favicon.ico", ico_of(clean_png) + b"x"), ("a fake PNG", "icon.png", b"not a picture")]:
+            (site / where).write_bytes(data)
+            if not check_site(site):
+                missed.append(name)
+            (site / where).unlink()
+
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -538,7 +622,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 11} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 17} planted faults were caught")
     return 0
 
 
