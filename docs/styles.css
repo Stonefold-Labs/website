@@ -515,9 +515,18 @@ a:focus-visible {
   white-space: nowrap;
 }
 
-.brand svg {
+.brand .mark {
   width: 2.25rem;
   height: 2.25rem;
+}
+
+/* The name is drawn, not typed (the owner picked draft A on 2026-11-18): the mark's own parts, one stroke with round
+   ends, square bowls and the gate at the bottom of each o. It takes the text colour, so every theme draws it the same
+   shape in its own ink. The drawing is ../StonefoldApp/docs/drafts/wordmark. */
+.brand .wordmark {
+  display: block;
+  width: auto;
+  height: 1.625rem;
 }
 
 /* The theme picker: one button that opens a short list of the app's eight themes. Hidden until theme.js is
@@ -1357,9 +1366,13 @@ footer {
   font-size: 1.0625rem;
 }
 
-.foot .brand svg {
+.foot .brand .mark {
   width: 1.5rem;
   height: 1.5rem;
+}
+
+.foot .brand .wordmark {
+  height: 1.25rem;
 }
 
 .foot ul {
