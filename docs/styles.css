@@ -2644,7 +2644,13 @@ footer {
 
 .sfd-nlist {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.125rem;
+}
+
+.sfd-nlist li,
+.sfd-nitem {
+  min-width: 0;
 }
 
 .sfd-nitem {
@@ -3119,7 +3125,12 @@ footer {
 
 .sfd-phone .sfd-notes {
   display: flex;
+  flex-direction: column;
   overflow: visible;
+}
+
+.sfd-phone .sfd-notes-results {
+  min-width: 0;
 }
 
 .sfd-tabbar {

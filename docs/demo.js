@@ -20,7 +20,7 @@
   /* ---------- small helpers ---------- */
 
   function esc(s) {
-    return String(s).replace(/[&<>"']/g, function (c) {
+    return String(s).replace(/[&<>\u0022\u0027]/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
     });
   }
@@ -1380,7 +1380,10 @@
     var inside = ev.composedPath ? ev.composedPath().indexOf(root) !== -1 : root.contains(ev.target);
     if ((S.menu || S.ctx) && !inside) { S.menu = null; S.ctx = null; drawPop(); drawTitle(); }
   });
-  if (window.ResizeObserver) { new ResizeObserver(measure).observe(mount); } else { window.addEventListener("resize", measure); }
+  /* The window's width decides its shape. A resize of the browser is listened for too, since the observer reports
+     only when the page is drawn, and a page in a hidden tab is not. */
+  if (window.ResizeObserver) { new ResizeObserver(measure).observe(mount); }
+  window.addEventListener("resize", measure);
   if (window.MutationObserver) { new MutationObserver(followPage).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] }); }
   if (window.matchMedia) {
     var mq = window.matchMedia("(prefers-color-scheme: dark)");

@@ -37,7 +37,7 @@ THEME_JS_SHA256 = "bb08f356677bcf8a8fd74c6594679ebc2f7d90036e740174bd9171bd31524
 # its exact contents are pinned the same way: read it, then put its SHA-256 here (shasum -a 256 docs/demo.js).
 # demo_rules says what that read must look for.
 DEMO_JS = "/demo.js"
-DEMO_JS_SHA256 = "25260dac0d20c38bac75a2aad416afee03d86642e2663049aea77abcf7d1a7c8"
+DEMO_JS_SHA256 = "f8b3ddde45e0efe0084c7aeeb7d745e86395f44649e2de01e554250535240b7d"
 DEMO_PAGE = "index.html"
 LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
@@ -342,6 +342,9 @@ def demo_rules(js):
         if re.search(pattern, js):
             problems.append(why)
     # Every string, in any quotes, with markup turned back into its words and the words its attributes show.
+    # Comments go first, so an apostrophe in one can't pair with a quote in the code.
+    js = re.sub(r"/\*.*?\*/", " ", js, flags=re.S)
+    js = re.sub(r"(?m)^\s*//.*$", " ", js)
     strings = re.findall(r'"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\'|`((?:[^`\\]|\\.)*)`', js)
     text = " ".join(part for found in strings for part in found if part).replace('\\"', '"')
     shown = re.findall(r'(?:title|aria-label|placeholder|alt|value)="([^"]*)"', text)
