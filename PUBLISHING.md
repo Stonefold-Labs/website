@@ -131,6 +131,29 @@ Florida approved Stonefold Labs LLC (document number L26000574352, filed 2026-11
 
 Do this **before** enrolling with Apple. Apple checks that the website belongs to the legal company: "Your organization's website must be publicly available and functional, and its domain name must be associated with your organization."
 
+## Part 9. Forward stonefoldapp.com to the site (you, 10 minutes; Claude only prepares) — not done, drafted 2026-11-18
+
+The owner bought `stonefoldapp.com` on 2026-11-18. The plan, if he says yes: anyone who types `stonefoldapp.com` or `www.stonefoldapp.com` lands on `https://stonefoldlabs.com` with the rest of the address kept (`stonefoldapp.com/privacy/` goes to `stonefoldlabs.com/privacy/`). **Nothing about stonefoldlabs.com changes:** its CNAME file and its DNS records are not touched, and the site still carries the one address. (If the owner would rather make `stonefoldapp.com` the main address, that is a different job: the `docs/CNAME` file, the GitHub Pages custom domain, the DNS records and the privacy page all change. Ask first.)
+
+**Say this on the privacy page first.** Cloudflare can only redirect an address whose records are "Proxied" (the orange cloud), so a reader who visits `stonefoldapp.com` reaches Cloudflare's servers for that one redirect, and Cloudflare can see their address as any web host can. That is not true of stonefoldlabs.com, which stays on "DNS only". `CLAUDE.md` says the privacy page changes before hosting does. Suggested words, for the owner's yes: "If you type stonefoldapp.com, that address is answered by Cloudflare, which sends you straight on to this site. Cloudflare sees that request, as any web host would, and we don't." The check's word list needs nothing new.
+
+Where the domain is registered decides step 1. Ask the owner which: **Cloudflare Registrar** (then the domain is already in the Cloudflare account) or another registrar.
+
+1. **Put the domain in Cloudflare (skip if it was bought at Cloudflare).** In the Cloudflare dashboard go to **Domains**, click **Onboard a domain**, type `stonefoldapp.com`, choose how to add the DNS records, click **Continue**, and pick the **Free** plan. Cloudflare shows two nameservers. At the registrar, find the domain's nameserver setting and replace the nameservers with those two. If the registrar shows DNSSEC as on, turn it off first and re-enable it from Cloudflare once the domain is active. It can take minutes to hours until Cloudflare says the domain is **Active**.
+2. **Give both names an address that Cloudflare answers.** Open **stonefoldapp.com** ▸ **DNS** ▸ **Records** ▸ **Add record**, twice:
+   - Type `A`, Name `@`, IPv4 address `192.0.2.1`, Proxy status **Proxied** (orange cloud).
+   - Type `A`, Name `www`, IPv4 address `192.0.2.1`, Proxy status **Proxied**.
+   `192.0.2.1` is a reserved address that goes nowhere; it only gives the redirect something to attach to. Click **Save** each time.
+3. **Make the redirect.** In **stonefoldapp.com** go to **Rules** ▸ **Overview** ▸ **Create rule** ▸ **Redirect Rule**. Do it twice:
+   - Rule name `apex to stonefoldlabs`. **When incoming requests match**: **Wildcard pattern**, **Request URL** `https://stonefoldapp.com/*`. **Then**: **Target URL** `https://stonefoldlabs.com/${1}`, **Status code** `301`, **Preserve query string** on. Click **Deploy**.
+   - Rule name `www to stonefoldlabs`. Same, with **Request URL** `https://www.stonefoldapp.com/*`.
+   If the wildcard option is not where this says, choose **Custom filter expression** with `(http.host eq "stonefoldapp.com") or (http.host eq "www.stonefoldapp.com")`, a dynamic **Target URL** of `concat("https://stonefoldlabs.com", http.request.uri.path)`, `301`, and **Preserve query string** on.
+4. **Turn on HTTPS for the redirect.** In **SSL/TLS** ▸ **Overview** the mode may stay on its default, since nothing is fetched from an origin; in **SSL/TLS** ▸ **Edge Certificates** turn on **Always Use HTTPS**, so `http://stonefoldapp.com` also ends at the site.
+5. **Test.** From a terminal: `curl -sI https://stonefoldapp.com/privacy/` should say `301` and `location: https://stonefoldlabs.com/privacy/`; so should `https://www.stonefoldapp.com/privacy/` and `http://stonefoldapp.com/privacy/`. Then tell the website chat, and add a check for it to `scripts/check-live.sh`.
+6. **Mail.** `stonefoldapp.com` has no mailbox. If the registrar or Cloudflare offers to add mail records, say no.
+
+Button names are from Cloudflare's help pages read on 2026-11-18 (Single Redirects, "Create a redirect rule in the dashboard"; "Add a site"; "Redirect all requests to a different hostname"), which say a Single Redirect applies only to a proxied hostname. Cloudflare renames things: if a button isn't there, stop and ask in the website chat. Not confirmed from a help page: the wording of the free-plan button, and the `192.0.2.1` placeholder address (a reserved address that is conventionally used for this; Cloudflare's dashboard may offer to create the proxied record itself when the rule is saved, which does the same job).
+
 ## Later changes
 
 Any change to the site: edit the files in `docs/`, run `python3 -I scripts/check.py`, commit, push. The live site follows within a minute or two. Then run `scripts/check-live.sh`.
@@ -147,6 +170,8 @@ When an app is released, its privacy policy goes on `/privacy/` and its help on 
 - GitHub, creating an organization: https://docs.github.com/en/organizations/collaborating-with-groups-in-organizations/creating-a-new-organization-from-scratch
 - Cloudflare, create DNS records: https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/
 - Cloudflare, zone apex records: https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-zone-apex/
+- Cloudflare, single redirects: https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/ (read 2026-11-18)
+- Cloudflare, add a site: https://developers.cloudflare.com/fundamentals/manage-domains/add-site/ (read 2026-11-18)
 - Proton, custom domains: https://proton.me/support/custom-domain
 
 Not confirmed from a help page, so check on the screen: the exact words of Cloudflare's grey-cloud setting ("DNS only"), GitHub's plan picker for a new organization, and where **Addresses** sits in Proton's settings.
