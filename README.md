@@ -65,6 +65,8 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 **Update 2026-11-18:** the owner asked for real screenshots throughout. The pictures from 2026-11-15/16 (kept in `~/Library/Developer/Xcode/DerivedData/Stonefold-pictures.noindex/website`) predate the app's themes and the Mac's are not real windows, so none is used. A fresh brief for an app chat, with Linen and Sage of each and a `<picture>` plan for light and dark, is in the dispatch notes folder (`website-screenshots-brief.md`).
 
+**On hold (the owner, 2026-11-18):** "Hold off on pushing screenshots until app is closer to 100% finished." A trial set of real pictures from the screenshots chat is built and kept on the local branch `screenshots-held` (commit 9ca2503: the eight JPEGs in `docs/pictures/`, Home swapped from drawings to pictures, a Linen and a Sage of each shown to match the theme). It is **not on `main` and not live**; the drawings stay on the site. Do not merge or push that branch until he says. When he does, the pictures are retaken first (the retake keeps the same file names; the brief is `docs-notes/website-screenshots-brief.md`), then merge `screenshots-held`, swap the files, look at every one, run `scripts/check.py`, and ask for his yes to the push. The branch's README has the longer note on how the pictures are shown.
+
 **The pictures wanted,** to be made by the app's build chat at the end of milestone A8, from a made-up household that reads like a real one (no "Made-up" in any name), light appearance, normal text size, a real window on the Mac, no test warnings, and no stand-in icon in view:
 
 | Goes in | Picture | Device |
