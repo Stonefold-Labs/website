@@ -1,6 +1,6 @@
 # Putting the site on the internet
 
-Stonefold Labs' website was put up at stonefoldlabs.com on 2026-11-13. On 2026-11-18 the owner chose stonefoldapp.com as its main address (Part 9 is the move, and is not done yet). Mail stays at stonefoldlabs.com.
+Stonefold Labs' website was put up at stonefoldlabs.com on 2026-11-13. On 2026-11-18 the owner chose stonefoldapp.com as its main address (Part 9 is the move, done the same day). Mail stays at stonefoldlabs.com.
 
 Written 2026-11-12.
 
@@ -133,11 +133,13 @@ Florida approved Stonefold Labs LLC (document number L26000574352, filed 2026-11
 
 Do this **before** enrolling with Apple. Apple checks that the website belongs to the legal company: "Your organization's website must be publicly available and functional, and its domain name must be associated with your organization."
 
-## Part 9. Move the site to stonefoldapp.com (you, in one sitting; Claude pushes one change on your yes) — not done, planned 2026-11-18
+## Part 9. Move the site to stonefoldapp.com (you, in one sitting; Claude pushes one change on your yes) — done 2026-11-18
 
 On 2026-11-18 the owner bought `stonefoldapp.com` and said "Make it the main". After this part, https://stonefoldapp.com is the site, `stonefoldlabs.com` and `www.stonefoldlabs.com` send readers on to it (the same page, with the path kept), and **mail stays at `support@stonefoldlabs.com`**. The mail records (the two MX records, the `v=spf1` and `protonmail-verification` TXT records, `_dmarc` and the three `protonmail…_domainkey` CNAMEs) are never touched.
 
 Parts 1 to 8 above say `stonefoldlabs.com` because that is the address they set up; they stay as the record of what was done.
+
+**What happened on 2026-11-18:** it went faster than the plan said. The domain was bought at Cloudflare Registrar, so step 1 was already done. After the owner added the verification record (the first attempt had the record's own name where its code belongs; the second, with GitHub's code, verified) and the nine DNS-only records, Claude pushed the CNAME change (`87db761`) at about 09:43, and GitHub had `https://stonefoldapp.com` serving with a Let's Encrypt certificate within about a minute, so there was no visible gap. The owner turned on Enforce HTTPS, then proxied the old address's nine web records and made the two redirect rules (Cloudflare warned that the rule "may not apply" for http; the records were proxied, so Deploy anyway was right). `scripts/check-live.sh` passes: every page exact on stonefoldapp.com, and the old address, with and without `www`, redirects with path and query kept. One `NOT OK` on the first run (`https://www.stonefoldlabs.com/`) was a moment's lag and cleared on the next.
 
 ### How long it takes, and what you will see
 

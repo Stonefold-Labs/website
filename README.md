@@ -46,7 +46,7 @@ It must say `clean`. It fails on any script but `theme.js` (whose exact contents
 
 ## Where it stands (2026-11-15)
 
-Live at https://stonefoldlabs.com since 2026-11-13, and at https://stonefoldapp.com once `PUBLISHING.md` Part 9 is done (the owner chose it as the main address on 2026-11-18; stonefoldlabs.com then redirects to it and stays the mail domain). Served by GitHub Pages from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), with Cloudflare on "DNS only". Commits are authored "Stonefold Labs". `PUBLISHING.md` says which parts are done; the mailbox test and the day the company exists are still to do. Any change: edit, `python3 -I scripts/check.py`, commit, push (on the owner's yes), then `scripts/check-live.sh`.
+Live at https://stonefoldlabs.com since 2026-11-13, and, since 2026-11-18, at https://stonefoldapp.com, the main address (the owner's choice; `PUBLISHING.md` Part 9 is the move). stonefoldlabs.com redirects to it, keeping the path, and stays the mail domain. Served by GitHub Pages from the public repo `Stonefold-Labs/website` (branch `main`, folder `/docs`), with Cloudflare on "DNS only". Commits are authored "Stonefold Labs". `PUBLISHING.md` says which parts are done; the mailbox test and the day the company exists are still to do. Any change: edit, `python3 -I scripts/check.py`, commit, push (on the owner's yes), then `scripts/check-live.sh`.
 
 The company is not formed yet, so no page says "LLC" and none carries a copyright line. `PUBLISHING.md` Part 8 is the change for the day it is.
 
