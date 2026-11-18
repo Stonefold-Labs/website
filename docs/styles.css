@@ -18,7 +18,9 @@
 }
 
 /* Every theme the app has. The colours are the app's own (LookThemes.swift) turned into the site's roles, and each theme's
-   face is a font that comes with the reader's device: nothing is loaded. Where nobody has chosen, the page follows the device:
+   face is a font that comes with the reader's device: nothing is loaded. The display face is the rounded one in every
+   theme: the owner's "Lowercase, rounded" (2026-11-18, about 11:35), on all eight themes as built (Picked; his to
+   change to Sage and Linen only). The demo's window keeps the app's own faces, serif headings in Sage and Linen. Where nobody has chosen, the page follows the device:
    Sage when it is dark, Linen when it is light. */
 
 :root {
@@ -45,7 +47,7 @@
   --event: #1f5143;
   --mark: #1f5143;
   --sans: var(--f-system);
-  --display: var(--f-book);
+  --display: var(--f-rounded);
 }
 
 /* Dark, because the device is, where nobody has chosen a theme and the script has not run. */
@@ -74,7 +76,7 @@
     --event: #a9b8a1;
     --mark: #a9b8a1;
     --sans: var(--f-system);
-    --display: var(--f-book);
+    --display: var(--f-rounded);
 }
 }
 
@@ -103,7 +105,7 @@
   --event: #a9b8a1;
   --mark: #a9b8a1;
   --sans: var(--f-system);
-  --display: var(--f-book);
+  --display: var(--f-rounded);
 }
 
 /* Linen */
@@ -131,7 +133,7 @@
   --event: #1f5143;
   --mark: #1f5143;
   --sans: var(--f-system);
-  --display: var(--f-book);
+  --display: var(--f-rounded);
 }
 
 /* Night */
@@ -159,7 +161,7 @@
   --event: #6aa3ff;
   --mark: #3381fa;
   --sans: var(--f-system);
-  --display: var(--f-system);
+  --display: var(--f-rounded);
 }
 
 /* Ember */
@@ -187,7 +189,7 @@
   --event: #e0903a;
   --mark: #cc7722;
   --sans: var(--f-mono);
-  --display: var(--f-mono);
+  --display: var(--f-rounded);
 }
 
 /* Paper */
@@ -215,7 +217,7 @@
   --event: #1f6f78;
   --mark: #1f6f78;
   --sans: var(--f-serif);
-  --display: var(--f-serif);
+  --display: var(--f-rounded);
 }
 
 /* Dusk */
@@ -271,7 +273,7 @@
   --event: #9e4426;
   --mark: #9e4426;
   --sans: var(--f-serif);
-  --display: var(--f-serif);
+  --display: var(--f-rounded);
 }
 
 /* Plain: the system's own colours, light or dark as the device is set. */
@@ -299,7 +301,7 @@
   --event: #0066cc;
   --mark: #0066cc;
   --sans: var(--f-system);
-  --display: var(--f-system);
+  --display: var(--f-rounded);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -327,7 +329,7 @@
     --event: #2997ff;
     --mark: #2997ff;
     --sans: var(--f-system);
-    --display: var(--f-system);
+    --display: var(--f-rounded);
 }
 }
 
@@ -768,11 +770,18 @@ nav a[aria-current="page"] {
 
 /* Headings and text */
 
+/* "Lowercase, rounded": display text is set in lowercase by the stylesheet alone, so the words underneath keep their
+   capitals for screen readers, search and copying. A name that must keep its own case goes in <span class="as-is">. */
 h1,
 h2 {
   font-family: var(--display);
-  font-weight: 500;
+  font-weight: 600;
+  text-transform: lowercase;
   text-wrap: balance;
+}
+
+.as-is {
+  text-transform: none;
 }
 
 h1 {
@@ -829,8 +838,10 @@ ul {
 .kicker {
   margin: 0 0 0.75rem;
   color: var(--link);
+  font-family: var(--display);
   font-size: 1.0625rem;
   font-weight: 600;
+  text-transform: lowercase;
 }
 
 .lede {
