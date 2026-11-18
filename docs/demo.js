@@ -262,7 +262,7 @@
   var gid = 0;
   function newGroup(panels) { gid += 1; return { id: "g" + gid, panels: panels.slice(), front: panels[0], collapsed: false }; }
   function emptyLayout() {
-    return { docks: { left: { groups: [], size: 280 }, right: { groups: [], size: 280 }, bottom: { groups: [], size: 200 } }, hidden: false, closedFrom: {} };
+    return { docks: { left: { groups: [], size: 280 }, right: { groups: [], size: 280 }, bottom: { groups: [], size: 220 } }, hidden: false, closedFrom: {} };
   }
   function startLayout() {
     var l = emptyLayout();
@@ -327,7 +327,7 @@
     var alone = w.g.panels.length === 1;
     if (t.kind === "tabs" && t.gid === w.g.id) { return false; }
     if (t.kind === "beside" && t.gid === w.g.id && alone) { return false; }
-    if (t.kind === "end" && alone && t.dock === w.dock && w.i === L.docks[w.dock].groups.length - 1) { return false; }
+    if (t.kind === "end" && alone && t.dock === w.dock && !w.g.collapsed && lastShown(w.dock, w.i)) { return false; }
     if (alone) { return moveGroup(w.g.id, t); }
     var k = w.g.panels.indexOf(p);
     w.g.panels.splice(k, 1);
@@ -353,7 +353,7 @@
     }
     if (t.kind === "beside" && t.gid === id) { return false; }
     var gs = L.docks[w.dock].groups;
-    if (t.kind === "end" && t.dock === w.dock && w.i === gs.length - 1) { return false; }
+    if (t.kind === "end" && t.dock === w.dock && !w.g.collapsed && lastShown(w.dock, w.i)) { return false; }
     if (t.kind === "beside") {
       var tw = groupAt(t.gid);
       if (tw.dock === w.dock && tw.i + (t.after ? 1 : 0) - (tw.i > w.i ? 1 : 0) === w.i) { return false; }
@@ -370,6 +370,12 @@
     var changed = fn();
     L = keep; gid = keepGid; S.slid = keepSlid;
     return changed;
+  }
+  /* Whether a group is already the last one drawn in its dock: only pinned groups come after it. */
+  function lastShown(dock, i) {
+    var gs = L.docks[dock].groups;
+    for (var j = i + 1; j < gs.length; j += 1) { if (!gs[j].collapsed) { return false; } }
+    return true;
   }
   function dockOf(t) { return t.kind === "end" ? t.dock : groupAt(t.gid).dock; }
 
@@ -506,7 +512,7 @@
   }
   var PICTURE_ART = "<svg class=\"sfd-art\" viewBox=\"0 0 240 150\" width=\"240\" height=\"150\" aria-hidden=\"true\" focusable=\"false\"><rect class=\"a-sky\" width=\"240\" height=\"150\"/><circle class=\"a-sun\" cx=\"182\" cy=\"38\" r=\"15\"/><path class=\"a-far\" d=\"M0 92 C40 70 70 74 104 86 S170 66 240 82 V150 H0z\"/><path class=\"a-near\" d=\"M0 112 C50 96 96 100 140 110 S206 100 240 106 V150 H0z\"/><g class=\"a-wall\"><rect x=\"18\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"52\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"86\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"120\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"154\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"188\" y=\"118\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"35\" y=\"130\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"69\" y=\"130\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"103\" y=\"130\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"137\" y=\"130\" width=\"30\" height=\"9\" rx=\"4.5\"/><rect x=\"171\" y=\"130\" width=\"30\" height=\"9\" rx=\"4.5\"/></g></svg>";
   function pictureBody() {
-    return "<figure class=\"sfd-picture\">" + PICTURE_ART + "<figcaption>A drawing stands in here. In the app you add a picture of your own, and it is kept inside the encrypted file that holds your calendar and reminders.</figcaption></figure>";
+    return "<figure class=\"sfd-picture\">" + PICTURE_ART + "<figcaption>A drawing stands in here. In the app you add a picture of your own, and like everything you keep, it is stored on your device, encrypted.</figcaption></figure>";
   }
   function panelName(p) { return p === "picture.1" ? "Picture, " + dayMonth(TODAY) : PANEL[p].name; }
   function panelBody(p) {
@@ -596,7 +602,9 @@
     }).join("") + "</ul>" : "<p class=\"sfd-quietline\">No notes match “" + esc(S.query) + "”.</p>";
     var n = NOTES.filter(function (x) { return x.id === S.note; })[0];
     var body = (n && notes.length) ? "<article class=\"sfd-note\"" + attr("aria-label", "Note: " + n.title) + ">" + noteBody(n) + "</article>" : "";
-    var count = "<p class=\"sfd-sr sfd-count\" aria-live=\"polite\">" + (S.query.trim() ? notes.length + (notes.length === 1 ? " note matches." : " notes match.") : "") + "</p>";
+    var count = "";
+    var counter = one(".sfd-found");
+    if (counter) { counter.textContent = S.query.trim() ? notes.length + (notes.length === 1 ? " note matches." : " notes match.") : ""; }
     if (S.phone) {
       if (S.phoneNote && body) {
         return "<button type=\"button\" class=\"sfd-back\"" + act("notesback") + ">" + icon("back", 14) + "Notes</button>" + body;
@@ -650,7 +658,7 @@
       for (var i = 0; i < 7; i += 1) {
         var d = addDays(start, w * 7 + i), o = diffDays(d, TODAY), items = calItems(o);
         var cls = "sfd-cell" + (d.getMonth() !== TODAY.getMonth() ? " is-out" : "") + (o === 0 ? " is-today" : "") + (o === S.day ? " is-sel" : "");
-        h += "<button type=\"button\" role=\"gridcell\" class=\"" + cls + "\"" + act("day", o) + attr("aria-selected", o === S.day ? "true" : "false") + attr("aria-label", longDate(d) + (o === 0 ? ", today" : "") + ", " + (items.length ? items.length + (items.length === 1 ? " thing" : " things") : "nothing")) + "><span class=\"sfd-num sfd-fig\" aria-hidden=\"true\">" + d.getDate() + "</span>";
+        h += "<button type=\"button\" role=\"gridcell\" class=\"" + cls + "\"" + act("day", o) + attr("tabindex", o === S.day ? "0" : "-1") + attr("aria-selected", o === S.day ? "true" : "false") + attr("aria-label", longDate(d) + (o === 0 ? ", today" : "") + ", " + (items.length ? items.length + (items.length === 1 ? " thing" : " things") : "nothing")) + "><span class=\"sfd-num sfd-fig\" aria-hidden=\"true\">" + d.getDate() + "</span>";
         items.slice(0, 2).forEach(function (it) { h += calChip(it); });
         if (items.length > 2) { h += "<span class=\"sfd-chip sfd-more\" aria-hidden=\"true\"><span>" + (items.length - 2) + " more</span></span>"; }
         h += "</button>";
@@ -677,7 +685,7 @@
         "<li><span class=\"sfd-s\">Are the bills covered?</span><strong>" + (groupLeft("Bills") >= billsLeft - 0.005 ? "Yes" : "Not yet") + "</strong><span class=\"sfd-s\"><span class=\"sfd-fig\">" + cash(billsLeft) + "</span> of bills still to pay, and <span class=\"sfd-fig\">" + cash(groupLeft("Bills")) + "</span> left in Bills.</span></li>" +
         "<li><span class=\"sfd-s\">Am I on pace?</span><strong>" + (everydaySpent <= pace ? "Yes" : "Not quite") + "</strong><span class=\"sfd-s\"><span class=\"sfd-fig\">" + cash(everydaySpent) + "</span> spent on everyday things, against <span class=\"sfd-fig\">" + cash(pace) + "</span> by today.</span></li>" +
         "<li><span class=\"sfd-s\">Left to plan</span><strong class=\"sfd-fig\" data-fig=\"ltp\">" + cash(leftToPlan()) + "</strong><span class=\"sfd-s\">Of <span class=\"sfd-fig\">" + cash(INCOME) + "</span> coming in.</span></li></ul>";
-      h += "<div class=\"sfd-afford\"><label class=\"sfd-afford-l\" for=\"sfd-afford\">Can I afford it?</label><div class=\"sfd-afford-row\"><input id=\"sfd-afford\" data-input=\"afford\" inputmode=\"decimal\" placeholder=\"$0.00\" autocomplete=\"off\"" + attr("value", S.afford) + "><span class=\"sfd-ans\" aria-live=\"polite\"></span></div><span class=\"sfd-s sfd-how\"></span></div>";
+      h += "<div class=\"sfd-afford\"><label class=\"sfd-afford-l\" for=\"sfd-afford\">Can I afford it?</label><div class=\"sfd-afford-row\"><input id=\"sfd-afford\" data-input=\"afford\" inputmode=\"decimal\" placeholder=\"0.00\" autocomplete=\"off\"" + attr("value", S.afford) + "><span class=\"sfd-ans\" aria-live=\"polite\"></span></div><span class=\"sfd-s sfd-how\"></span></div>";
     } else {
       h += viewTitle(month + ": the plan", "", "<span class=\"sfd-chipbox sfd-fig\" data-fig=\"ltpchip\"></span>");
       h += "<div class=\"sfd-tablewrap\"><table class=\"sfd-plan\"><caption class=\"sfd-sr\">The plan for " + esc(month) + ". Type in the Plan column.</caption><thead><tr><th scope=\"col\">Category</th><th scope=\"col\">Plan</th><th scope=\"col\" class=\"sfd-spent\">Spent</th><th scope=\"col\">Left</th></tr></thead><tbody>";
@@ -766,7 +774,7 @@
     "<div class=\"sfd-lock\" hidden><div class=\"sfd-lock-in\">" + MARK + "<h3 class=\"sfd-lock-h\">Unlock to open Stonefold</h3><p>Face ID, Touch ID, or your device’s passcode or password opens the app. By default, anyone who can unlock your device can open the app.</p><button type=\"button\" class=\"sfd-btn\" data-act=\"unlock\">Unlock</button></div></div>" +
     "<div class=\"sfd-pop\" hidden></div>" +
     "</div>" +
-    "<p class=\"sfd-sr sfd-live\" aria-live=\"polite\"></p>" +
+    "<p class=\"sfd-sr sfd-live\" aria-live=\"polite\"></p><p class=\"sfd-sr sfd-found\" aria-live=\"polite\"></p>" +
     "<div class=\"sfd-ghost\" aria-hidden=\"true\" hidden></div><div class=\"sfd-hint\" aria-hidden=\"true\" hidden></div>";
 
   function drawTitle() {
@@ -774,9 +782,9 @@
     var tools = "";
     if (!S.phone) {
       tools += "<button type=\"button\" class=\"sfd-tool\"" + act("sec", "today") + attr("aria-pressed", S.section === "today" ? "true" : "false") + " title=\"Today (G, then T)\">" + icon("today", 15) + "<span class=\"sfd-lbl\">Today</span></button>";
-      tools += "<button type=\"button\" class=\"sfd-tool\"" + act("menu", "panels") + " aria-haspopup=\"true\"" + attr("aria-expanded", S.menu === "panels" ? "true" : "false") + ">" + icon("panels", 15) + "<span class=\"sfd-lbl\">Panels</span>" + icon("down", 12) + "</button>";
+      tools += "<button type=\"button\" class=\"sfd-tool\"" + act("menu", "panels") + attr("aria-expanded", S.menu === "panels" ? "true" : "false") + ">" + icon("panels", 15) + "<span class=\"sfd-lbl\">Panels</span>" + icon("down", 12) + "</button>";
     }
-    tools += "<button type=\"button\" class=\"sfd-tool\"" + act("menu", "theme") + " aria-haspopup=\"true\"" + attr("aria-expanded", S.menu === "theme" ? "true" : "false") + attr("aria-label", "Theme: " + themeName(S.look)) + ">" + icon("theme", 15) + "<span class=\"sfd-lbl\">" + esc(themeName(S.look)) + "</span>" + icon("down", 12) + "</button>";
+    tools += "<button type=\"button\" class=\"sfd-tool\"" + act("menu", "theme") + attr("aria-expanded", S.menu === "theme" ? "true" : "false") + attr("aria-label", "Theme: " + themeName(S.look)) + ">" + icon("theme", 15) + "<span class=\"sfd-lbl\">" + esc(themeName(S.look)) + "</span>" + icon("down", 12) + "</button>";
     tools += "<button type=\"button\" class=\"sfd-tool\"" + act("lock") + ">" + icon("lock", 15) + "<span class=\"sfd-lbl\">Lock</span></button>";
     one(".sfd-tools").innerHTML = tools;
   }
@@ -793,7 +801,7 @@
     h += "<div class=\"sfd-ghead\"" + attr("data-gid", g.id) + ">";
     g.panels.forEach(function (p) {
       h += "<button type=\"button\" class=\"sfd-tab" + (p === g.front ? " is-front" : "") + (single ? " is-single" : "") + "\"" + act("tab", p, attr("data-gid", g.id)) + attr("aria-pressed", p === g.front ? "true" : "false") +
-        attr("title", "Drag to move " + panelName(p) + ". Right-click for more.") + ">" + icon(PANEL[p].icon, 13) + "<span>" + esc(panelName(p)) + "</span></button>";
+        attr("title", "Drag to move " + panelName(p) + ". Control-click, or Shift-F10 from the keyboard, for more.") + ">" + icon(PANEL[p].icon, 13) + "<span>" + esc(panelName(p)) + "</span></button>";
     });
     h += "<span class=\"sfd-ghead-gap\" aria-hidden=\"true\"></span>";
     h += "<button type=\"button\" class=\"sfd-gbtn" + (g.collapsed ? " is-on" : "") + "\"" + act("pin", g.id) + attr("aria-pressed", g.collapsed ? "true" : "false") + attr("aria-label", (g.collapsed ? "Dock again: " : "Pin to the edge: ") + panelName(g.front)) + attr("title", g.collapsed ? "Dock again" : "Pin to the edge") + ">" + icon("pin", 13) + "</button>";
@@ -906,11 +914,11 @@
     } else if (S.menu === "panels") {
       pop.classList.add("is-panels");
       h = "<div role=\"group\" aria-label=\"View, Panels\"><p class=\"sfd-pop-h\">View ▸ Panels</p>";
-      PARTS.forEach(function (p) { h += menuItem("panel", p, esc(PANEL[p].name), { pressed: !!where(p) }); });
+      PARTS.forEach(function (p) { h += menuItem("panel", p, esc(PANEL[p].name), { pressed: !!where(p) && !L.hidden }); });
       h += "<p class=\"sfd-pop-h\">Lists</p>";
-      LISTS.forEach(function (p) { h += menuItem("panel", p, esc(PANEL[p].name) + " <span class=\"sfd-s\">" + PANEL[p].kind + "</span>", { pressed: !!where(p) }); });
+      LISTS.forEach(function (p) { h += menuItem("panel", p, esc(PANEL[p].name) + " <span class=\"sfd-s\">" + PANEL[p].kind + "</span>", { pressed: !!where(p) && !L.hidden }); });
       h += "<p class=\"sfd-pop-h\">Pictures</p>";
-      PICTURES.forEach(function (p) { h += menuItem("panel", p, "Picture added " + esc(dayMonth(TODAY)), { pressed: !!where(p) }); });
+      PICTURES.forEach(function (p) { h += menuItem("panel", p, "Picture added " + esc(dayMonth(TODAY)), { pressed: !!where(p) && !L.hidden }); });
       h += "<hr>" + menuItem("hide", null, L.hidden ? "Show Panels" : "Hide Panels", { key: "⌃⌘P", disabled: !anyPanel() });
       h += menuItem("cycle", "1", "Next Panel", { key: "⌃⌘]", disabled: !anyPanel() || L.hidden }) + menuItem("cycle", "-1", "Previous Panel", { key: "⌃⌘[", disabled: !anyPanel() || L.hidden });
       h += "<hr>";
@@ -927,12 +935,23 @@
         menuItem("ctxdock", "left", "Dock on the Left", { extra: gx, disabled: w.dock === "left" && !w.g.collapsed }) +
         menuItem("ctxdock", "right", "Dock on the Right", { extra: gx, disabled: w.dock === "right" && !w.g.collapsed }) +
         menuItem("ctxdock", "bottom", "Dock Along the Bottom", { extra: gx, disabled: w.dock === "bottom" && !w.g.collapsed }) + "<hr>" +
+        stackItems(w) +
         menuItem("pin", w.g.id, w.g.collapsed ? "Dock Again" : "Collapse") +
         menuItem("close", w.g.front, "Close " + esc(panelName(w.g.front))) + "</div>";
     }
     pop.innerHTML = h;
     pop.hidden = false;
     placePop(pop);
+  }
+  /* From the keyboard, the same moves a drag makes: onto another group's tabs. */
+  function stackItems(w) {
+    var h = "";
+    DOCK_ORDER.forEach(function (d) {
+      L.docks[d].groups.forEach(function (g) {
+        if (g.id !== w.g.id) { h += menuItem("ctxstack", g.id, "Stack onto " + esc(g.panels.map(panelName).join(", ")), { extra: attr("data-gid", w.g.id) + attr("data-p", S.ctx && S.ctx.panel ? S.ctx.panel : "") }); }
+      });
+    });
+    return h ? h + "<hr>" : "";
   }
   function placePop(pop) {
     var win = one(".sfd-win").getBoundingClientRect(), x, y;
@@ -994,7 +1013,8 @@
     if (S.locked && (!b || b.getAttribute("data-act") !== "unlock")) { return; }
     /* A click outside a slid-out panel puts it back and does nothing else. */
     if (S.slid && !ev.target.closest(".sfd-slide") && !ev.target.closest(".sfd-strip") && !ev.target.closest(".sfd-pop")) {
-      S.slid = null; draw(); ev.preventDefault(); return;
+      S.slid = null;
+      if (ev.target.closest(".sfd-centre") && ev.detail !== 0) { draw(); ev.preventDefault(); return; }
     }
     if ((S.menu || S.ctx) && !ev.target.closest(".sfd-pop") && !(b && b.getAttribute("data-act") === "menu")) {
       S.menu = null; S.ctx = null; draw();
@@ -1020,7 +1040,7 @@
         return;
       case "look": setLook(v); S.menu = null; keep = "menu|theme|||"; break;
       case "panel":
-        if (where(v)) { closePanel(v); }
+        if (where(v) && !L.hidden) { closePanel(v); }
         else { showPanel(v); tourDone("show"); say("Shown: " + panelName(v) + ", on the " + where(v).dock + "."); }
         S.menu = null; keep = "menu|panels|||";
         break;
@@ -1039,7 +1059,7 @@
         }
         break;
       case "putaway": L = emptyLayout(); S.slid = null; S.menu = null; say("Every panel put away."); break;
-      case "lock": S.locked = true; S.menu = null; S.ctx = null; S.slid = null; drag = null; draw(); one(".sfd-lock .sfd-btn").focus(); return;
+      case "lock": onDividerUp(); S.locked = true; S.menu = null; S.ctx = null; S.slid = null; drag = null; draw(); one(".sfd-lock .sfd-btn").focus(); return;
       case "unlock": S.locked = false; draw("lock||||"); return;
       case "tab":
         var tw = groupAt(g);
@@ -1062,6 +1082,12 @@
         var t = { kind: "end", dock: v }, cw = groupAt(g);
         if (cw && cw.g.collapsed && cw.dock === v) { cw.g.collapsed = false; S.slid = null; say(panelName(cw.g.front) + " docked again."); }
         else if (moveGroup(g, t)) { if (v !== (S.ctx && S.ctx.from)) { tourDone("edge"); } say(panelName(groupAt(g).g.front) + " docked " + (v === "bottom" ? "along the bottom" : "on the " + v) + "."); }
+        S.ctx = null;
+        break;
+      case "ctxstack":
+        var sp = b.getAttribute("data-p"), target = { kind: "tabs", gid: v }, src = groupAt(g);
+        var moved = sp && src && src.g.panels.length > 1 ? movePanel(sp, target) : moveGroup(g, target);
+        if (moved) { tourDone("stack"); say((sp ? panelName(sp) : "The group") + " stacked as a tab."); }
         S.ctx = null;
         break;
       case "rem": S.remDone[v] = !S.remDone[v]; break;
@@ -1212,9 +1238,11 @@
   function onKey(ev) {
     var t = ev.target, inField = t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA");
     var k = (ev.key || "").toLowerCase();
+    var inDemo = root.contains(t);
     if (ev.key === "Escape") {
       if (drag) { endDrag(false); return; }
-      if (S.menu || S.ctx) { var back = S.menu ? "menu|" + S.menu + "|||" : null; S.menu = null; S.ctx = null; draw(back); return; }
+      if (!inDemo) { return; }
+      if (S.menu || S.ctx) { var back = S.menu ? "menu|" + S.menu + "|||" : S.ctx.back; S.menu = null; S.ctx = null; draw(back); return; }
       if (S.slid) { S.slid = null; draw(); return; }
       if (S.gPending) { S.gPending = false; drawStatus(); }
       return;
@@ -1230,10 +1258,20 @@
       ev.preventDefault();
       return;
     }
+    /* The month takes the arrow keys: one stop for Tab, a day or a week at a time inside it. */
+    var cell = t.closest && t.closest(".sfd-cell");
+    var steps = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+    if (cell && steps[ev.key]) {
+      var first = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1), lo = diffDays(addDays(first, -first.getDay()), TODAY);
+      var nd = Math.max(lo, Math.min(lo + 41, +cell.getAttribute("data-v") + steps[ev.key]));
+      S.day = nd; draw("day|" + nd + "|||");
+      ev.preventDefault();
+      return;
+    }
     var tab = t.closest && t.closest(".sfd-tab");
-    if (tab && (ev.key === "ContextMenu" || (ev.shiftKey && ev.key === "F10"))) {
+    if (tab && (ev.key === "ContextMenu" || (ev.shiftKey && ev.key === "F10") || (ev.ctrlKey && ev.key === "Enter"))) {
       var r = tab.getBoundingClientRect();
-      S.ctx = { gid: tab.getAttribute("data-gid"), x: r.left, y: r.bottom + 2, from: groupAt(tab.getAttribute("data-gid")).dock };
+      S.ctx = { gid: tab.getAttribute("data-gid"), panel: tab.getAttribute("data-v"), x: r.left, y: r.bottom + 2, from: groupAt(tab.getAttribute("data-gid")).dock, back: keyOf(tab) };
       S.menu = null; draw();
       var first = one(".sfd-pop button:not([disabled])"); if (first) { first.focus(); }
       ev.preventDefault();
@@ -1261,7 +1299,7 @@
 
   function onInput(ev) {
     var t = ev.target, kind = t.getAttribute && t.getAttribute("data-input");
-    if (!kind) { return; }
+    if (!kind || S.locked) { return; }
     if (kind === "search") {
       S.query = t.value;
       if (/encrypt/i.test(S.query)) { tourDone("search"); }
@@ -1283,7 +1321,8 @@
     var head = ev.target.closest(".sfd-ghead");
     if (!head || S.phone) { return; }
     ev.preventDefault();
-    S.ctx = { gid: head.getAttribute("data-gid"), x: ev.clientX, y: ev.clientY, from: groupAt(head.getAttribute("data-gid")).dock };
+    var ctab = ev.target.closest(".sfd-tab");
+    S.ctx = { gid: head.getAttribute("data-gid"), panel: ctab ? ctab.getAttribute("data-v") : null, x: ev.clientX, y: ev.clientY, from: groupAt(head.getAttribute("data-gid")).dock, back: ctab ? keyOf(ctab) : null };
     S.menu = null;
     draw();
   }
@@ -1303,6 +1342,7 @@
   mount.innerHTML = "";
   mount.appendChild(root);
   mount.classList.add("is-live");
+  if (mount.parentNode && mount.parentNode.classList) { mount.parentNode.classList.add("is-live"); }
 
   function measure() {
     var w = root.getBoundingClientRect().width;
@@ -1324,6 +1364,13 @@
   root.addEventListener("input", onInput);
   root.addEventListener("change", onChange);
   root.addEventListener("contextmenu", onContextMenu);
+  /* Tabbing out of an open menu closes it, as clicking elsewhere does. */
+  root.addEventListener("focusout", function (ev) {
+    var pop = one(".sfd-pop"), to = ev.relatedTarget;
+    if ((S.menu || S.ctx) && pop.contains(ev.target) && to && !pop.contains(to) && !(to.getAttribute && to.getAttribute("data-act") === "menu")) {
+      S.menu = null; S.ctx = null; drawPop(); drawTitle();
+    }
+  });
   window.addEventListener("pointermove", function (ev) { onPointerMove(ev); onDividerMove(ev); }, { passive: false });
   window.addEventListener("pointerup", function () { endDrag(true); onDividerUp(); });
   window.addEventListener("pointercancel", function () { endDrag(false); onDividerUp(); });

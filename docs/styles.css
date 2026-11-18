@@ -1563,6 +1563,12 @@ footer {
   min-height: 3rem;
 }
 
+/* Without the script the section is only its heading and one line saying so. */
+.demo:not(.is-live) .intro,
+.demo:not(.is-live) .demo-about {
+  display: none;
+}
+
 .demo-off {
   margin: 0;
   padding: 1rem 1.25rem;

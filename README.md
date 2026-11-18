@@ -14,7 +14,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   support/index.html https://stonefoldapp.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
-  theme.js           the theme picker: the site's only script
+  theme.js           the theme picker: one of the site's two scripts, with demo.js
   demo.js            the demo on Home (proposed 2026-11-18, waiting on the owner's yes; see "The demo")
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17

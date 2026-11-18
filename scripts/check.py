@@ -29,14 +29,15 @@ CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; 
 # every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
 # read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
-THEME_JS_SHA256 = "ead365ea7423be0a80080e667ef6a66da1c1b32409934c9d39713026233c5bfa"
+THEME_JS_SHA256 = "bb08f356677bcf8a8fd74c6594679ebc2f7d90036e740174bd9171bd315246d1"
 # The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # The demo on the home page: a second script, proposed 2026-11-18 for the owner's yes (the live-demo chat), as the
-# owner's rule asks of any second script. It is allowed on the home page alone, once, at the foot of the page, and
+# owner's rule asks of any second script. It is allowed on the home page alone, once, in the page's body, and
 # its exact contents are pinned the same way: read it, then put its SHA-256 here (shasum -a 256 docs/demo.js).
+# demo_rules says what that read must look for.
 DEMO_JS = "/demo.js"
-DEMO_JS_SHA256 = "d9e9512671bada9ec38f2dacc25d882e4033a318fae531363be3a617e5cc295d"
+DEMO_JS_SHA256 = "25260dac0d20c38bac75a2aad416afee03d86642e2663049aea77abcf7d1a7c8"
 DEMO_PAGE = "index.html"
 LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
@@ -327,23 +328,35 @@ def check_css(file):
     return problems
 
 
+def demo_rules(js):
+    """What demo.js may hold, apart from its pin: no way to the network, nothing kept, no code made and run, and
+    only words a page may say. The pin is the real guard (any change needs a re-read); these rules say what a
+    re-read must look for, and the self-test plants a fault against each one with the pin set aside."""
+    problems = []
+    for pattern, why in [
+        (r"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:|postMessage|window\.open|\.action\b|\.submit\(", "it may not reach the network"),
+        (r"(window|self|globalThis|document|top|parent)\s*\[", "it may not reach the page's globals by a name it builds"),
+        (r"cookie|indexedDB|sessionStorage|localStorage|caches|history\.|\.name\s*=|opener", "it may keep nothing at all"),
+        (r"eval|Function\(|document\.write|setTimeout\(\s*[\"'`]|setInterval\(\s*[\"'`]", "it may not run code it makes"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    # Every string, in any quotes, with markup turned back into its words and the words its attributes show.
+    strings = re.findall(r'"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\'|`((?:[^`\\]|\\.)*)`', js)
+    text = " ".join(part for found in strings for part in found if part).replace('\\"', '"')
+    shown = re.findall(r'(?:title|aria-label|placeholder|alt|value)="([^"]*)"', text)
+    words = re.sub(r"<[^>]+>", " ", text) + " " + " ".join(shown)
+    problems += check_words(words, a_page=False)
+    return problems
+
+
 def check_demo_js(file):
-    """The demo: pinned, reaching no network, keeping nothing, and saying only what a page may say."""
+    """The demo: pinned, and held to demo_rules."""
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != DEMO_JS_SHA256:
         problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
-    for pattern, why in [
-        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:|postMessage|window\.open", "it may not reach the network"),
-        (rb"cookie|indexedDB|sessionStorage|localStorage|caches|history\.", "it may keep nothing at all"),
-        (rb"eval|Function\(|document\.write", "it may not run code it makes"),
-    ]:
-        if re.search(pattern, js):
-            problems.append(why)
-    text = js.decode("utf-8")
-    words = " ".join(re.findall(r'"((?:[^"\\]|\\.)*)"', text))
-    problems += check_words(re.sub(r"<[^>]+>", " ", words), a_page=False)
-    return problems
+    return problems + demo_rules(js.decode("utf-8"))
 
 
 def check_js(site, file):
@@ -544,6 +557,19 @@ BAD = [
 ]
 
 
+DEMO_FAULTS = [
+    ("the demo fetching", 'fetch("/x");'),
+    ("the demo building a global's name", 'window["fe" + "tch"]("/x");'),
+    ("the demo keeping a word in localStorage", 'localStorage.setItem("x", "1");'),
+    ("the demo keeping a word in the window's name", 'window.name = "kept";'),
+    ("the demo running code it makes", 'eval("1");'),
+    ("the demo with a single-quoted claim", "var x = 'Available now on the App Store';"),
+    ("the demo with a template-string claim", "var x = `Download it now`;"),
+    ("the demo with a claim in a title", 'var x = "<button title=\\"Download it now\\">x</button>";'),
+    ("the demo with another price in a placeholder", 'var x = "<input placeholder=\\"$19.99\\">";'),
+]
+
+
 def self_test():
     missed = []
     with tempfile.TemporaryDirectory() as folder:
@@ -665,6 +691,14 @@ def self_test():
             if not check_site(site):
                 missed.append(name)
         (site / "demo.js").write_bytes(demo)
+        # Each rule on its own, the pin set aside: a clean copy passes, and each planted fault is found.
+        clean = demo.decode("utf-8")
+        if demo_rules(clean):
+            print("self-test: demo.js broke its own rules:", demo_rules(clean))
+            return 1
+        for name, fault in DEMO_FAULTS:
+            if not demo_rules(clean + "\n" + fault + "\n"):
+                missed.append(name)
         other = site / "other"
         other.mkdir()
         (other / "index.html").write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<script src="/demo.js"></script>'))
@@ -681,7 +715,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 22} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 22 + len(DEMO_FAULTS)} planted faults were caught")
     return 0
 
 
