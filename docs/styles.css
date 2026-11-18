@@ -43,6 +43,7 @@
   --band-amber: #d5a96c;
   --band-sage: #a9b8a1;
   --event: #1f5143;
+  --mark: #1f5143;
   --sans: var(--f-system);
   --display: var(--f-book);
 }
@@ -71,17 +72,10 @@
     --band-amber: #d5a96c;
     --band-sage: #a9b8a1;
     --event: #a9b8a1;
+    --mark: #a9b8a1;
     --sans: var(--f-system);
     --display: var(--f-book);
 }
-
-  :root:not([data-theme]) .mark-light {
-    display: none;
-  }
-
-  :root:not([data-theme]) .mark-dark {
-    display: block;
-  }
 }
 
 /* Sage */
@@ -107,6 +101,7 @@
   --band-amber: #d5a96c;
   --band-sage: #a9b8a1;
   --event: #a9b8a1;
+  --mark: #a9b8a1;
   --sans: var(--f-system);
   --display: var(--f-book);
 }
@@ -134,6 +129,7 @@
   --band-amber: #d5a96c;
   --band-sage: #a9b8a1;
   --event: #1f5143;
+  --mark: #1f5143;
   --sans: var(--f-system);
   --display: var(--f-book);
 }
@@ -161,6 +157,7 @@
   --band-amber: #6aa3ff;
   --band-sage: #7fb8c9;
   --event: #6aa3ff;
+  --mark: #3381fa;
   --sans: var(--f-system);
   --display: var(--f-system);
 }
@@ -188,6 +185,7 @@
   --band-amber: #e0903a;
   --band-sage: #c8b894;
   --event: #e0903a;
+  --mark: #cc7722;
   --sans: var(--f-mono);
   --display: var(--f-mono);
 }
@@ -215,6 +213,7 @@
   --band-amber: #e3bc7c;
   --band-sage: #9fd0d0;
   --event: #1f6f78;
+  --mark: #1f6f78;
   --sans: var(--f-serif);
   --display: var(--f-serif);
 }
@@ -242,6 +241,7 @@
   --band-amber: #e6b99a;
   --band-sage: #c4a7f0;
   --event: #c4a7f0;
+  --mark: #c4a7f0;
   --sans: var(--f-rounded);
   --display: var(--f-rounded);
 }
@@ -269,6 +269,7 @@
   --band-amber: #e0a07a;
   --band-sage: #b5c29a;
   --event: #9e4426;
+  --mark: #9e4426;
   --sans: var(--f-serif);
   --display: var(--f-serif);
 }
@@ -296,6 +297,7 @@
   --band-amber: #64d2ff;
   --band-sage: #8e8e93;
   --event: #0066cc;
+  --mark: #293b36;
   --sans: var(--f-system);
   --display: var(--f-system);
 }
@@ -323,32 +325,10 @@
     --band-amber: #64d2ff;
     --band-sage: #a1a1a6;
     --event: #2997ff;
+    --mark: #a9b8a1;
     --sans: var(--f-system);
     --display: var(--f-system);
 }
-
-  :root[data-theme="plain"] .mark-light {
-    display: none;
-  }
-
-  :root[data-theme="plain"] .mark-dark {
-    display: block;
-  }
-}
-
-/* The dark themes show the pale mark. */
-:root[data-theme="sage"] .mark-light,
-:root[data-theme="night"] .mark-light,
-:root[data-theme="ember"] .mark-light,
-:root[data-theme="dusk"] .mark-light {
-  display: none;
-}
-
-:root[data-theme="sage"] .mark-dark,
-:root[data-theme="night"] .mark-dark,
-:root[data-theme="ember"] .mark-dark,
-:root[data-theme="dusk"] .mark-dark {
-  display: block;
 }
 
 /* Each theme's swatch in the menu: its page and its accent. */
@@ -430,8 +410,9 @@ svg {
   display: block;
 }
 
-.mark-dark {
-  display: none;
+/* The company's mark, drawn inline so its stones can take the theme's own colour, as the app's icon does. */
+.mark rect {
+  fill: var(--mark);
 }
 
 /* Words for screen readers only. */
@@ -496,7 +477,7 @@ a:focus-visible {
   border-right: 1px solid var(--rule);
 }
 
-.corner img {
+.corner svg {
   width: 2.25rem;
   height: 2.25rem;
 }
@@ -534,7 +515,7 @@ a:focus-visible {
   white-space: nowrap;
 }
 
-.brand img {
+.brand svg {
   width: 2.25rem;
   height: 2.25rem;
 }
@@ -1376,7 +1357,7 @@ footer {
   font-size: 1.0625rem;
 }
 
-.foot .brand img {
+.foot .brand svg {
   width: 1.5rem;
   height: 1.5rem;
 }
