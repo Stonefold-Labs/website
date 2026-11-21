@@ -1838,10 +1838,9 @@ footer {
 }
 
 .faq summary {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1rem 0;
+  position: relative;
+  display: block;
+  padding: 1rem 2rem 1rem 0;
   font: 500 1.125rem/1.4 var(--display);
   cursor: pointer;
   list-style: none;
@@ -1853,7 +1852,9 @@ footer {
 
 .faq summary::after {
   content: "+";
-  flex: none;
+  position: absolute;
+  top: 1rem;
+  right: 0;
   color: var(--quiet);
   font-weight: 400;
 }
@@ -2368,7 +2369,11 @@ h2 {
 }
 
 .faq summary {
-  padding: 0.75rem 0;
+  padding: 0.75rem 2rem 0.75rem 0;
+}
+
+.faq summary::after {
+  top: 0.75rem;
 }
 
 @media (min-width: 62.01rem) {
