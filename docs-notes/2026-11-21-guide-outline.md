@@ -136,3 +136,16 @@ The app's `main` is now 6355f6b: the note kinds (Logins, the generator, Journal,
 - **The password generator:** the app shows "About 89 bits: very strong", with the word in lower case.
 
 **Checked and matching:** every other name the scan found (the rest were pieces of my own sentences), the focus timer's limits, the habit streaks, the loan, converter and tip rules, the retirement defaults and the Binder, Journal, Recipe and Logins wording. Not checked against the app: whatever its builders have not yet written down or built.
+
+### Checked against the app again (2026-11-21, 14:20)
+
+The app's `main` is now 134892c: the clock, habits and boards, the retirement planner, Files and the money tools are all merged into it. Still on their own branches: the note kinds' later work (Code notes), the terminal themes and "the window your way". Every builder was idle. I read what changed in each one's Help, words and keys since the last check, searched every quoted name, path and menu item in all the app's trees, and checked the numbers against code.
+
+**Fixed:**
+- **Saved scenarios and the saved debt plan** (new in the money tools): Save Scenario… keeps a mortgage or car loan in your own budget's encrypted file under Saved in Your Budget, and Save Plan keeps the Debt Payoff plan; neither is offered in the sample budget. The mortgage, car loan, Debt Payoff and calculator pages said what you type is always forgotten when the app locks.
+- **Files, from its Settings screen and SPEC:** Files has no passphrase of its own (it opens with the one unlock) and no Save a Copy as a whole; a file another app sends waits in the app's own folder, unreadable while the iPhone is locked and left out of its backups, until it is sealed into Files. "What stays private" gained a Files part.
+- **Code notes** (on the note-kinds branch, not yet in `main`; SPEC §39.10, record 0056): a new guide page, Code in the kinds page, ⌥⌘F Find and Replace… in the shortcuts, and the fenced code blocks in How formatting is written. If that branch does not ship, take them out.
+
+**Checked and matching:** every other quoted name, path and menu item; the calculator's fifty sums; the retirement Help as committed; the Files, Clock and Reminders Help; the shortcut lists.
+
+**The terminal themes** are not on the site. The app's branch `claude/terminal-theme-55f0ab` holds four (Terminal Green, Amber, White and Cyan), making twelve, with a Code note palette; it is not merged and its papers are still being written. The site's theme picker mirrors the app's themes (the owner, 2026-11-18), so adding them means four more picker buttons, their colours in `styles.css`, `LOOKS` in `scripts/check.py` and the pinned `theme.js`, and "twelve themes" on Home and in the guide. Waiting for the merge and for the owner's yes on `theme.js`.
