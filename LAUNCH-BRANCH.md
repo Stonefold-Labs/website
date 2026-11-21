@@ -49,7 +49,7 @@ The words come from `SPEC.md`, from the builders' plans in `StonefoldApp/docs/pl
 8. **The one price** is $24.99, paid once, for iPhone and Mac together. It holds only if the App Store record is set up that way.
 9. **The Mac's app icon** starts out matching the theme (the money tools plan, item 0). Check that is how it shipped.
 10. **Privacy's date** is set to 21 November 2026. Change it to launch day.
-11. **The window your way (P8)** and **the Editor theme** are on the app's branches, not yet in its `main`: the guide's Panels, Today, Settings and shortcuts pages describe P8 from its Help, and the Editor theme is the owner's, built on the site first and then decided by the app's builder (2026-11-21), whose colours the site now uses. Check both shipped, and that the site's nine themes are the app's.
+11. **The window your way (P8)** is in the app's `main` (since 2026-11-21 14:55); the guide's Panels, Today, Settings and shortcuts pages describe it from its Help. **The Editor theme** is committed on the app's branch `claude/terminal-theme-55f0ab` and not yet in `main`: the owner's idea, built on the site first and then decided by the app's builder, whose colours the site uses and whose Help wording the guide's look page uses. **P9, "one way to make and find anything"** (the command box offers New Transaction for a line with an amount, and each kind of note, and finds events, reminders and transactions) was still being written, uncommitted, at 14:55: add it to the guide's keyboard page when it lands. Check all three shipped, and that the site's nine themes are the app's.
 
 ## On launch day, with the owner's yes at each step
 
