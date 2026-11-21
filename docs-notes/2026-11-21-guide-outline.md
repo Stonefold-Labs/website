@@ -149,3 +149,7 @@ The app's `main` is now 134892c: the clock, habits and boards, the retirement pl
 **Checked and matching:** every other quoted name, path and menu item; the calculator's fifty sums; the retirement Help as committed; the Files, Clock and Reminders Help; the shortcut lists.
 
 **The terminal themes** are not on the site. The app's branch `claude/terminal-theme-55f0ab` holds four (Terminal Green, Amber, White and Cyan), making twelve, with a Code note palette; it is not merged and its papers are still being written. The site's theme picker mirrors the app's themes (the owner, 2026-11-18), so adding them means four more picker buttons, their colours in `styles.css`, `LOOKS` in `scripts/check.py` and the pinned `theme.js`, and "twelve themes" on Home and in the guide. Waiting for the merge and for the owner's yes on `theme.js`.
+
+### The terminal themes are on the site (2026-11-21, 14:50)
+
+On the owner's "add terminal themes now": Terminal Green, Amber, White and Cyan, making twelve, from the app's record 0059 on its branch (not yet in the app's `main`; if the colours change there, change them here). Four colour blocks in `styles.css`, four picker buttons after Clay, `theme.js` and `LOOKS` in `scripts/check.py` (re-pinned), Home says twelve themes, and the guide's "How the app looks" names them in the app's own words. The terminal themes have square corners, as the app's do.

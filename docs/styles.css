@@ -2947,3 +2947,138 @@ h3 .wm,
 h4 .wm {
   font-size: 1em;
 }
+
+/* The terminal themes (the owner, 2026-11-21: "add terminal themes now"): the app's terminal family (record 0059), near black with words and accent in
+   one phosphor colour, a monospace face and square corners, as a terminal draws them. The colours are the app's own. */
+:root[data-theme="terminal"] {
+  color-scheme: dark;
+  --page: #050805;
+  --raised: #0d130d;
+  --text: #33ff66;
+  --quiet: #22b84a;
+  --link: #33ff66;
+  --rule: #17301c;
+  --fill: #33ff66;
+  --on-fill: #050805;
+  --stripe: #33ff66;
+  --amber-mark: #33ff66;
+  --sage-mark: #22b84a;
+  --stone: #33ff66;
+  --band: #0d130d;
+  --band-card: #131c13;
+  --band-rule: #1d3a24;
+  --band-text: #33ff66;
+  --band-quiet: #22b84a;
+  --band-amber: #33ff66;
+  --band-sage: #22b84a;
+  --event: #33ff66;
+  --mark: #33ff66;
+  --sans: var(--f-mono);
+  --display: var(--f-rounded);
+}
+
+:root[data-theme="terminal-amber"] {
+  color-scheme: dark;
+  --page: #0a0700;
+  --raised: #15100a;
+  --text: #ffb000;
+  --quiet: #d39418;
+  --link: #ffb000;
+  --rule: #33260f;
+  --fill: #ffb000;
+  --on-fill: #0a0700;
+  --stripe: #ffb000;
+  --amber-mark: #ffb000;
+  --sage-mark: #d39418;
+  --stone: #ffb000;
+  --band: #15100a;
+  --band-card: #1d160c;
+  --band-rule: #3a2a10;
+  --band-text: #ffb000;
+  --band-quiet: #d39418;
+  --band-amber: #ffb000;
+  --band-sage: #d39418;
+  --event: #ffb000;
+  --mark: #ffb000;
+  --sans: var(--f-mono);
+  --display: var(--f-rounded);
+}
+
+:root[data-theme="terminal-white"] {
+  color-scheme: dark;
+  --page: #0a0b0c;
+  --raised: #131517;
+  --text: #e6edf3;
+  --quiet: #a6afb7;
+  --link: #e6edf3;
+  --rule: #2a2f34;
+  --fill: #e6edf3;
+  --on-fill: #0a0b0c;
+  --stripe: #e6edf3;
+  --amber-mark: #e6edf3;
+  --sage-mark: #a6afb7;
+  --stone: #e6edf3;
+  --band: #131517;
+  --band-card: #1a1d20;
+  --band-rule: #30363c;
+  --band-text: #e6edf3;
+  --band-quiet: #a6afb7;
+  --band-amber: #e6edf3;
+  --band-sage: #a6afb7;
+  --event: #e6edf3;
+  --mark: #e6edf3;
+  --sans: var(--f-mono);
+  --display: var(--f-rounded);
+}
+
+:root[data-theme="terminal-cyan"] {
+  color-scheme: dark;
+  --page: #03090b;
+  --raised: #0a1418;
+  --text: #5fe1ff;
+  --quiet: #47b4ce;
+  --link: #5fe1ff;
+  --rule: #12343f;
+  --fill: #5fe1ff;
+  --on-fill: #03090b;
+  --stripe: #5fe1ff;
+  --amber-mark: #5fe1ff;
+  --sage-mark: #47b4ce;
+  --stone: #5fe1ff;
+  --band: #0a1418;
+  --band-card: #101d22;
+  --band-rule: #1a404c;
+  --band-text: #5fe1ff;
+  --band-quiet: #47b4ce;
+  --band-amber: #5fe1ff;
+  --band-sage: #47b4ce;
+  --event: #5fe1ff;
+  --mark: #5fe1ff;
+  --sans: var(--f-mono);
+  --display: var(--f-rounded);
+}
+
+.theme-option[data-look="terminal"] {
+  --sw-page: #050805;
+  --sw-accent: #33ff66;
+}
+
+.theme-option[data-look="terminal-amber"] {
+  --sw-page: #0a0700;
+  --sw-accent: #ffb000;
+}
+
+.theme-option[data-look="terminal-white"] {
+  --sw-page: #0a0b0c;
+  --sw-accent: #e6edf3;
+}
+
+.theme-option[data-look="terminal-cyan"] {
+  --sw-page: #03090b;
+  --sw-accent: #5fe1ff;
+}
+
+/* Square corners in the terminal family, as the app has them; the colour swatches in the menu stay round. */
+:root[data-theme^="terminal"] *:not(.swatch) {
+  border-radius: 0;
+}

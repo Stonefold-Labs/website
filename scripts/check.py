@@ -43,7 +43,7 @@ FONT_FACE = """@font-face {
 # every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
 # read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
-THEME_JS_SHA256 = "bb08f356677bcf8a8fd74c6594679ebc2f7d90036e740174bd9171bd315246d1"
+THEME_JS_SHA256 = "63812d0b8c263c3f86f9d2a547bbaa1a048908e937eb51c543e2793eb307adc1"
 # The guide's search (the owner, 2026-11-21: "Yes, build search"): a second script and its data file, on the guide's
 # pages only. The script is pinned like theme.js, and may do no more than make a box, read the index and list links; the
 # index is checked against the pages it holds, word for word, so it can never say what a page doesn't.
@@ -52,11 +52,11 @@ SEARCH_INDEX_JS = "/guide/search-index.js"
 SEARCH_JS_SHA256 = "4140887eee6e49601c29e014c6bd49b9004ac1759f8a6acc90c213c07bec33b8"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS)
-# The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
+# The app's twelve themes (LookThemes.swift; the four terminal themes were added on 2026-11-21, record 0059), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
 # second script, docs/demo.js, is gone from the branch and the theme picker is the site's one script again.)
-LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
+LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "terminal", "terminal-amber", "terminal-white", "terminal-cyan", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
 
 # Every link that leaves the site is listed here, so a new one is a decision.
