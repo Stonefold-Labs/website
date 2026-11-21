@@ -1,6 +1,6 @@
-/* The theme picker. It and the guide's search (guide/search.js) are the only scripts on stonefoldapp.com.
+/* The theme picker. It and the home page's demo (demo.js) are the only scripts on stonefoldapp.com.
 
-   The page can wear any of the app's twelve themes. This script sets one word on the page, such as "sage" or "linen",
+   The page can wear any of the app's nine themes. This script sets one word on the page, such as "sage" or "linen",
    and keeps that word in this browser, and only after a theme has been picked. Until then the page follows the
    device: Sage when the device is dark, Linen when it is light. It asks no server for anything and sends nothing
    anywhere. */
@@ -8,7 +8,7 @@
   "use strict";
 
   var root = document.documentElement;
-  var themes = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "terminal", "terminal-amber", "terminal-white", "terminal-cyan", "plain"];
+  var themes = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "editor", "plain"];
   var prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
   function known(word) {
