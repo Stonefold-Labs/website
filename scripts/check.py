@@ -32,7 +32,7 @@ CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; 
 # exact contents are pinned here like theme.js's: rebuild it, look at it, then put its SHA-256 here
 # (shasum -a 256 docs/fonts/stonefold-display.woff2). The CSP's font-src 'self' is the one loosening, for this file.
 FONT_FILE = "fonts/stonefold-display.woff2"
-FONT_SHA256 = "9456a99e8dc999dea3afacc5661d0f32e772cd365f672aee1eef5c0e1489a237"
+FONT_SHA256 = "c23c0c02ac7fe548bbf9bb12e2c2f8146e81c8b8bf56e2eb8f4c03e3555bedd8"
 FONT_FACE = """@font-face {
   font-family: "Stonefold Display";
   src: url("/fonts/stonefold-display.woff2") format("woff2");
@@ -457,20 +457,25 @@ class _Extract(HTMLParser):
             self.text.append(data)
 
 
+def _plain(source):
+    """The page as the words say it: the logo's <span class="wm"> around the name is only how it is set."""
+    return source.replace('<span class="wm">Stonefold</span>', "Stonefold")
+
+
 def _words(text):
     return re.sub(r"\s+", " ", text).strip()
 
 
 def guide_index_text(site):
     first = _Extract()
-    first.feed((site / "guide" / "index.html").read_text(encoding="utf-8"))
+    first.feed(_plain((site / "guide" / "index.html").read_text(encoding="utf-8")))
     seen, entries = set(), []
     for href in first.order:
         if href in seen or not re.fullmatch(r"/guide/[a-z0-9-]+/[a-z0-9-]+/", href):
             continue
         seen.add(href)
         x = _Extract()
-        x.feed((site / href.strip("/") / "index.html").read_text(encoding="utf-8"))
+        x.feed(_plain((site / href.strip("/") / "index.html").read_text(encoding="utf-8")))
         crumbs = _words(x.crumbs)
         entries.append({"p": href, "t": _words(x.h1), "g": crumbs.split("/", 1)[1].strip() if "/" in crumbs else "", "x": _words(" ".join(x.text))})
     return "window.STONEFOLD_GUIDE=" + json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + ";\n"

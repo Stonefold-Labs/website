@@ -2926,3 +2926,24 @@ kbd {
   margin: 0.25rem 0 0;
   color: var(--quiet);
 }
+
+/* The name, set as the logo wherever it is written (the owner, 2026-11-21: "make stonefold match the logo everywhere that it is
+   named"). The word stays text. Set in the heading font, whose ligature for "Stonefold" is the wordmark with its two stones, so
+   the letters must not be spaced apart or the ligature does not form. */
+.wm {
+  font-family: var(--f-brand);
+  font-size: 1.15em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 0;
+  font-variant-ligatures: common-ligatures;
+  white-space: nowrap;
+}
+
+h1 .wm,
+h2 .wm,
+h3 .wm,
+h4 .wm {
+  font-size: 1em;
+}

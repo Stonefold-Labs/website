@@ -5,6 +5,7 @@ round ends, squared bowls with rounded corners) stroked at the wordmark's weight
 so the stroke is 115, the x-height 500 and the ascender 700 (outer edges). Run with the venv's python."""
 import math
 import sys
+from fontTools.feaLib.builder import addOpenTypeFeaturesFromString
 from fontTools.fontBuilder import FontBuilder
 from fontTools.pens.cu2quPen import Cu2QuPen
 from fontTools.pens.ttGlyphPen import TTGlyphPen
@@ -337,6 +338,64 @@ w = 320
 g("$", P((w, 560), (0, 560), (0, C), (w, C), (w, 160), (0, 160), r=[0, R, R, R, R, 0]), P((w / 2, A + 20), (w / 2, 560)), P((w / 2, 160), (w / 2, B - 20)))
 
 
+# ------------------------------------------------------------------ the logo, as one glyph
+# The word as the wordmark draws it (../StonefoldApp/docs/drafts/wordmark, and the site's header): the same letters, in the
+# wordmark's own spacing, with the two o's as the mark's eight stones. A ligature turns the typed word into it, so the name
+# set in this font anywhere on the site is the logo, and stays text (copying it, searching it and a screen reader read
+# "Stonefold"). The wordmark's drawing is 1 unit to 5 of the font's, its baseline (outer edge) at y 140 and its x-height at 40.
+LOGO_NAME = "stonefold_logo"
+# (letter, the drawing's x of the letter's local x = 0): s, t's stem, n, e, f's stem, l, d's bowl
+LOGO_LETTERS = [("s", 11.5), ("t", 130.0), ("n", 312.5), ("e", 417.5), ("f", 544.0), ("l", 722.5), ("d", 764.5)]
+LOGO_STONES_AT = (158.8, 568.8)              # the two o's: where the mark is placed in the drawing (x), and its scale
+STONES_Y, STONES_SCALE = 18.2, 0.57
+# The mark's eight stones (x, y, width, height) in its own 256 square; each is a pill.
+MARK_STONES = [(64, 38, 56, 28), (130, 38, 56, 28), (37, 65, 28, 56), (37, 131, 28, 56), (185, 65, 28, 56), (185, 131, 28, 56),
+               (64, 186, 45, 28), (141, 186, 45, 28)]
+LOGO_END = 847.0                              # the drawing's right edge of the d's stem (835.5 + half the stroke)
+
+
+def fx(xd):
+    return xd * 5 + SB
+
+
+def fy(yd):
+    return (140 - yd) * 5
+
+
+def pill(x0, y0, x1, y1):
+    """A clockwise rounded bar: a rectangle whose short sides are half circles."""
+    r = min(x1 - x0, y1 - y0) / 2
+    if x1 - x0 >= y1 - y0:
+        cy = (y0 + y1) / 2
+        ops = [("M", (x0 + r, y1)), ("L", (x1 - r, y1))]
+        ops += [("C", c1, c2, e) for c1, c2, e in arc_cubics((x1 - r, cy), r, math.pi / 2, -math.pi / 2)]
+        ops += [("L", (x0 + r, y0))]
+        ops += [("C", c1, c2, e) for c1, c2, e in arc_cubics((x0 + r, cy), r, -math.pi / 2, -3 * math.pi / 2)]
+    else:
+        cx = (x0 + x1) / 2
+        ops = [("M", (x0, y1 - r))]
+        ops += [("C", c1, c2, e) for c1, c2, e in arc_cubics((cx, y1 - r), r, math.pi, 0.0)]
+        ops += [("L", (x1, y0 + r))]
+        ops += [("C", c1, c2, e) for c1, c2, e in arc_cubics((cx, y0 + r), r, 0.0, -math.pi)]
+    return ops
+
+
+def logo_contours():
+    cons = []
+    for ch, xd in LOGO_LETTERS:
+        strokes, _ = G[ch]
+        for pts, radii, closed in strokes:
+            moved = [(px + xd * 5 + SB, py) for px, py in pts]
+            segs, joints = segments(moved, radii, closed)
+            cons += contours_for(segs, joints)
+    for tx in LOGO_STONES_AT:
+        for x, y, w, h in MARK_STONES:
+            xa, xb = tx + x * STONES_SCALE, tx + (x + w) * STONES_SCALE
+            ya, yb = STONES_Y + y * STONES_SCALE, STONES_Y + (y + h) * STONES_SCALE
+            cons.append(pill(fx(xa), fy(yb), fx(xb), fy(ya)))
+    return cons
+
+
 def build(out_ttf, out_woff2=None):
     glyphs = {}
     metrics = {}
@@ -365,6 +424,14 @@ def build(out_ttf, out_woff2=None):
         metrics[name] = (int(round(x1 - x0 + 2 * sb)), int(round(sb)))
         names.append(name)
         cmap[ord(ch)] = name
+    # the logo: one glyph, reached by typing the name
+    cons = logo_contours()
+    x0, x1, _, _ = bounds(cons)
+    pen = TTGlyphPen(None)
+    draw(cons, 0, Cu2QuPen(pen, 1.0, reverse_direction=False))
+    glyphs[LOGO_NAME] = pen.glyph()
+    metrics[LOGO_NAME] = (int(round(fx(LOGO_END) + SB)), int(round(x0)))
+    names.append(LOGO_NAME)
     fb = FontBuilder(UPM, isTTF=True)
     fb.setupGlyphOrder(names)
     fb.setupCharacterMap(cmap)
@@ -376,6 +443,11 @@ def build(out_ttf, out_woff2=None):
     fb.setupOS2(sTypoAscender=800, sTypoDescender=-250, sTypoLineGap=0, usWinAscent=900, usWinDescent=300,
                 sxHeight=500, sCapHeight=700, fsType=0, achVendID="STFD")
     fb.setupPost()
+    uni = lambda ch: "uni%04X" % ord(ch)
+    word = lambda text: " ".join(uni(c) for c in text)
+    addOpenTypeFeaturesFromString(fb.font, "languagesystem DFLT dflt;\nlanguagesystem latn dflt;\nfeature liga {\n"
+                                  + "".join(f"    sub {word(w)} by {LOGO_NAME};\n" for w in ("Stonefold", "stonefold", "STONEFOLD"))
+                                  + "} liga;\n")
     fb.save(out_ttf)
     if out_woff2:
         f = TTFont(out_ttf)

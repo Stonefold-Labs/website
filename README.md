@@ -19,6 +19,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   404.html           shown for any address that doesn't exist
   styles.css
   theme.js           the theme picker (the demo, demo.js, is gone from the launch branch)
+  fonts/             stonefold-display.woff2: the heading font, and the name as the logo (`scripts/build-font.py`)
   guide/search.js    the guide's search, on the guide's pages only, with guide/search-index.js, the words it reads
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
