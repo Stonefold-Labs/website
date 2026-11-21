@@ -119,6 +119,8 @@ class Page(HTMLParser):
         self.pictures = []
         self.scripts = 0
         self.script_srcs = []
+        self.refresh = None
+        self.canonical = None
         self.buttons = 0
         self.looks = []
         self.menu_hidden = None
@@ -162,6 +164,8 @@ class Page(HTMLParser):
             equiv = (a.get("http-equiv") or "").lower()
             if equiv == "content-security-policy":
                 self.csp = a.get("content")
+            elif equiv == "refresh":
+                self.refresh = a.get("content") or ""
             elif equiv:
                 self.problems.append(f"<meta http-equiv={equiv}> is not allowed")
             if name == "description":
@@ -173,7 +177,9 @@ class Page(HTMLParser):
         elif tag == "link":
             rel = (a.get("rel") or "").lower()
             href = a.get("href") or ""
-            if rel not in ("stylesheet", "icon", "apple-touch-icon"):
+            if rel == "canonical":
+                self.canonical = href
+            elif rel not in ("stylesheet", "icon", "apple-touch-icon"):
                 self.problems.append(f"<link rel={rel!r}>: only the stylesheet and the icons")
             if not href.startswith("/") or href.startswith("//"):
                 self.problems.append(f"<link href={href!r}>: must be a file of this site")
@@ -270,6 +276,24 @@ def check_words(text, a_page=True):
     return problems
 
 
+_IDS = {}
+
+
+def ids_of(site, path):
+    """The ids on a page of this site (by its address), for a link to a place in it."""
+    target = site / path.lstrip("/")
+    target = target / "index.html" if path.endswith("/") else target
+    key = str(target)
+    if key not in _IDS:
+        found = set()
+        if target.is_file():
+            page = Page()
+            page.feed(target.read_text(encoding="utf-8"))
+            found = page.ids
+        _IDS[key] = found
+    return _IDS[key]
+
+
 def check_page(site, file):
     page = Page()
     raw = file.read_text(encoding="utf-8")
@@ -291,11 +315,25 @@ def check_page(site, file):
         problems.append("no <title>")
     if not page.description:
         problems.append("no description")
-    in_guide = file.relative_to(site).parts[:1] == ("guide",)
+    parts = file.relative_to(site).parts
+    # The guide: its front page and each section's page have the search; an old address of a topic, guide/<section>/<topic>/, is a tiny
+    # page that sends to the topic's place in its section, with a meta refresh of 0 and a canonical link, and no search.
+    stub = parts[:1] == ("guide",) and len(parts) == 4
+    in_guide = parts[:1] == ("guide",) and not stub
     if page.script_srcs != (GUIDE_SCRIPTS if in_guide else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
         problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages have its search as well")
     if in_guide != ("guide-search" in page.ids):
-        problems.append("the guide's pages, and only they, hold the search box's place (id guide-search)")
+        problems.append("the guide's front page and sections' pages, and only they, hold the search box's place (id guide-search)")
+    if stub:
+        target = f"/guide/{parts[1]}/#{parts[2]}"
+        if page.refresh != f"0; url={target}":
+            problems.append(f"an old guide address sends to {target} with <meta http-equiv=refresh content=\"0; url={target}\">")
+        if page.canonical != f"/guide/{parts[1]}/":
+            problems.append(f"an old guide address has <link rel=canonical href=\"/guide/{parts[1]}/\">")
+        if parts[2] not in ids_of(site, f"/guide/{parts[1]}/"):
+            problems.append(f"{target}: the section has no such topic")
+    elif page.refresh is not None or page.canonical is not None:
+        problems.append("only an old guide address may carry a meta refresh or a canonical link")
     if page.menu_hidden is not True:
         problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:
@@ -317,6 +355,8 @@ def check_page(site, file):
         elif href.startswith("/") and not href.startswith("//"):
             if not resolves(site, href):
                 problems.append(f"{href}: the link goes nowhere")
+            elif "#" in href and href.split("#", 1)[1] and href.split("#", 1)[1] not in ids_of(site, href.split("#", 1)[0]):
+                problems.append(f"{href}: no such place on that page")
         elif href in OUTSIDE_LINKS:
             if "noreferrer" not in (attrs.get("rel") or ""):
                 problems.append(f"{href}: an outside link needs rel=\"noreferrer\"")
@@ -392,39 +432,38 @@ def check_search_js(file):
     return problems
 
 
-# The guide's search index, read with the same rules the builder uses: for each page in the guide's tree, its path, title,
-# group and the words in its article (not the tree, the crumbs, the title or the page links). The builder is in
-# scratchpad, not here, so this is its second reading: they must agree.
+# The guide's search index, read with the same rules the builder uses: for each topic of the guide, in the front page's order, its place (its
+# section's page and its anchor), title (the topic's h2), section (the page's h1) and the words under it (not a nav, a picture or a script).
+# The builder is in the chat's scratchpad, not here, so this is its second reading: they must agree.
 _VOID = {"br", "hr", "img", "input", "link", "meta", "source", "area", "base", "col", "embed", "param", "track", "wbr"}
-_SKIP = {"nav", "svg", "script", "h1"}
+_SKIP = {"nav", "svg", "script"}
 
 
-class _Extract(HTMLParser):
+class _Topics(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
-        self.stack, self.in_article, self.skipping = [], False, 0
-        self.h1, self.in_h1, self.crumbs, self.in_crumbs = "", False, "", False
-        self.text, self.order, self.in_tree_d = [], [], False
+        self.stack, self.skipping = [], 0
+        self.h1, self.in_h1 = "", False
+        self.topics, self.cur, self.in_title, self.hrefs = [], None, False, []
 
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
         cls = (a.get("class") or "").split()
+        if tag == "a" and a.get("href"):
+            self.hrefs.append(a["href"])
         if tag in _VOID:
             return
-        root = tag in _SKIP or (tag == "details" and "tree-m" in cls) or (tag == "p" and "crumbs" in cls)
-        self.stack.append((tag, root, tag == "article" and "article" in cls, tag == "nav" and "tree-d" in cls))
-        if self.stack[-1][2]:
-            self.in_article = True
-        if self.stack[-1][3]:
-            self.in_tree_d = True
+        root = tag in _SKIP
+        self.stack.append((tag, root, tag == "section" and "topic" in cls))
         if root:
             self.skipping += 1
-        if tag == "h1" and self.in_article:
+        if tag == "section" and "topic" in cls:
+            self.cur = {"id": a.get("id", ""), "t": "", "x": []}
+            self.topics.append(self.cur)
+        if tag == "h1":
             self.in_h1 = True
-        if tag == "p" and "crumbs" in cls:
-            self.in_crumbs = True
-        if tag == "a" and self.in_tree_d and a.get("href"):
-            self.order.append(a["href"])
+        if tag == "h2" and self.cur is not None and not self.cur["t"] and not self.in_title:
+            self.in_title = True
 
     def handle_startendtag(self, tag, attrs):
         self.handle_starttag(tag, attrs)
@@ -434,27 +473,26 @@ class _Extract(HTMLParser):
         if tag in _VOID:
             return
         while self.stack:
-            t, root, article, tree_d = self.stack.pop()
+            t, root, is_topic = self.stack.pop()
             if root:
                 self.skipping -= 1
-            if article:
-                self.in_article = False
-            if tree_d:
-                self.in_tree_d = False
+            if is_topic:
+                self.cur = None
             if t == "h1":
                 self.in_h1 = False
-            if t == "p" and self.in_crumbs:
-                self.in_crumbs = False
+            if t == "h2":
+                self.in_title = False
             if t == tag:
                 break
 
     def handle_data(self, data):
         if self.in_h1:
             self.h1 += data
-        if self.in_crumbs:
-            self.crumbs += data
-        if self.in_article and not self.skipping:
-            self.text.append(data)
+        if self.cur is not None and not self.skipping:
+            if self.in_title:
+                self.cur["t"] += data
+            else:
+                self.cur["x"].append(data)
 
 
 def _plain(source):
@@ -467,18 +505,22 @@ def _words(text):
 
 
 def guide_index_text(site):
-    first = _Extract()
-    first.feed(_plain((site / "guide" / "index.html").read_text(encoding="utf-8")))
-    seen, entries = set(), []
-    for href in first.order:
-        if href in seen or not re.fullmatch(r"/guide/[a-z0-9-]+/[a-z0-9-]+/", href):
-            continue
-        seen.add(href)
-        x = _Extract()
-        x.feed(_plain((site / href.strip("/") / "index.html").read_text(encoding="utf-8")))
-        crumbs = _words(x.crumbs)
-        entries.append({"p": href, "t": _words(x.h1), "g": crumbs.split("/", 1)[1].strip() if "/" in crumbs else "", "x": _words(" ".join(x.text))})
-    return "window.STONEFOLD_GUIDE=" + json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + ";\n"
+    front = _Topics()
+    front.feed(_plain((site / "guide" / "index.html").read_text(encoding="utf-8")))
+    order, seen = [], set()
+    for href in front.hrefs:
+        m = re.fullmatch(r"/guide/([a-z0-9-]+)/#([a-z0-9-]+)", href)
+        if m and href not in seen:
+            seen.add(href)
+            order.append((m.group(1), href))
+    entries = {}
+    for slug in {slug for slug, _ in order}:
+        page = _Topics()
+        page.feed(_plain((site / "guide" / slug / "index.html").read_text(encoding="utf-8")))
+        for x in page.topics:
+            entries[f"/guide/{slug}/#{x['id']}"] = {"p": f"/guide/{slug}/#{x['id']}", "t": _words(x["t"]), "g": _words(page.h1),
+                                                    "x": _words(" ".join(x["x"]))}
+    return "window.STONEFOLD_GUIDE=" + json.dumps([entries[href] for _, href in order], ensure_ascii=False, separators=(",", ":")) + ";\n"
 
 
 def check_search_index(site, file):
@@ -633,11 +675,14 @@ GOOD_PAGE = """<!doctype html>
 SEARCH_TAGS = '<script src="/guide/search-index.js"></script><script src="/guide/search.js"></script>'
 # A guide page for the self-test: the same page, with the guide's tree and article, and its search after the content.
 GUIDE_PAGE = GOOD_PAGE.replace("<main><h1>One</h1>{body}</main>", "<main>{body}</main>").replace("</body>", "{scripts}</body>")
-GUIDE_HOME = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/a/b/">B</a></nav>'
-              '<article class="article"><div class="gsearch" id="guide-search" hidden></div><h1>Guide</h1><p>Words.</p></article></div>')
-GUIDE_LEAF = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/a/b/">B</a></nav>'
+GUIDE_HOME = ('<div class="wrap guide idx-page"><article class="article"><div class="gsearch" id="guide-search" hidden></div><h1>Guide</h1>'
+              '<div class="idx"><section class="idx-sec"><ul><li><a href="/guide/a/#b">B</a></li></ul></section></div></article></div>')
+GUIDE_LEAF = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/a/#b">B</a></nav>'
               '<article class="article"><div class="gsearch" id="guide-search" hidden></div>'
-              '<p class="crumbs"><a href="/guide/">Guide</a> / A</p><h1>B</h1><p>Some words here.</p></article></div>')
+              '<p class="crumbs"><a href="/guide/">Guide</a> / A</p><h1>A</h1>'
+              '<section class="topic" id="b"><h2>B</h2><p>Some words here.</p></section></article></div>')
+GUIDE_STUB = '<h1>B</h1><p>This page moved. It is now <a href="/guide/a/#b">A: B</a>.</p>'
+STUB_HEAD = '<meta http-equiv="refresh" content="0; url=/guide/a/#b"><link rel="canonical" href="/guide/a/">'
 
 LOOK_BUTTONS = "".join(f'<button type="button" data-look="{name}"></button>' for name in LOOKS)
 
@@ -823,16 +868,17 @@ def self_test():
         search = (SITE / "guide" / "search.js").read_bytes()
         (site / "guide" / "a" / "b").mkdir(parents=True)
 
-        def guide(scripts=SEARCH_TAGS, home=GUIDE_HOME, leaf=GUIDE_LEAF):
-            for where, body in (("guide/index.html", home), ("guide/a/b/index.html", leaf)):
-                (site / where).write_text(GUIDE_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=body, scripts=scripts))
+        def guide(scripts=SEARCH_TAGS, home=GUIDE_HOME, leaf=GUIDE_LEAF, stub=GUIDE_STUB, stub_head=STUB_HEAD, leaf_head=""):
+            for where, body, head, tags in (("guide/index.html", home, "", scripts), ("guide/a/index.html", leaf, leaf_head, scripts),
+                                            ("guide/a/b/index.html", stub, stub_head, "")):
+                (site / where).write_text(GUIDE_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head=head, body=body, scripts=tags))
             (site / "guide" / "search.js").write_bytes(search)
             (site / "guide" / "search-index.js").write_text(guide_index_text(site), encoding="utf-8")
 
         page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
         guide()
         if check_site(site):
-            print("self-test: a guide page with its search was refused:", check_site(site))
+            print("self-test: a guide with its search, a section and an old address was refused:", check_site(site))
             return 1
         guide(scripts="")
         if not check_site(site):
@@ -849,15 +895,26 @@ def self_test():
         (site / "guide" / "search-index.js").write_text(guide_index_text(site).replace("Some words here.", "Some other words."), encoding="utf-8")
         if not check_site(site):
             missed.append("a search index that says what the page doesn't")
-        guide()
         guide(leaf=GUIDE_LEAF.replace('id="guide-search" ', ""))
         if not check_site(site):
             missed.append("a guide page without the search box's place")
+        guide(stub_head=STUB_HEAD.replace("#b", "#c"))
+        if not check_site(site):
+            missed.append("an old guide address that sends to the wrong place")
+        guide(stub_head=STUB_HEAD.replace('<link rel="canonical" href="/guide/a/">', ""))
+        if not check_site(site):
+            missed.append("an old guide address without its canonical link")
+        guide(leaf_head=STUB_HEAD)
+        if not check_site(site):
+            missed.append("a meta refresh on a section's page")
+        guide(leaf=GUIDE_LEAF.replace("Some words here.", 'Some words <a href="/guide/a/#nope">here</a>.'))
+        if not check_site(site):
+            missed.append("a link to a place that is not on the page")
 
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 25} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 29} planted faults were caught")
     return 0
 
 

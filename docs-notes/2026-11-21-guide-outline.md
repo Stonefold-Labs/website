@@ -171,3 +171,15 @@ The app's builder (the chat "Stonefold — Editor theme build") sent its final c
 ### Checked against the app again (2026-11-21, 15:00)
 
 The app's `main` is now b29a280: "the window your way" (P8) is merged, so those guide pages now match `main`. The Editor theme is committed on its branch (fb9f3b9), not merged; its Help describes it as "slate, as a code editor is, with soft light words, a clear blue, and code and charts in several colours", and the guide's look page now says the same in American spelling. **P9, "one way to make and find anything"** (record 0061) has a committed plan and about sixteen uncommitted files: the command box would offer New Transaction for a line with an amount (the budget's Add sheet opens filled in, nothing saved until Add) and a new note of each kind, and would find events, reminders and transactions by what they say. Not in the guide yet; it is not committed.
+
+### The guide made denser (2026-11-21, 15:30)
+
+The owner's word, relayed by the chat "Stonefold — denser guide, site and app": "can we make the guide on the website and within the app more data dense and easier to see more at once also easier to navigate", and "Yes, build it" to a drawing of the design. Layout only: the words are unchanged.
+
+- **Section pages:** `/guide/<section>/` holds the whole section, each topic under its own h2 with id = its slug (a topic's own headings go down one level). The tree has a count beside each section and opens the current one; "On this page" (right pane) lists the topics and the sections before and after. Below 72rem the right pane goes and a short jump list shows at the top of the section; below 56rem the tree folds into the menu.
+- **Old addresses:** `/guide/<section>/<topic>/` is a tiny page with `<meta http-equiv="refresh" content="0; url=/guide/<section>/#<topic>">`, a plain link and `<link rel="canonical" href="/guide/<section>/">`. No script. Links inside the guide's words go straight to the anchors. `scripts/check.py` allows the refresh and the canonical link on those pages only, checks each points at a topic that exists, and checks that any link to a place in another page finds that place.
+- **Search:** the index has one entry for each topic, pointing at its anchor in its section's page; `search.js` is unchanged.
+- **Mac and iPhone side by side:** where a list gives both ("On the Mac, … On the iPhone, …"), where a paragraph ends with the iPhone's one sentence, and where "On the Mac" and "On the iPhone" are headings one after the other. A few paragraphs that give both and then another sentence for both are left as they were.
+- **Denser type:** 15px body at 1.5, tighter heading margins, a wider middle pane (up to 52rem), the tree and "On this page" at 13px.
+- **The front page:** the eight sections with all 91 topics as titles in up to five columns, one short line per section and none per topic; on a 1440 by 900 screen all of it and the footer are in view.
+- **`CLAUDE.md`'s description of the guide is not changed yet:** the chat that asked for this is another session's, and the owner has not said so here. Change its "The guide" lines with his own yes, when this is pushed.
