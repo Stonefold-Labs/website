@@ -1,8 +1,16 @@
-# Launch branch: read this first
+# Launch version: read this first
 
-**Do not merge this branch to `main`, and do not push it, until the owner says so at launch.** It describes the app as it will be on launch day: iCloud sync, and every feature built the weekend of 2026-11-21. SPEC §6 allows the sync wording only after sync ships, so this site must not go live before it does. The live site stays as it is.
+**Live for the owner's review since 2026-11-21.** His words, about 12:00 that day: "Please make the launch day website live so that it can be reviewed. I'm not worried about anyone stumbling across the website right now so it's only me seeing it." That lifts, for this review, SPEC §6's limit that the sync wording waits until sync ships. The site now describes iCloud sync and every feature built the weekend of 2026-11-21 in the present tense, **before they have all shipped**, so it is not to be announced, linked or shown to anyone else until the app is out. Nothing here adds a store link, "available now" wording, or any way of hiding the pages.
 
-Branch: `claude/launch-site-afa64e`, written 2026-11-21. Nothing here has been pushed.
+**The old site is kept.** Before the push, the live commit `397092c` was tagged `pre-launch-site-2026-11-21` on origin. To put the old site back in one step (each push is the owner's yes):
+
+```bash
+git checkout pre-launch-site-2026-11-21 -- docs scripts
+git commit -m "Put the pre-launch site back"
+git push origin main
+```
+
+Written on the branch `claude/launch-site-afa64e`, commit `1538725`, then merged into `main`. Later pushes, after his review, go out on his own words as he gives them.
 
 ## What it holds
 

@@ -1,6 +1,6 @@
 # Stonefold Labs — the website
 
-> **Launch branch (`claude/launch-site-afa64e`, 2026-11-21): do not merge or push until the owner says so at launch.** It describes the app on launch day, sync included. See `LAUNCH-BRANCH.md`.
+> **The launch version (written 2026-11-21) is live for the owner's review, at his word that day.** It describes the app on launch day, sync included, so it is not to be announced or linked until the app ships. The old site is tagged `pre-launch-site-2026-11-21`. See `LAUNCH-BRANCH.md`.
 
 The public site for stonefoldapp.com (before 2026-11-18, stonefoldlabs.com, which now redirects here): a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the theme picker.
 

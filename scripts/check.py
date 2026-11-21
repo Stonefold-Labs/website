@@ -70,7 +70,8 @@ NOT_YET = [
     # Sharing is allowed only after it ships, and the privacy label's words only once it is live.
     # (Launch branch, 2026-11-21: the sync wording is allowed here, because sync ships with the app, with the claims
     # SPEC §6 lets it make: end-to-end encrypted, only your devices hold the key, through your own iCloud, no servers of ours.
-    # This branch must not go live before sync does.)
+    # The owner lifted SPEC §6's "after sync ships" limit for his review of the site, 2026-11-21: "Please make the launch day
+    # website live so that it can be reviewed." The site is not to be announced until sync ships.)
     (r"\bsharing\b", "house rules §4: sharing wording waits until it ships"),
     (r"data not collected", "house rules §4: waits until a privacy label is live"),
     # The app is not released.
