@@ -2131,3 +2131,262 @@ footer {
   background: var(--band-text);
   color: var(--band);
 }
+
+/* ===== Compact, and fewer boxes (the owner, 2026-11-21: "more compact and less spread out, more data in one area",
+   and "get rid of so many squares"). Cards become columns under a hairline; spacing is tightened. ===== */
+
+h2 {
+  font-size: 1.5rem;
+}
+
+.section {
+  padding-top: 2rem;
+  padding-bottom: 2.25rem;
+}
+
+.section.airy {
+  padding-top: 2rem;
+  padding-bottom: 2.25rem;
+}
+
+.hero {
+  gap: 1.5rem 2.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.hero.center {
+  padding-top: 2.25rem;
+  padding-bottom: 0.5rem;
+}
+
+.hero.center h1 {
+  max-width: 26ch;
+  font-size: 2.625rem;
+}
+
+.hero.center .lede {
+  margin-top: 0.875rem;
+  font-size: 1.0625rem;
+}
+
+.hero.center .actions {
+  margin-top: 1.25rem;
+}
+
+.hero.center .jump {
+  margin-top: 1.25rem;
+}
+
+.hero.center .hero-art {
+  margin-top: 1rem;
+}
+
+.hero.center .hero-art svg {
+  max-width: 14rem;
+}
+
+.slot.window {
+  max-width: 58rem;
+  margin-top: 1.5rem;
+}
+
+.slot .drawing,
+.slot img {
+  border-radius: 0.5rem;
+  box-shadow: none;
+}
+
+.lead {
+  margin-bottom: 1.25rem;
+}
+
+.lead h2 {
+  margin-bottom: 0.375rem;
+  font-size: 1.875rem;
+}
+
+.lead p {
+  font-size: 1.0625rem;
+}
+
+.has-step {
+  margin-bottom: 1rem;
+  font-size: 1.75rem;
+}
+
+.has-step .step {
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+}
+
+.part {
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 1.5rem 2.5rem;
+  margin-top: 1.75rem;
+  padding-top: 1.75rem;
+}
+
+.part.bare {
+  margin-top: 0.75rem;
+}
+
+.part .slot {
+  max-width: 24rem;
+}
+
+.part-name {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.points {
+  gap: 0.625rem;
+  margin-top: 1rem;
+}
+
+.band {
+  padding-top: 2.25rem;
+  padding-bottom: 2.5rem;
+}
+
+.vault {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Cards: no boxes. Each is a column under a hairline. */
+.cards > li,
+.groups > li,
+.reasons li,
+.flows li,
+.keeps li,
+.compare > div {
+  padding: 0.875rem 0 0;
+  background: none;
+  border: 0;
+  border-top: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+.compare .stay {
+  border-top: 2px solid var(--sage-mark);
+}
+
+.compare .leave {
+  border-top: 2px solid var(--amber-mark);
+}
+
+.cards,
+.groups,
+.reasons,
+.flows,
+.keeps,
+.compare {
+  gap: 0.5rem 2rem;
+  margin-top: 1rem;
+}
+
+.cards h3,
+.groups h3 {
+  font-size: 1.25rem;
+}
+
+.reasons h3 {
+  font-size: 1.125rem;
+}
+
+.reasons .figure {
+  font-size: 1.75rem;
+}
+
+.reasons p,
+.cards p,
+.groups p,
+.keeps p,
+.flows li > p:last-child {
+  margin-top: 0.25rem;
+  font-size: 0.9375rem;
+}
+
+.keeps h3,
+.flows h3 {
+  font-size: 1.125rem;
+}
+
+.groups > li {
+  padding-bottom: 0.5rem;
+}
+
+.group-signs {
+  margin-bottom: 0.5rem;
+}
+
+/* Jump links and "more in Stonefold": plain links, not pills or boxes. */
+.jump {
+  gap: 0.25rem 1.25rem;
+}
+
+.jump a {
+  min-height: 2rem;
+  padding: 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-underline-offset: 0.3em;
+}
+
+.jump a:hover {
+  text-decoration-color: var(--text);
+}
+
+.next {
+  gap: 0.25rem 1.75rem;
+  margin-top: 1rem;
+}
+
+.next a {
+  min-height: 0;
+  padding: 0.375rem 0;
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+
+.hub li {
+  padding: 0.625rem 0;
+}
+
+.faq summary {
+  padding: 0.75rem 0;
+}
+
+@media (min-width: 62.01rem) {
+  .hub {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 44rem) {
+  .section,
+  .section.airy {
+    padding-top: 1.5rem;
+    padding-bottom: 1.75rem;
+  }
+
+  .hero.center {
+    padding-top: 1.5rem;
+  }
+
+  .hero.center h1 {
+    font-size: 2rem;
+  }
+
+  .lead h2,
+  .has-step {
+    font-size: 1.5rem;
+  }
+}
