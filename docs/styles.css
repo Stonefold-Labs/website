@@ -2783,3 +2783,41 @@ kbd {
   color: var(--quiet);
   font-size: 0.9375rem;
 }
+
+/* The guide's list of every key: a key on the left, what it does on the right. */
+.keytable {
+  width: 100%;
+  margin: 0 0 1.5rem;
+  border-collapse: collapse;
+}
+
+.keytable td {
+  padding: 0.4rem 1rem 0.4rem 0;
+  border-top: 1px solid var(--rule);
+  vertical-align: top;
+}
+
+.keytable td:first-child {
+  width: 9.5rem;
+  white-space: nowrap;
+}
+
+.article p.quiet {
+  margin: 0.25rem 0 0.5rem;
+  color: var(--quiet);
+}
+
+.article ul.jump {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  padding-left: 0;
+  list-style: none;
+}
+
+@media (max-width: 40rem) {
+  .keytable td:first-child {
+    width: 6.5rem;
+    white-space: normal;
+  }
+}

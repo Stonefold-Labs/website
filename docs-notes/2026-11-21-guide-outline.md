@@ -93,3 +93,25 @@ That is about 55 short pages. Most already exist as Help pages in the app; the n
 - **Settings, group by group** is the one reference page that was not already a Help page: it follows `SPEC.md` §21.1's order. The Mac's shortcuts, the command box, panels, Today and the window are the four pages under On the Mac, so the reference group is folded into the groups that already hold them.
 - **The guide is now 87 pages in eight groups.** What is not in it: the game (the owner took its line off the site), and anything the apps' Help does not say yet.
 - **Check against the finished app:** the money tools (loan calculators, converters, net worth, debt payoff), the retirement planner, Journal, Recipes, Logins and the password generator were written from plans, because their builders had written no Help text.
+
+### Checked against the app (2026-11-21)
+
+The owner asked: "Check the guide against the finished app." The app's `origin/main` is c6f482e (the money tools are merged). Four builders' branches were not merged yet: clock-habits (dd80f5d), files (d35dfaa), note-kinds (6355f6b), retirement (a0feaa3). I read each one's Help and Words files and its lists of keys, in its own worktree, never editing them. Every quoted name in the guide (a menu item ending in "…", a "Settings ▸" path, a name in quotes) was searched for in all five trees. They were all there.
+
+**What did not match, and is fixed:**
+- **Habits** now have a streak: from two in a row, "5 days in a row", in days, due days or weeks. The page and the Habits card said there were none (house rule 15 was lifted by the owner on 2026-11-21).
+- **Debt payoff:** what you type is forgotten when the app locks (the page said it was kept in the budget file); the plan runs month by month starting next month; the limit is shown as "Not in 100 years"; the smallest-balance and highest-rate orders are the two shown side by side, not three.
+- **Net worth:** the chart covers one, two or three years.
+- **The calculator:** with Loans and Converters on, Mortgage, Car Loan and Converters are in the Mac's View menu too; Export Schedule says the file isn't encrypted, then saves it where the person chooses (Mac) or hands it to the iPhone's own sheet.
+- **The retirement planner:** the iPhone can make a plan and change any part of it, not only show one; By Year on the iPhone shows net worth in today's money; a plan is compared by Duplicate (both) and Compare (Mac, up to three).
+- **Logins:** how to start one on each device (Notes ▸ New Logins Note, or the New Note button on the Mac; touch and hold the pencil on the iPhone); the buttons are Generate Password… and Show Password; exports leave out each login's own notes as well as the passwords, and ask first that this is the person's device.
+- **The password generator:** the three kinds are named Password, PIN and Groups of Six; "Leave out look-alikes"; Generate Password is under More on the iPhone.
+- **Recipes:** the New Note list says Recipe (Notes ▸ New Recipe on the Mac).
+- **Binder** (new in the note-kinds branch, SPEC §39.9) had no page: added "A binder for your family", a Binder card on the Notes features page, and Binder in the kinds page and Settings list.
+- **Using the keyboard:** the two-key jumps now include K for the Clock and F for Files; "⌘1 to ⌘4" is now "⌘1 and on", since up to six sections can be kept; a countdown's key is written ⌥⇧⌘N, as the app's list writes it (the countdown Help writes ⇧⌥⌘N, which is the builder's slip; the menu shows ⌥⇧⌘N).
+
+**Added:** "Every keyboard shortcut" (`/guide/mac/every-key/`), the owner's request of the same day: every key in the app's own lists (the app's, Calendar, Reminders, Notes, Budget, Clock, Files), with the feature each needs. Read from `ShellShortcut`, `LookShortcut`, `PanelShortcut`, `SightShortcut`, `WindowShortcut`, `KeyJump`, `CalendarShortcut`, `RemindersShortcut`, `NotesShortcut`, `AppShortcut` and its table keys, `ClockShortcut` and `FilesShortcut`. The Mac has them; the iPhone has none listed. When a builder changes a key, this page changes.
+
+**Matched without change:** Calendar, Alerts, Boards, Countdowns, the focus timer, the world clock, Files (all seven pages), Journal, the kinds page, the Settings page, backups and the recovery sheet.
+
+**Still plan-based (the builders' Help is silent):** the details in the loan calculators' fields, the converters' limits, how a due date is worked out in a maintenance log, the focus timer's limits (1 to 120 minutes), and Files' folders-first sort. Each came from a plan or a screen file and is not contradicted by anything read.
