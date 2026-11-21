@@ -2748,3 +2748,11 @@ kbd {
 .article .keys {
   padding-left: 0;
 }
+
+.tree ul {
+  display: block;
+}
+
+.pager {
+  flex-wrap: wrap;
+}
