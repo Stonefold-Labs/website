@@ -3115,3 +3115,20 @@ h4 .wm {
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Down the left every section is open on every page; the page you are on is marked, and a browser that can scrolls the list to it. */
+.tree a[aria-current="page"] {
+  scroll-initial-target: nearest;
+}
+
+/* Under the pager of topics, the pager of sections: the first page of the section before, and of the section after. */
+.pager.pager-sections {
+  margin-top: 0.25rem;
+  padding-top: 0.5rem;
+  border-top: 0;
+}
+
+.pager-sections a {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
