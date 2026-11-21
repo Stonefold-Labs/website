@@ -125,3 +125,14 @@ The owner asked for "2-3 pages (the main page, the guide/wiki page, and maybe on
 - **The guide's first page:** each group has a line under its name, and the page list under it. That list, a page and its one line each, is the old "every feature in a line".
 - **New guide page:** How the parts work together (Getting started), from the last section of the old features index: the two switches, Bills on the Calendar and in Reminders, and Reminders on the Calendar.
 - **Dropped with the pages:** the drawings of signs on a stone wall on each group page, and the long feature cards (their facts are in the guide's pages, which were checked against the app).
+
+### Checked against the app again (2026-11-21, 13:10 to 13:30)
+
+The app's `main` is now 6355f6b: the note kinds (Logins, the generator, Journal, Recipes, the Binder) are merged into it. The retirement builder had Help changes not yet committed; clock-habits, files and money-tools had changed only tests and notes; note-kinds had one layout fix. I read each one's Help again, searched every quoted name, menu item, path and Title Case phrase in the guide in all of the app's trees, and checked the numbers I could find in code.
+
+**Fixed:**
+- **Retirement:** a new plan counts the budget's own accounts, other than cards and loans, as cash, and an account tracked outside the budget only if you choose it, as taxable ("count investments, not a house or a car"). On the iPhone the button is New Retirement Plan…, not +.
+- **Net worth:** Add an Asset… opens the new account sheet with Type set to "Asset or Investment (tracking only)" and Include in budget off. The page had quoted a label the app doesn't have.
+- **The password generator:** the app shows "About 89 bits: very strong", with the word in lower case.
+
+**Checked and matching:** every other name the scan found (the rest were pieces of my own sentences), the focus timer's limits, the habit streaks, the loan, converter and tip rules, the retirement defaults and the Binder, Journal, Recipe and Logins wording. Not checked against the app: whatever its builders have not yet written down or built.
