@@ -3116,19 +3116,76 @@ h4 .wm {
   }
 }
 
-/* Down the left every section is open on every page; the page you are on is marked, and a browser that can scrolls the list to it. */
-.tree a[aria-current="page"] {
-  scroll-initial-target: nearest;
+/* The guide as one long page (the owner, 2026-11-21: "just have endless scrolling"): each section a heading, each topic under it, the list down
+   the left open on every section and jumping to a place on the page. */
+.article h2.sec {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.25rem 0 0.1rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--rule);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  scroll-margin-top: 0.75rem;
 }
 
-/* Under the pager of topics, the pager of sections: the first page of the section before, and of the section after. */
-.pager.pager-sections {
-  margin-top: 0.25rem;
-  padding-top: 0.5rem;
-  border-top: 0;
+.article > .lede + h2.sec {
+  margin-top: 1.25rem;
 }
 
-.pager-sections a {
-  font-size: 0.875rem;
-  font-weight: 500;
+.sec-intro {
+  margin: 0 0 0.5rem;
+  color: var(--quiet);
+}
+
+.article .topic {
+  margin-top: 1.1rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--rule);
+  scroll-margin-top: 0.75rem;
+}
+
+.article .topic h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.article .topic .lede {
+  margin: 0 0 0.6rem;
+  color: var(--quiet);
+}
+
+.article .topic h4 {
+  margin: 0.9rem 0 0.2rem;
+  font-size: 1.0625rem;
+  line-height: 1.25;
+}
+
+.article .topic h5 {
+  margin: 0.7rem 0 0.15rem;
+  font-size: 0.9375rem;
+}
+
+/* A section's name in the list is a link to its heading, and the chevron still opens and closes it. */
+.tree summary a.sec-link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0;
+  border-radius: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
+.tree summary a.sec-link:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+.tree summary .g {
+  display: flex;
 }
