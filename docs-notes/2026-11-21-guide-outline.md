@@ -53,3 +53,9 @@ That is about 55 short pages. Most already exist as Help pages in the app; the n
 2. **Generated or written twice.** Recommended: generated from the app's Help pages, so there is one copy of every sentence. It needs a small export step in the app's repository and a read of it from here.
 3. **Screenshots.** They are on hold. The guide reads well without them and much better with them, so the hold matters more once this exists.
 4. **Who writes the new sections' pages.** Recommended: each builder chat writes its own section's Help pages as it builds, which the app's spec already asks for, and this chat only publishes and checks them.
+
+## Where it stands (2026-11-21, evening)
+
+- **Built:** the tree navigation (groups that open and close, the current page marked, a menu at the top on a phone, a Before and Next link at the foot of each page) and 15 pages: Getting started (11) and On the Mac (4), adapted from `ShellHelp.swift`. Words the site refuses (restore, reset, recover) are put another way, and the Clock's "no export yet" is stated without "yet".
+- **Next, one section at a time:** Calendar, Reminders, Notes, Budget, Clock and calculator, Files, then the reference pages, each from that section's own Help file (`CalendarHelp.swift`, `RemindersHelp.swift`, `NotesHelp.swift`, `BudgetHelp.swift`, `ClockHelp.swift`) and, for this weekend's additions, from the builders' plans.
+- **Decisions taken as recommended** until the owner says otherwise: no script for search; the pages are written here from the app's Help, not generated; screenshots stay on hold.
