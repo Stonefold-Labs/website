@@ -79,3 +79,10 @@ That is about 55 short pages. Most already exist as Help pages in the app; the n
 - **The glossary's examples use plain numbers,** because the site's check refuses any dollar figure but the app's price.
 - **Check against the finished screens:** net worth, debt payoff and the retirement planner are written from plans, and the retirement planner's own plan says its build was still going.
 - **Still to write:** Clock and calculator (with countdowns, focus, loans and converters), Files, and the reference pages.
+
+### Update: Clock and calculator written, and Habits, Logs and Boards corrected
+
+- **Clock and calculator (12 pages):** the stopwatch; timers; alarms; the world clock; countdowns; the focus timer; the calculator; the mortgage calculator; the car loan calculator; converters; the Clock beside your work (Mac); deleting in the Clock. From the clock builder's own Help (read in its worktree, which is newer than the main checkout), `SPEC.md` §34, and the money-tools builder's plan and the labels on its calculator screens.
+- **Corrected from the builder's real Help:** the Habits and Maintenance Logs pages now use its button names (New Habit…, Remind Me, Log Something, Add Recurring Item…, Remind Me In, Log It…). **Added:** a page for Boards (a reminders list as cards in columns, with To Do, Doing and Done to start), which the builder added after the plans, and a Boards card on the Plan your days page.
+- **Still no Help text from the money-tools builder,** so the loan calculators, converters, net worth and debt payoff are written from its plan and screens. Check them against the finished app.
+- **Still to write:** Files, and the reference pages.
