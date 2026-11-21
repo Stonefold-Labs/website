@@ -23,7 +23,19 @@ SITE = ROOT / "docs"
 # "Stonefold Labs LLC" in its footer, and the privacy page says it runs the website.
 COMPANY_FORMED = True
 
-CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'"
+CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'"
+
+# The one font file (the owner, 2026-11-21: "Draw our own heading font from the logo"): Stonefold Display, drawn from the
+# wordmark's own letters (scripts/build-font.py makes it), served from this site, and the only font file there is. Its
+# exact contents are pinned here like theme.js's: rebuild it, look at it, then put its SHA-256 here
+# (shasum -a 256 docs/fonts/stonefold-display.woff2). The CSP's font-src 'self' is the one loosening, for this file.
+FONT_FILE = "fonts/stonefold-display.woff2"
+FONT_SHA256 = "9456a99e8dc999dea3afacc5661d0f32e772cd365f672aee1eef5c0e1489a237"
+FONT_FACE = """@font-face {
+  font-family: "Stonefold Display";
+  src: url("/fonts/stonefold-display.woff2") format("woff2");
+  font-display: swap;
+}"""
 
 # The site's one script: the theme picker (the owner, 2026-11-12 for the light and dark switch; 2026-11-18 for
 # every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
@@ -46,7 +58,7 @@ OUTSIDE_LINKS = {
 # and lives only under /pictures/. There are none until the app's own pictures are made.
 # .png and .ico are the company's mark as pictures (the owner, 2026-11-18: "add the PNG and icon set"): the tab icon,
 # the home-screen icon and the mark at a few sizes, from the app's docs/brand, with nothing but the picture in them.
-ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg", ".png", ".ico"}
+ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg", ".png", ".ico", ".woff2"}
 SCREENSHOTS = "/pictures/"
 ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
@@ -306,7 +318,7 @@ def check_page(site, file):
 
 
 def check_css(file):
-    css = file.read_text(encoding="utf-8")
+    css = file.read_text(encoding="utf-8").replace(FONT_FACE, "", 1)
     problems = []
     for pattern, why in [
         (r"@import", "no imports"),
@@ -400,6 +412,21 @@ def check_svg(file):
     return problems
 
 
+def check_font(site, file):
+    """The one font: at its own path, a WOFF2, no bigger than a few kilobytes, exactly the pinned bytes."""
+    if str(file.relative_to(site)) != FONT_FILE:
+        return [f"the only font file is {FONT_FILE}"]
+    data = file.read_bytes()
+    problems = []
+    if data[:4] != b"wOF2":
+        problems.append("not a WOFF2")
+    if len(data) > 30000:
+        problems.append("a font this big is not the heading font")
+    if hashlib.sha256(data).hexdigest() != FONT_SHA256:
+        problems.append("it changed. Look at it, and if it is right, put its new SHA-256 in scripts/check.py")
+    return problems
+
+
 def check_jpg(site, file):
     """A picture of the app: under /pictures/, and carrying nothing but the picture and its colour profile.
     Exif and XMP (APP1) can hold the device, the software, dates and places; comments can hold anything."""
@@ -446,6 +473,8 @@ def check_site(site):
             problems = check_png(file)
         elif file.suffix == ".ico":
             problems = check_ico(file)
+        elif file.suffix == ".woff2":
+            problems = check_font(site, file)
         else:
             problems = []
         if problems:
@@ -623,11 +652,31 @@ def self_test():
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
+        (site / "tracker.js").unlink()
+
+        font = (SITE / FONT_FILE).read_bytes()
+        (site / "fonts").mkdir()
+        (site / "fonts" / "stonefold-display.woff2").write_bytes(font)
+        (site / "styles.css").write_text(FONT_FACE + "\nbody { margin: 0 }\n")
+        if check_site(site):
+            print("self-test: the heading font and its one @font-face were refused:", check_site(site))
+            return 1
+        for name, where, data in [("a changed font file", "fonts/stonefold-display.woff2", font + b"x"),
+                                  ("a font file in another place", "fonts/other.woff2", font),
+                                  ("a font that is not a WOFF2", "fonts/stonefold-display.woff2", b"not a font")]:
+            (site / where).write_bytes(data)
+            if not check_site(site):
+                missed.append(name)
+            (site / where).unlink() if where != "fonts/stonefold-display.woff2" else (site / where).write_bytes(font)
+        (site / "styles.css").write_text(FONT_FACE + "\n@font-face { font-family: x; src: url(\"/fonts/other.woff2\") }\n")
+        if not check_site(site):
+            missed.append("a second @font-face")
+        (site / "styles.css").write_text("body { margin: 0 }\n")
 
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 17} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 20} planted faults were caught")
     return 0
 
 
