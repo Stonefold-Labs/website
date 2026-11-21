@@ -2950,26 +2950,26 @@ h4 .wm {
 
 /* Editor (the owner, 2026-11-21, after he found the terminal themes hard to read: "one theme ... what coding or IDEs look like. Maybe with
    multiple colors within one theme"): dark slate with a code editor's several colours, blue for links, orange for the mark and code,
-   green and purple for the rest. The company's own values, not any named outside palette. Words stay a soft white-blue for reading. */
+   green and purple for the rest. The company's own values, not any named outside palette. Words stay a soft white-blue for reading. Now the app's own values (its Editor theme, 2026-11-21: the pane #1f2330, quieter words #a3acc0, on-accent #1b1e26); only the hairline #333a4b and the bands' card colours are the site's. */
 :root[data-theme="editor"] {
   color-scheme: dark;
   --page: #1b1e26;
-  --raised: #232733;
+  --raised: #1f2330;
   --text: #d5d9e4;
-  --quiet: #9aa3b8;
+  --quiet: #a3acc0;
   --link: #6cb2ff;
   --rule: #333a4b;
   --fill: #6cb2ff;
-  --on-fill: #14161c;
+  --on-fill: #1b1e26;
   --stripe: #f0a35e;
   --amber-mark: #f0a35e;
   --sage-mark: #7ccf8a;
   --stone: #6cb2ff;
-  --band: #232733;
-  --band-card: #2a2f3d;
+  --band: #1f2330;
+  --band-card: #272c3b;
   --band-rule: #3a4154;
   --band-text: #d5d9e4;
-  --band-quiet: #a9b2c6;
+  --band-quiet: #a3acc0;
   --band-amber: #f0a35e;
   --band-sage: #7ccf8a;
   --event: #b48ef0;

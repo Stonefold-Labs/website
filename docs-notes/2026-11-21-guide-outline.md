@@ -163,3 +163,7 @@ The app's `main` is now 7fdfdc0: Code notes are merged into it, so that page now
 - **The loan calculators:** in Mortgage, Car Loan and Converters on the Mac, Esc closes the calculator (on `main`).
 
 **Matching:** all other names; Code notes' languages (Plain Text, JavaScript and TypeScript, Shell and the rest); the earlier fixes.
+
+### The app's Editor theme is decided (2026-11-21, 15:20)
+
+The app's builder (the chat "Stonefold — Editor theme build") sent its final colours, replacing the five terminal themes with one, "Editor": window #1B1E26, pane #1F2330, words #D5D9E4, quieter #A3ACC0, faintest #737B8E, accent and links #6CB2FF, on-accent #1B1E26, green #7CCF8A, chart series #6CB2FF, #5FC9C9, #F0A35E, #B48EF0, #F07FB0, #E6C86E and #7CCF8A; code keywords #C4A2F5, strings #8EDB9B, numbers #F4B47A, comments #A3ACC0; words in the system font, figures and Code notes in monospace, rounded corners. The site now uses the pane, quieter words and on-accent as they are; it keeps its own hairline (#333a4b), band card colours and orange for code and the headline word (the app's chart orange #F0A35E). The name and the count of nine are unchanged.
