@@ -2992,30 +2992,19 @@ h4 .wm {
   --sw-accent: #6cb2ff;
 }
 
-/* The guide, denser (the owner, 2026-11-21: "more data dense and easier to see more at once also easier to navigate"). A whole section on one
-   page, three panes on a wide screen (the tree with a count beside each section, the section, "On this page"), smaller and tighter type, the
-   Mac's and the iPhone's way side by side, and a front page that lists every topic in columns. Layout only: the words are the same. */
-.wrap.guide {
-  max-width: 92rem;
-  grid-template-columns: 14.5rem minmax(0, 1fr) 13rem;
+/* The guide, a little denser, in the same shape as before: the list down the left, one topic on the page beside it (the owner, 2026-11-21, after
+   he went back from whole-section pages: "make the vertical more dense"). Tighter type and spacing, a compact list with a count beside each
+   section, a wider page, and a front page in three columns. The words and the pages are the same. */
+.guide {
   gap: 2rem;
+  grid-template-columns: 15rem minmax(0, 1fr);
   padding-top: 1rem;
-  padding-bottom: 2rem;
 }
 
-.wrap.guide.idx-page {
-  display: block;
+.wrap.guide {
+  max-width: 78rem;
 }
 
-.guide .article {
-  max-width: 52rem;
-}
-
-.guide.idx-page .article {
-  max-width: none;
-}
-
-/* The tree: compact rows, a count beside each section, the current section open, and it scrolls by itself. */
 .tree-d {
   top: 0.75rem;
   max-height: calc(100vh - 1.5rem);
@@ -3046,19 +3035,24 @@ h4 .wm {
   line-height: 1.3;
 }
 
-.tree li.all a {
-  color: var(--quiet);
+.article {
+  max-width: 50rem;
 }
 
-/* The section, set tighter. */
 .article h1 {
   margin: 0 0 0.25rem;
-  font-size: 1.875rem;
+  font-size: 1.75rem;
 }
 
 .article .lede {
   margin: 0 0 0.75rem;
   font-size: 1rem;
+}
+
+.article h2 {
+  margin: 1.1rem 0 0.25rem;
+  font-size: 1.125rem;
+  line-height: 1.25;
 }
 
 .article p,
@@ -3076,298 +3070,48 @@ h4 .wm {
   margin: 0.15rem 0;
 }
 
-.article .topic {
-  margin-top: 1.25rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-  scroll-margin-top: 0.75rem;
+.pager {
+  margin-top: 1.5rem;
+  padding-top: 0.75rem;
 }
 
-.article .topic h2 {
-  margin: 0 0 0.2rem;
-  font-size: 1.375rem;
-  line-height: 1.2;
+/* The front page: three columns of titles, each with its one line. */
+.toc {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 1.5rem;
+  margin: 0.25rem 0 0.75rem;
 }
 
-.article .topic .lede {
-  margin: 0 0 0.6rem;
-  color: var(--quiet);
+.toc li {
+  padding: 0.4rem 0;
 }
 
-.article .topic h3 {
-  margin: 0.9rem 0 0.2rem;
-  font-size: 1.0625rem;
-  line-height: 1.25;
-}
-
-.article .topic h4 {
-  margin: 0.7rem 0 0.15rem;
+.toc a {
   font-size: 0.9375rem;
 }
 
-/* The Mac's way and the iPhone's, side by side wherever a topic gives both. */
-.article .devices {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.5rem 1rem;
-  margin: 0.5rem 0 0.75rem;
-  padding-left: 0;
-  list-style: none;
-}
-
-.article .devices > li {
-  margin: 0;
-}
-
-.article ul.devices > li:not(.dev-mac):not(.dev-phone) {
-  grid-column: 1 / -1;
-}
-
-.dev-mac,
-.dev-phone {
-  min-width: 0;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--rule);
-  border-radius: 0.5rem;
-  background: var(--raised);
-}
-
-.dev-mac {
-  order: 1;
-}
-
-.dev-phone {
-  order: 2;
-}
-
-.article .devices h3 {
-  margin-top: 0;
-}
-
-.article .devices > div > :last-child {
-  margin-bottom: 0;
-}
-
-/* The right pane: the topics of this section, and the sections before and after. */
-.onpage {
-  position: sticky;
-  top: 0.75rem;
-  max-height: calc(100vh - 1.5rem);
-  overflow-y: auto;
-  font-size: 0.8125rem;
-}
-
-.onpage-h {
-  margin: 0 0 0.35rem;
-  color: var(--quiet);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-}
-
-.onpage ul {
-  margin: 0;
-  padding: 0;
-  border-left: 1px solid var(--rule);
-  list-style: none;
-}
-
-.onpage li {
-  margin: 0;
-}
-
-.onpage a {
-  display: block;
-  padding: 0.1875rem 0.6rem;
-  color: var(--text);
-  line-height: 1.3;
-  text-decoration: none;
-}
-
-.onpage a:hover {
-  background: var(--raised);
-}
-
-.sect-pager {
-  display: grid;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-}
-
-.sect-pager a {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  font-weight: 600;
-}
-
-.sect-pager a span {
-  color: var(--quiet);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.sect-pager a:hover {
-  background: none;
-  text-decoration: underline;
-}
-
-/* A short jump list at the top of a section, and the sections' pager at its foot, where the right pane is not shown. */
-.topic-jump,
-.article > .pager:last-child {
-  display: none;
-}
-
-.topic-jump ul {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.2rem 0.9rem;
-  margin: 0 0 0.5rem;
-  padding: 0;
-  list-style: none;
-}
-
-.topic-jump a {
-  font-size: 0.8125rem;
-}
-
-.guide.searching .onpage {
-  display: none;
-}
-
-/* The front page: every section, with all its topics as titles, in columns. */
-.guide.idx-page .article h1 {
-  margin-bottom: 0.1rem;
-  font-size: 1.375rem;
-}
-
-.idx {
-  columns: 5 11rem;
-  column-gap: 1.5rem;
-  margin-top: 0.5rem;
-}
-
-.guide.idx-page .gsearch {
-  margin-bottom: 0.75rem;
-}
-
-.guide.idx-page .gsearch-box {
-  padding: 0.45rem 0.75rem;
-}
-
-.guide.idx-page .article .lede {
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-}
-
-.idx-sec {
-  break-inside: avoid;
-  margin: 0 0 1rem;
-}
-
-.idx-sec h2 {
-  margin: 0 0 0.1rem;
-  font-size: 1rem;
-  line-height: 1.25;
-}
-
-.idx-sec h2 a {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  color: var(--text);
-  text-decoration: none;
-}
-
-.idx-sec h2 a:hover span:not(.n) {
-  text-decoration: underline;
-}
-
-.idx-sec h2 .n {
-  margin-left: auto;
-  color: var(--quiet);
-  font-size: 0.75rem;
-  font-weight: 400;
-}
-
-.idx-sec .one {
-  margin: 0 0 0.3rem;
-  color: var(--quiet);
+.toc p {
   font-size: 0.8125rem;
   line-height: 1.35;
 }
 
-.idx-sec ul {
+.toc-h {
+  margin: 1rem 0 0.1rem;
+  font-size: 1.125rem;
+}
+
+.toc-intro {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  font-size: 0.875rem;
 }
 
-.idx-sec li {
-  margin: 0;
-  padding: 0;
-  font-size: 0.8125rem;
-  line-height: 1.3;
-}
-
-.idx-sec li a {
-  display: block;
-  padding: 0.05rem 0;
-  color: var(--text);
-  text-decoration: none;
-}
-
-.idx-sec li a:hover {
-  color: var(--link);
-  text-decoration: underline;
-}
-
-.prose-stub {
-  padding-top: 2rem;
-  padding-bottom: 3rem;
-}
-
-/* Two panes where there is no room for three. */
-@media (max-width: 72rem) {
-  .wrap.guide {
-    grid-template-columns: 14.5rem minmax(0, 1fr);
-  }
-
-  .onpage {
-    display: none;
-  }
-
-  .topic-jump,
-  .article > .pager:last-child {
-    display: block;
-  }
-
-  .article > .pager:last-child {
-    display: flex;
-  }
-}
-
-/* One pane on a phone: the tree folds into the menu, and the Mac's and the iPhone's ways stack. */
 @media (max-width: 56rem) {
-  .wrap.guide {
+  .guide {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
   }
 
-  .guide .article {
-    max-width: none;
-  }
-}
-
-@media (max-width: 40rem) {
-  .article .devices {
+  .toc {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .idx {
-    columns: 1;
   }
 }
