@@ -2906,3 +2906,23 @@ kbd {
 .guide.searching .article > :not(.gsearch) {
   display: none;
 }
+
+/* No rail and no corner since 2026-11-21 (the owner: two or three pages, so visitors don't get lost): the mark sits
+   beside the wordmark at every width, and the page runs under the header. */
+.top,
+.frame.plain {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.corner {
+  display: none;
+}
+
+.brand-marks {
+  display: inline-flex;
+}
+
+.toc-intro {
+  margin: 0.25rem 0 0;
+  color: var(--quiet);
+}

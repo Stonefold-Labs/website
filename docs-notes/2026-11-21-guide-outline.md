@@ -115,3 +115,13 @@ The owner asked: "Check the guide against the finished app." The app's `origin/m
 **Matched without change:** Calendar, Alerts, Boards, Countdowns, the focus timer, the world clock, Files (all seven pages), Journal, the kinds page, the Settings page, backups and the recovery sheet.
 
 **Still plan-based (the builders' Help is silent):** the details in the loan calculators' fields, the converters' limits, how a due date is worked out in a maintenance log, the focus timer's limits (1 to 120 minutes), and Files' folders-first sort. Each came from a plan or a screen file and is not contradicted by anything read.
+
+### Update: the site cut to three pages (2026-11-21)
+
+The owner asked for "2-3 pages (the main page, the guide/wiki page, and maybe one more page, how it works I guess)" so visitors don't get lost, and said "Yes, do that" to the plan.
+
+- **Gone:** `/features/` and its five pages, the left rail, and Privacy and Support in the top menu (both stay in the footer, which the App Store listing links to). The top menu is How it works and Guide.
+- **Home:** its six cards are now the app's six parts (Calendar, Reminders, Notes, Budget, Clock and calculator, Files) and each leads to that part's place on the guide's first page (`/guide/#calendar` and so on). "See every feature" became "Read the guide".
+- **The guide's first page:** each group has a line under its name, and the page list under it. That list, a page and its one line each, is the old "every feature in a line".
+- **New guide page:** How the parts work together (Getting started), from the last section of the old features index: the two switches, Bills on the Calendar and in Reminders, and Reminders on the Calendar.
+- **Dropped with the pages:** the drawings of signs on a stone wall on each group page, and the long feature cards (their facts are in the guide's pages, which were checked against the app).

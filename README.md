@@ -12,7 +12,7 @@ It exists for three reasons, in order: Apple requires an organization to have a 
 docs/              the published pages (GitHub Pages only publishes a folder with this name)
   index.html         Home: Stonefold, the app
   how-it-works/      How it works: offline, encrypted on the device, sync only if turned on, export, no account (launch branch)
-  features/          Features: the index, and plan/, notes/, money/, life/ and yours/ (launch branch)
+  guide/             the guide: its first page, its pages down a tree, and its search (launch branch). There is no features/ since 2026-11-21.
   pictures/          pictures of the app, once they are made (none yet; see "Pictures of the app")
   privacy/index.html https://stonefoldapp.com/privacy/
   support/index.html https://stonefoldapp.com/support/
