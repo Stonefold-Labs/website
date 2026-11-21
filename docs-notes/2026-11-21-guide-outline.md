@@ -86,3 +86,10 @@ That is about 55 short pages. Most already exist as Help pages in the app; the n
 - **Corrected from the builder's real Help:** the Habits and Maintenance Logs pages now use its button names (New Habit…, Remind Me, Log Something, Add Recurring Item…, Remind Me In, Log It…). **Added:** a page for Boards (a reminders list as cards in columns, with To Do, Doing and Done to start), which the builder added after the plans, and a Boards card on the Plan your days page.
 - **Still no Help text from the money-tools builder,** so the loan calculators, converters, net worth and debt payoff are written from its plan and screens. Check them against the finished app.
 - **Still to write:** Files, and the reference pages.
+
+### Update: Files written, and a Settings page; the guide covers every part
+
+- **Files (7 pages):** what Files is; bringing files in; folders, names and details; finding a file; looking at a file; reminders before a file expires; deleting in Files. From the Files builder's own Help (read in its worktree) and its plan.
+- **Settings, group by group** is the one reference page that was not already a Help page: it follows `SPEC.md` §21.1's order. The Mac's shortcuts, the command box, panels, Today and the window are the four pages under On the Mac, so the reference group is folded into the groups that already hold them.
+- **The guide is now 87 pages in eight groups.** What is not in it: the game (the owner took its line off the site), and anything the apps' Help does not say yet.
+- **Check against the finished app:** the money tools (loan calculators, converters, net worth, debt payoff), the retirement planner, Journal, Recipes, Logins and the password generator were written from plans, because their builders had written no Help text.
