@@ -1,7 +1,9 @@
 /* Stonefold guide search (the owner, 2026-11-21: "Yes, build search").
    It reads the page text from /guide/search-index.js, which is loaded beside it, and finds pages by their words
-   in this browser. It reaches no network, keeps nothing and writes nothing but the box and the list of results.
-   Pinned in scripts/check.py: read the diff before you change it. */
+   in this browser. It also marks, in the list down the left, the topic you are reading as you scroll (the owner,
+   2026-11-21: "have it track/highlight the left menu as you scroll"). It reaches no network, keeps nothing and writes
+   nothing but the box, the list of results and that one mark. Pinned in scripts/check.py: read the diff before you
+   change it. */
 (function () {
   "use strict";
   var mount = document.getElementById("guide-search");
@@ -188,4 +190,54 @@
       box.focus();
     }
   });
+  // The list down the left follows the page: the row of the topic at the top of the screen is marked, and kept in view in the list, which
+  // scrolls by itself, without moving the page. Nothing is remembered: it is worked out again from where the page is.
+  var list = document.querySelector(".tree-d");
+  var topics = Array.prototype.slice.call(document.querySelectorAll(".article .topic[id]"));
+  if (list && topics.length) {
+    var rows = {};
+    Array.prototype.slice.call(list.querySelectorAll("li a")).forEach(function (link) {
+      var href = link.getAttribute("href") || "";
+      var at = href.indexOf("#");
+      if (at !== -1) rows[href.slice(at + 1)] = link;
+    });
+    var marked = null;
+    var waiting = false;
+
+    function mark(id) {
+      if (id === marked) return;
+      if (marked && rows[marked]) rows[marked].removeAttribute("aria-current");
+      marked = id;
+      var link = id && rows[id];
+      if (!link) return;
+      link.setAttribute("aria-current", "true");
+      var top = link.offsetTop;
+      var bottom = top + link.offsetHeight;
+      if (top < list.scrollTop + 40) list.scrollTop = Math.max(0, top - 40);
+      else if (bottom > list.scrollTop + list.clientHeight - 40) list.scrollTop = bottom - list.clientHeight + 40;
+    }
+
+    function follow() {
+      waiting = false;
+      if (wrap.classList.contains("searching")) return;
+      var line = window.innerHeight * 0.3;
+      var found = null;
+      for (var i = 0; i < topics.length; i++) {
+        if (topics[i].getBoundingClientRect().top <= line) found = topics[i].id;
+        else break;
+      }
+      mark(found);
+    }
+
+    function soon() {
+      if (!waiting) {
+        waiting = true;
+        window.requestAnimationFrame(follow);
+      }
+    }
+
+    window.addEventListener("scroll", soon, { passive: true });
+    window.addEventListener("resize", soon);
+    follow();
+  }
 })();

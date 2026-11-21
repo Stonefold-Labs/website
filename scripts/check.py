@@ -49,7 +49,7 @@ THEME_JS_SHA256 = "24f318df9fe375023bde3ddac7feb38089f93c0c292958d40cb44cd64c9c4
 # index is checked against the pages it holds, word for word, so it can never say what a page doesn't.
 SEARCH_JS = "/guide/search.js"
 SEARCH_INDEX_JS = "/guide/search-index.js"
-SEARCH_JS_SHA256 = "4140887eee6e49601c29e014c6bd49b9004ac1759f8a6acc90c213c07bec33b8"
+SEARCH_JS_SHA256 = "8ba0f375f27107d815621020419a00ddf4946dcc251b8e9cf207fd026a01f544"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
@@ -427,8 +427,8 @@ def check_search_js(file):
     made = re.findall(rb"createElement\(([^)]*)\)", js)
     if any(m.strip(b'"') not in {b"input", b"p", b"ul", b"li", b"a", b"span", b"mark"} or not m.startswith(b'"') for m in made):
         problems.append("it may make only a box, a line, a list and its links")
-    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"href", b"aria-label", b"autocomplete", b"spellcheck", b"role"}:
-        problems.append("it may set only an address on a link and the box's own labels")
+    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"href", b"aria-label", b"autocomplete", b"spellcheck", b"role", b"aria-current"}:
+        problems.append("it may set only an address on a link, the box's own labels and the mark on the list's current row")
     return problems
 
 
