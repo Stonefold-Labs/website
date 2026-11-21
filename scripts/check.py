@@ -5,11 +5,13 @@
     python3 -I scripts/check.py --self-test  prove each rule can fail
 
 It fails if a page could track a reader, load anything from another site, run any
-script but the theme picker (docs/theme.js, pinned below), or say
+script but the theme picker (docs/theme.js, pinned below) and, on the guide's pages only, its search (pinned
+below), or say
 something the house rules (../Stonefold/HOUSE-RULES.md §4) don't allow yet.
 """
 
 import hashlib
+import json
 import re
 import sys
 import tempfile
@@ -42,6 +44,14 @@ FONT_FACE = """@font-face {
 # read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
 THEME_JS_SHA256 = "bb08f356677bcf8a8fd74c6594679ebc2f7d90036e740174bd9171bd315246d1"
+# The guide's search (the owner, 2026-11-21: "Yes, build search"): a second script and its data file, on the guide's
+# pages only. The script is pinned like theme.js, and may do no more than make a box, read the index and list links; the
+# index is checked against the pages it holds, word for word, so it can never say what a page doesn't.
+SEARCH_JS = "/guide/search.js"
+SEARCH_INDEX_JS = "/guide/search-index.js"
+SEARCH_JS_SHA256 = "4140887eee6e49601c29e014c6bd49b9004ac1759f8a6acc90c213c07bec33b8"
+GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
+ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
@@ -108,6 +118,7 @@ class Page(HTMLParser):
         self.links = []
         self.pictures = []
         self.scripts = 0
+        self.script_srcs = []
         self.buttons = 0
         self.looks = []
         self.menu_hidden = None
@@ -172,8 +183,9 @@ class Page(HTMLParser):
             # Only the switch, loaded from this site, with nothing written inside the tag.
             self._in_script = True
             self.scripts += 1
-            if attrs != [("src", THEME_JS)]:
-                self.problems.append(f"<script>: the only script is <script src=\"{THEME_JS}\"></script>")
+            self.script_srcs.append(a.get("src"))
+            if attrs != [("src", a.get("src"))] or a.get("src") not in ALLOWED_SCRIPTS:
+                self.problems.append(f"<script>: the only scripts are <script src=\"{THEME_JS}\"></script> and, on the guide's pages, its search")
         elif tag == "div" and a.get("id") == "theme-menu":
             self.menu_hidden = "hidden" in a
         elif tag == "button":
@@ -279,8 +291,11 @@ def check_page(site, file):
         problems.append("no <title>")
     if not page.description:
         problems.append("no description")
-    if page.scripts != 1 or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
-        problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
+    in_guide = file.relative_to(site).parts[:1] == ("guide",)
+    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
+        problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages have its search as well")
+    if in_guide != ("guide-search" in page.ids):
+        problems.append("the guide's pages, and only they, hold the search box's place (id guide-search)")
     if page.menu_hidden is not True:
         problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:
@@ -334,8 +349,13 @@ def check_css(file):
 
 
 def check_js(site, file):
-    if "/" + str(file.relative_to(site)) != THEME_JS:
-        return ["the only script is " + THEME_JS]
+    name = "/" + str(file.relative_to(site))
+    if name == SEARCH_JS:
+        return check_search_js(file)
+    if name == SEARCH_INDEX_JS:
+        return check_search_index(site, file)
+    if name != THEME_JS:
+        return ["the only scripts are the theme picker, and the guide's search and its index"]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -350,6 +370,118 @@ def check_js(site, file):
     if set(re.findall(rb"localStorage\.\w+Item\(\s*\"([^\"]*)\"", js)) - {b"theme"}:
         problems.append("it may remember only \"theme\"")
     return problems
+
+
+def check_search_js(file):
+    js = file.read_bytes()
+    problems = []
+    if hashlib.sha256(js).hexdigest() != SEARCH_JS_SHA256:
+        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
+    for pattern, why in [
+        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:", "it may not reach the network"),
+        (rb"cookie|localStorage|sessionStorage|indexedDB|caches", "it may keep nothing"),
+        (rb"eval|Function\(|innerHTML|outerHTML|insertAdjacentHTML|document\.write|setTimeout|setInterval", "it may not make or run code"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    made = re.findall(rb"createElement\(([^)]*)\)", js)
+    if any(m.strip(b'"') not in {b"input", b"p", b"ul", b"li", b"a", b"span", b"mark"} or not m.startswith(b'"') for m in made):
+        problems.append("it may make only a box, a line, a list and its links")
+    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"href", b"aria-label", b"autocomplete", b"spellcheck", b"role"}:
+        problems.append("it may set only an address on a link and the box's own labels")
+    return problems
+
+
+# The guide's search index, read with the same rules the builder uses: for each page in the guide's tree, its path, title,
+# group and the words in its article (not the tree, the crumbs, the title or the page links). The builder is in
+# scratchpad, not here, so this is its second reading: they must agree.
+_VOID = {"br", "hr", "img", "input", "link", "meta", "source", "area", "base", "col", "embed", "param", "track", "wbr"}
+_SKIP = {"nav", "svg", "script", "h1"}
+
+
+class _Extract(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.stack, self.in_article, self.skipping = [], False, 0
+        self.h1, self.in_h1, self.crumbs, self.in_crumbs = "", False, "", False
+        self.text, self.order, self.in_tree_d = [], [], False
+
+    def handle_starttag(self, tag, attrs):
+        a = dict(attrs)
+        cls = (a.get("class") or "").split()
+        if tag in _VOID:
+            return
+        root = tag in _SKIP or (tag == "details" and "tree-m" in cls) or (tag == "p" and "crumbs" in cls)
+        self.stack.append((tag, root, tag == "article" and "article" in cls, tag == "nav" and "tree-d" in cls))
+        if self.stack[-1][2]:
+            self.in_article = True
+        if self.stack[-1][3]:
+            self.in_tree_d = True
+        if root:
+            self.skipping += 1
+        if tag == "h1" and self.in_article:
+            self.in_h1 = True
+        if tag == "p" and "crumbs" in cls:
+            self.in_crumbs = True
+        if tag == "a" and self.in_tree_d and a.get("href"):
+            self.order.append(a["href"])
+
+    def handle_startendtag(self, tag, attrs):
+        self.handle_starttag(tag, attrs)
+        self.handle_endtag(tag)
+
+    def handle_endtag(self, tag):
+        if tag in _VOID:
+            return
+        while self.stack:
+            t, root, article, tree_d = self.stack.pop()
+            if root:
+                self.skipping -= 1
+            if article:
+                self.in_article = False
+            if tree_d:
+                self.in_tree_d = False
+            if t == "h1":
+                self.in_h1 = False
+            if t == "p" and self.in_crumbs:
+                self.in_crumbs = False
+            if t == tag:
+                break
+
+    def handle_data(self, data):
+        if self.in_h1:
+            self.h1 += data
+        if self.in_crumbs:
+            self.crumbs += data
+        if self.in_article and not self.skipping:
+            self.text.append(data)
+
+
+def _words(text):
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def guide_index_text(site):
+    first = _Extract()
+    first.feed((site / "guide" / "index.html").read_text(encoding="utf-8"))
+    seen, entries = set(), []
+    for href in first.order:
+        if href in seen or not re.fullmatch(r"/guide/[a-z0-9-]+/[a-z0-9-]+/", href):
+            continue
+        seen.add(href)
+        x = _Extract()
+        x.feed((site / href.strip("/") / "index.html").read_text(encoding="utf-8"))
+        crumbs = _words(x.crumbs)
+        entries.append({"p": href, "t": _words(x.h1), "g": crumbs.split("/", 1)[1].strip() if "/" in crumbs else "", "x": _words(" ".join(x.text))})
+    return "window.STONEFOLD_GUIDE=" + json.dumps(entries, ensure_ascii=False, separators=(",", ":")) + ";\n"
+
+
+def check_search_index(site, file):
+    if not (site / "guide" / "index.html").is_file():
+        return ["there is no guide to index"]
+    if file.read_text(encoding="utf-8") != guide_index_text(site):
+        return ["it is not what the guide's pages say: rebuild it"]
+    return []
 
 
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
@@ -492,6 +624,15 @@ GOOD_PAGE = """<!doctype html>
 <body><header><nav><a href="/">Home</a></nav><button type="button" id="theme-toggle" aria-label="Choose a theme" aria-controls="theme-menu" hidden></button><div id="theme-menu" hidden>{looks}</div></header>
 <main><h1>One</h1>{body}</main><footer>© 2026 Stonefold Labs LLC</footer></body></html>
 """
+
+SEARCH_TAGS = '<script src="/guide/search-index.js"></script><script src="/guide/search.js"></script>'
+# A guide page for the self-test: the same page, with the guide's tree and article, and its search after the content.
+GUIDE_PAGE = GOOD_PAGE.replace("<main><h1>One</h1>{body}</main>", "<main>{body}</main>").replace("</body>", "{scripts}</body>")
+GUIDE_HOME = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/a/b/">B</a></nav>'
+              '<article class="article"><div class="gsearch" id="guide-search" hidden></div><h1>Guide</h1><p>Words.</p></article></div>')
+GUIDE_LEAF = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/a/b/">B</a></nav>'
+              '<article class="article"><div class="gsearch" id="guide-search" hidden></div>'
+              '<p class="crumbs"><a href="/guide/">Guide</a> / A</p><h1>B</h1><p>Some words here.</p></article></div>')
 
 LOOK_BUTTONS = "".join(f'<button type="button" data-look="{name}"></button>' for name in LOOKS)
 
@@ -673,10 +814,45 @@ def self_test():
             missed.append("a second @font-face")
         (site / "styles.css").write_text("body { margin: 0 }\n")
 
+        # The guide's search: its script, its index and its two tags pass on the guide's pages, and fail changed or anywhere else.
+        search = (SITE / "guide" / "search.js").read_bytes()
+        (site / "guide" / "a" / "b").mkdir(parents=True)
+
+        def guide(scripts=SEARCH_TAGS, home=GUIDE_HOME, leaf=GUIDE_LEAF):
+            for where, body in (("guide/index.html", home), ("guide/a/b/index.html", leaf)):
+                (site / where).write_text(GUIDE_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=body, scripts=scripts))
+            (site / "guide" / "search.js").write_bytes(search)
+            (site / "guide" / "search-index.js").write_text(guide_index_text(site), encoding="utf-8")
+
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
+        guide()
+        if check_site(site):
+            print("self-test: a guide page with its search was refused:", check_site(site))
+            return 1
+        guide(scripts="")
+        if not check_site(site):
+            missed.append("a guide page without its search")
+        guide()
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head=SEARCH_TAGS, body=""))
+        if not check_site(site):
+            missed.append("the search on a page outside the guide")
+        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
+        (site / "guide" / "search.js").write_bytes(search + b'\nfetch("/log");\n')
+        if not check_site(site):
+            missed.append("a changed search.js")
+        (site / "guide" / "search.js").write_bytes(search)
+        (site / "guide" / "search-index.js").write_text(guide_index_text(site).replace("Some words here.", "Some other words."), encoding="utf-8")
+        if not check_site(site):
+            missed.append("a search index that says what the page doesn't")
+        guide()
+        guide(leaf=GUIDE_LEAF.replace('id="guide-search" ', ""))
+        if not check_site(site):
+            missed.append("a guide page without the search box's place")
+
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 20} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 25} planted faults were caught")
     return 0
 
 

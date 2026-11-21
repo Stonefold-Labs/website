@@ -18,7 +18,8 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   support/index.html https://stonefoldapp.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
-  theme.js           the theme picker: the site's one script (the demo, demo.js, is gone from the launch branch)
+  theme.js           the theme picker (the demo, demo.js, is gone from the launch branch)
+  guide/search.js    the guide's search, on the guide's pages only, with guide/search-index.js, the words it reads
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
@@ -47,7 +48,7 @@ Then open http://localhost:4731 in a browser. Stop it with Control-C. Opening th
 python3 -I scripts/check.py
 ```
 
-It must say `clean`. It fails on any script but `theme.js` (whose exact contents are pinned in the check), anything loaded from another site, a dead link, a retired app name, or a claim the house rules (`../Stonefold/HOUSE-RULES.md` §4) don't allow yet. `python3 -I scripts/check.py --self-test` proves each rule can fail.
+It must say `clean`. It fails on any script but `theme.js` and, on the guide's pages, `guide/search.js` and its index (each pinned or checked in the check), anything loaded from another site, a dead link, a retired app name, or a claim the house rules (`../Stonefold/HOUSE-RULES.md` §4) don't allow yet. `python3 -I scripts/check.py --self-test` proves each rule can fail.
 
 ## Where it stands (2026-11-15)
 
