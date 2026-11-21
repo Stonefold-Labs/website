@@ -101,7 +101,7 @@ The owner asked: "Check the guide against the finished app." The app's `origin/m
 **What did not match, and is fixed:**
 - **Habits** now have a streak: from two in a row, "5 days in a row", in days, due days or weeks. The page and the Habits card said there were none (house rule 15 was lifted by the owner on 2026-11-21).
 - **Debt payoff:** what you type is forgotten when the app locks (the page said it was kept in the budget file); the plan runs month by month starting next month; the limit is shown as "Not in 100 years"; the smallest-balance and highest-rate orders are the two shown side by side, not three.
-- **Net worth:** the chart covers one, two or three years.
+- **Net worth:** the chart covers one, two or three years. The Settings switches are named Net worth, Debt payoff and Retirement planning (the screens are Net Worth and Debt Payoff).
 - **The calculator:** with Loans and Converters on, Mortgage, Car Loan and Converters are in the Mac's View menu too; Export Schedule says the file isn't encrypted, then saves it where the person chooses (Mac) or hands it to the iPhone's own sheet.
 - **The retirement planner:** the iPhone can make a plan and change any part of it, not only show one; By Year on the iPhone shows net worth in today's money; a plan is compared by Duplicate (both) and Compare (Mac, up to three).
 - **Logins:** how to start one on each device (Notes ▸ New Logins Note, or the New Note button on the Mac; touch and hold the pencil on the iPhone); the buttons are Generate Password… and Show Password; exports leave out each login's own notes as well as the passwords, and ask first that this is the person's device.
