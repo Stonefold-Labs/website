@@ -2085,3 +2085,49 @@ footer {
     font-size: 1.75rem;
   }
 }
+
+/* The same centered opening on the features pages and How it works. */
+.hero.center .jump {
+  justify-content: center;
+}
+
+.hero.center .hero-art {
+  margin-top: 2.5rem;
+}
+
+.hero.center .hero-art svg {
+  max-width: 22rem;
+}
+
+.has-step {
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 2rem;
+  font-size: 2.375rem;
+  line-height: 1.15;
+  text-align: center;
+}
+
+.has-step .step {
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.125rem;
+}
+
+@media (max-width: 44rem) {
+  .has-step {
+    font-size: 1.75rem;
+  }
+}
+
+.has-step + .intro {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+/* In the evergreen band the badge takes the band's own light and dark, so it shows in every theme. */
+.band .step {
+  background: var(--band-text);
+  color: var(--band);
+}
