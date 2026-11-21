@@ -72,3 +72,10 @@ That is about 55 short pages. Most already exist as Help pages in the app; the n
 - **Notes (16 pages):** writing a note; finding a note; folders, checklists and formatting; how formatting is written; your notes as files; tags and templates; saved views (Mac); kinds of note; Journal; Recipes; Logins; the password generator; sign-in codes (Authenticator); the keyboard in your notes; VoiceOver in your notes; deleted notes. From `NotesHelp.swift`, with Journal, Recipes, Logins and the password generator from the note-kinds builder's plan and the Authenticator from `SPEC.md` §35.
 - **Check against the finished screens:** the four new kinds (Journal, Recipes, Logins, password generator) are written from a plan. Logins is never called a password manager and never said to be as safe as one, as the plan asks.
 - **Still to write:** Budget (with net worth, debt payoff and the retirement planner), Clock and calculator (with countdowns, focus, loans and converters), Files, and the reference pages.
+
+### Update: Budget written
+
+- **Budget (13 pages):** adding a purchase; bills and paydays; where you stand, and safe to spend; checking a balance; the plan; working in the grid (Mac); copying and pasting rows (Mac); more for the budget; net worth; debt payoff; the retirement planner; the sample budget; budgeting words (the glossary). From `BudgetHelp.swift` and `Glossary.swift`, with net worth and debt payoff from the money-tools builder's plan and the retirement planner from its plan.
+- **The glossary's examples use plain numbers,** because the site's check refuses any dollar figure but the app's price.
+- **Check against the finished screens:** net worth, debt payoff and the retirement planner are written from plans, and the retirement planner's own plan says its build was still going.
+- **Still to write:** Clock and calculator (with countdowns, focus, loans and converters), Files, and the reference pages.
