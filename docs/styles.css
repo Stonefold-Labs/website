@@ -770,18 +770,13 @@ nav a[aria-current="page"] {
 
 /* Headings and text */
 
-/* "Lowercase, rounded": display text is set in lowercase by the stylesheet alone, so the words underneath keep their
-   capitals for screen readers, search and copying. A name that must keep its own case goes in <span class="as-is">. */
+/* Headings are set as written, with regular capitals (the owner, 2026-11-21, who had asked on 2026-11-18 for
+   lowercase headings: "Lets go back to regular grammar and formatting for capitalization"). The rounded face stays. */
 h1,
 h2 {
   font-family: var(--display);
   font-weight: 600;
-  text-transform: lowercase;
   text-wrap: balance;
-}
-
-.as-is {
-  text-transform: none;
 }
 
 h1 {
@@ -841,7 +836,6 @@ ul {
   font-family: var(--display);
   font-size: 1.0625rem;
   font-weight: 600;
-  text-transform: lowercase;
 }
 
 .lede {
