@@ -103,3 +103,12 @@ Pages read: home and About. The features page and a "why" page do not exist, and
 - **A row of jump links** under the opening of How it works and Support, and short answers that open in place (details and summary, no script) on both.
 - **A closing question and two links** at the foot of Home and How it works.
 - **Not taken:** the "Try the window" demo. The owner asked on 2026-11-21 for that section to go, so Home no longer carries it, and `docs/demo.js` and its styles are gone from this branch.
+
+## Added after looking at the three sites in a browser (2026-11-21)
+
+The first pass could only read text, so the owner's question ("I don't see that anything changed") was fair. Looked at on screen, all three do the same visible things, and Home now takes them:
+
+- **A centered hero** with one short headline, one line under it and one button (all three). Home's headline now has one word, "private", in the accent colour, as ProjectionLab and Thunderbird colour a word of theirs. No gradient, because the site's colours come from the themes.
+- **A large picture directly under the hero** (all three). Real screenshots are on hold, so Home draws the Stonefold window instead: the parts down the side, the calendar in the middle, a note and the budget beside it.
+- **Each section is one big sentence, at most one line, then the picture or cards** (Notion and Thunderbird most of all), with plenty of air. Home's section headings are larger and centered, and the detail that used to sit on Home (how the parts work together) is on the features index.
+- **Not taken:** the page fade-in on scroll (ProjectionLab), the full-width photograph and the product-logo ring (Notion), the dark hero with a download button (Thunderbird). They need script, outside pictures or a store link.
