@@ -2756,3 +2756,8 @@ kbd {
 .pager {
   flex-wrap: wrap;
 }
+
+.article code {
+  font: 500 0.9em ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
