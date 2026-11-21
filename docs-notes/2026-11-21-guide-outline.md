@@ -153,3 +153,13 @@ The app's `main` is now 134892c: the clock, habits and boards, the retirement pl
 ### Editor replaces the terminal themes (2026-11-21, 15:00)
 
 The owner found the four terminal themes hard to read ("one terminal theme ... what coding or IDEs look like ... multiple colors within one theme") and asked for them to go. They were on the site from about 14:55 to 15:00 (`13a704b`, reverted). The site now has one new theme, **Editor**: dark slate `#1b1e26` with a pane `#232733`, soft white-blue words `#d5d9e4`, blue links and buttons `#6cb2ff`, orange for the top stripe, the headline word and code `#f0a35e`, green `#7ccf8a` and purple `#b48ef0` for marks and events. The words stay in the system font for reading; only the colours are the editor's. The app has no such theme: its builder was told, and the site's values are the starting palette. Check at launch that the app's Editor matches the site's, or change the site to match the app.
+
+### Checked against the app again (2026-11-21, 14:50)
+
+The app's `main` is now 7fdfdc0: Code notes are merged into it, so that page now matches `main`. Still unmerged: money-tools (one commit: the loan calculators' Esc), the terminal-theme branch (being changed to one editor-style theme at the owner's word), the website-screenshots branch, and **P8, "the window your way"** (record 0060, SPEC §42; five commits, its paperwork written). I read each one's Help, words and keys, and searched every quoted name, path and menu item in the guide in all the trees; the only two not found verbatim are my own examples.
+
+**Fixed:**
+- **P8, on its branch:** Settings ▸ Layout (after Look, with two or more sections kept) puts the sections in an order of your own, and on the Mac chooses Today's parts, their column and their order, and on the iPhone which sections are on the tab bar; View ▸ Panels ▸ Sections puts a whole section beside the one on screen; a saved layout is Layout 1 to 5 (it was 1 to 3) and keeps what was in the middle; ⌃⌥1 to ⌃⌥5 use one. Changed: Panels, and your own layout; Today, and the status line; Settings, group by group; Every keyboard shortcut. If P8 does not ship, take those lines out.
+- **The loan calculators:** in Mortgage, Car Loan and Converters on the Mac, Esc closes the calculator (on `main`).
+
+**Matching:** all other names; Code notes' languages (Plain Text, JavaScript and TypeScript, Shell and the rest); the earlier fixes.
