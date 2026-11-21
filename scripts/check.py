@@ -32,13 +32,8 @@ THEME_JS = "/theme.js"
 THEME_JS_SHA256 = "bb08f356677bcf8a8fd74c6594679ebc2f7d90036e740174bd9171bd315246d1"
 # The app's eight themes (LookThemes.swift, 2026-11-18), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
-# The demo on the home page: a second script, proposed 2026-11-18 for the owner's yes (the live-demo chat), as the
-# owner's rule asks of any second script. It is allowed on the home page alone, once, in the page's body, and
-# its exact contents are pinned the same way: read it, then put its SHA-256 here (shasum -a 256 docs/demo.js).
-# demo_rules says what that read must look for.
-DEMO_JS = "/demo.js"
-DEMO_JS_SHA256 = "f8b3ddde45e0efe0084c7aeeb7d745e86395f44649e2de01e554250535240b7d"
-DEMO_PAGE = "index.html"
+# (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
+# second script, docs/demo.js, is gone from the branch and the theme picker is the site's one script again.)
 LOOKS = ["sage", "linen", "night", "ember", "paper", "dusk", "clay", "plain"]
 SUPPORT = "mailto:support@stonefoldlabs.com"
 
@@ -72,8 +67,11 @@ NOT_YET = [
     (r"\bonly you\b", "house rules §4: by default anyone who can unlock the device can open the app"),
     (r"secure enclave|secure hardware", "SPEC §4: no claim about the device's hardware until builds are signed"),
     (r"free updates|lifetime|forever", "house rules §4: may not be claimed"),
-    # Allowed only after an app's sync ships, or its privacy label is live.
-    (r"\bsync|end.to.end|icloud|\bsharing\b", "house rules §4: sync and sharing wording waits until they ship"),
+    # Sharing is allowed only after it ships, and the privacy label's words only once it is live.
+    # (Launch branch, 2026-11-21: the sync wording is allowed here, because sync ships with the app, with the claims
+    # SPEC §6 lets it make: end-to-end encrypted, only your devices hold the key, through your own iCloud, no servers of ours.
+    # This branch must not go live before sync does.)
+    (r"\bsharing\b", "house rules §4: sharing wording waits until it ships"),
     (r"data not collected", "house rules §4: waits until a privacy label is live"),
     # The app is not released.
     (r"download|available (on|now|in|for)|app store|testflight|\bbuy\b|\bget it\b|pre.?order|coming soon", "the app is not released; nothing may read as available"),
@@ -97,7 +95,6 @@ class Page(HTMLParser):
         self.links = []
         self.pictures = []
         self.scripts = 0
-        self.demo_scripts = 0
         self.buttons = 0
         self.looks = []
         self.menu_hidden = None
@@ -161,12 +158,9 @@ class Page(HTMLParser):
         elif tag == "script":
             # Only the switch, loaded from this site, with nothing written inside the tag.
             self._in_script = True
-            if attrs == [("src", DEMO_JS)] and not self._in_head:
-                self.demo_scripts += 1
-            else:
-                self.scripts += 1
-                if attrs != [("src", THEME_JS)]:
-                    self.problems.append(f"<script>: the only scripts are <script src=\"{THEME_JS}\"></script> and, on the home page, <script src=\"{DEMO_JS}\"></script>")
+            self.scripts += 1
+            if attrs != [("src", THEME_JS)]:
+                self.problems.append(f"<script>: the only script is <script src=\"{THEME_JS}\"></script>")
         elif tag == "div" and a.get("id") == "theme-menu":
             self.menu_hidden = "hidden" in a
         elif tag == "button":
@@ -274,8 +268,6 @@ def check_page(site, file):
         problems.append("no description")
     if page.scripts != 1 or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
         problems.append(f"{page.scripts} scripts and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
-    if page.demo_scripts and (str(file.relative_to(site)) != DEMO_PAGE or page.demo_scripts != 1):
-        problems.append(f"{DEMO_JS} is loaded once, on the home page alone")
     if page.menu_hidden is not True:
         problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:
@@ -328,45 +320,9 @@ def check_css(file):
     return problems
 
 
-def demo_rules(js):
-    """What demo.js may hold, apart from its pin: no way to the network, nothing kept, no code made and run, and
-    only words a page may say. The pin is the real guard (any change needs a re-read); these rules say what a
-    re-read must look for, and the self-test plants a fault against each one with the pin set aside."""
-    problems = []
-    for pattern, why in [
-        (r"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:|postMessage|window\.open|\.action\b|\.submit\(", "it may not reach the network"),
-        (r"(window|self|globalThis|document|top|parent)\s*\[", "it may not reach the page's globals by a name it builds"),
-        (r"cookie|indexedDB|sessionStorage|localStorage|caches|history\.|\.name\s*=|opener", "it may keep nothing at all"),
-        (r"eval|Function\(|document\.write|setTimeout\(\s*[\"'`]|setInterval\(\s*[\"'`]", "it may not run code it makes"),
-    ]:
-        if re.search(pattern, js):
-            problems.append(why)
-    # Every string, in any quotes, with markup turned back into its words and the words its attributes show.
-    # Comments go first, so an apostrophe in one can't pair with a quote in the code.
-    js = re.sub(r"/\*.*?\*/", " ", js, flags=re.S)
-    js = re.sub(r"(?m)^\s*//.*$", " ", js)
-    strings = re.findall(r'"((?:[^"\\]|\\.)*)"|\'((?:[^\'\\]|\\.)*)\'|`((?:[^`\\]|\\.)*)`', js)
-    text = " ".join(part for found in strings for part in found if part).replace('\\"', '"')
-    shown = re.findall(r'(?:title|aria-label|placeholder|alt|value)="([^"]*)"', text)
-    words = re.sub(r"<[^>]+>", " ", text) + " " + " ".join(shown)
-    problems += check_words(words, a_page=False)
-    return problems
-
-
-def check_demo_js(file):
-    """The demo: pinned, and held to demo_rules."""
-    js = file.read_bytes()
-    problems = []
-    if hashlib.sha256(js).hexdigest() != DEMO_JS_SHA256:
-        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
-    return problems + demo_rules(js.decode("utf-8"))
-
-
 def check_js(site, file):
-    if "/" + str(file.relative_to(site)) == DEMO_JS:
-        return check_demo_js(file)
     if "/" + str(file.relative_to(site)) != THEME_JS:
-        return ["the only scripts are " + THEME_JS + " and " + DEMO_JS]
+        return ["the only script is " + THEME_JS]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -540,7 +496,6 @@ BAD = [
     ("a comment", "body", "<!-- note -->"),
     ("never leaves", "body", "<p>Your data never leaves your device.</p>"),
     ("military-grade", "body", "<p>Military-grade encryption.</p>"),
-    ("sync", "body", "<p>Sync is end-to-end encrypted.</p>"),
     ("the label", "body", "<p>Data Not Collected.</p>"),
     ("download", "body", "<p>Download it today.</p>"),
     ("the store", "body", "<p>Soon on the App Store.</p>"),
@@ -557,19 +512,6 @@ BAD = [
     ("a retired name", "body", "<p>Bellwether Budget</p>"),
     ("the game by name", "body", "<p>Small Flock is a herding game.</p>"),
     ("the game's line, reworded", "body", "<p>There is a small flock of sheep in here.</p>"),
-]
-
-
-DEMO_FAULTS = [
-    ("the demo fetching", 'fetch("/x");'),
-    ("the demo building a global's name", 'window["fe" + "tch"]("/x");'),
-    ("the demo keeping a word in localStorage", 'localStorage.setItem("x", "1");'),
-    ("the demo keeping a word in the window's name", 'window.name = "kept";'),
-    ("the demo running code it makes", 'eval("1");'),
-    ("the demo with a single-quoted claim", "var x = 'Available now on the App Store';"),
-    ("the demo with a template-string claim", "var x = `Download it now`;"),
-    ("the demo with a claim in a title", 'var x = "<button title=\\"Download it now\\">x</button>";'),
-    ("the demo with another price in a placeholder", 'var x = "<input placeholder=\\"$19.99\\">";'),
 ]
 
 
@@ -593,7 +535,7 @@ def self_test():
             print("self-test: the good page was refused:", check_site(site))
             return 1
 
-        allowed = f"<p>The recovery sheet is a page you print. It will cost $24.99, paid once.</p><p>{FLOCK_LINE}</p>"
+        allowed = f"<p>The recovery sheet is a page you print. It costs $24.99, paid once.</p><p>Sync is end-to-end encrypted, through your own iCloud.</p><p>{FLOCK_LINE}</p>"
         page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=allowed))
         if check_site(site):
             print("self-test: the recovery sheet, the owner's price or the game's line was refused:", check_site(site))
@@ -677,40 +619,6 @@ def self_test():
                 missed.append(name)
             (site / where).unlink()
 
-        demo = (SITE / "demo.js").read_bytes()
-        (site / "demo.js").write_bytes(demo)
-        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<script src="/demo.js"></script>'))
-        if check_site(site):
-            print("self-test: the demo on the home page was refused:", check_site(site))
-            return 1
-        for name, where, data, body in [
-            ("a changed demo.js", "demo.js", demo + b"\n", '<script src="/demo.js"></script>'),
-            ("a demo.js that keeps something", "demo.js", demo + b"\nlocalStorage.x=1;\n", '<script src="/demo.js"></script>'),
-            ("a demo.js that says a word the rules refuse", "demo.js", demo + b'\n"Download it";\n', '<script src="/demo.js"></script>'),
-            ("the demo twice", "demo.js", demo, '<script src="/demo.js"></script><script src="/demo.js"></script>'),
-        ]:
-            (site / where).write_bytes(data)
-            page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=body))
-            if not check_site(site):
-                missed.append(name)
-        (site / "demo.js").write_bytes(demo)
-        # Each rule on its own, the pin set aside: a clean copy passes, and each planted fault is found.
-        clean = demo.decode("utf-8")
-        if demo_rules(clean):
-            print("self-test: demo.js broke its own rules:", demo_rules(clean))
-            return 1
-        for name, fault in DEMO_FAULTS:
-            if not demo_rules(clean + "\n" + fault + "\n"):
-                missed.append(name)
-        other = site / "other"
-        other.mkdir()
-        (other / "index.html").write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body='<script src="/demo.js"></script>'))
-        page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=""))
-        if not check_site(site):
-            missed.append("the demo on another page")
-        (other / "index.html").unlink()
-        (site / "demo.js").unlink()
-
         (site / "tracker.js").write_text("1")
         if not check_site(site):
             missed.append("a .js file")
@@ -718,7 +626,7 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 22 + len(DEMO_FAULTS)} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 17} planted faults were caught")
     return 0
 
 

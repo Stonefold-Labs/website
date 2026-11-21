@@ -1,5 +1,7 @@
 # Stonefold Labs — the website
 
+> **Launch branch (`claude/launch-site-afa64e`, 2026-11-21): do not merge or push until the owner says so at launch.** It describes the app on launch day, sync included. See `LAUNCH-BRANCH.md`.
+
 The public site for stonefoldapp.com (before 2026-11-18, stonefoldlabs.com, which now redirects here): a home page that presents Stonefold, the company's one app, a privacy page and a support page. Hand-written HTML and one stylesheet. No build step, no cookies, no analytics, nothing loaded from anyone else. One small script of our own, the theme picker.
 
 It exists for three reasons, in order: Apple requires an organization to have a public website and an e-mail address on its own domain before it can enroll in the Developer Program; the app's App Store listing needs a privacy policy URL and a support URL; and people should be able to see what Stonefold Labs makes.
@@ -9,13 +11,14 @@ It exists for three reasons, in order: Apple requires an organization to have a 
 ```
 docs/              the published pages (GitHub Pages only publishes a folder with this name)
   index.html         Home: Stonefold, the app
+  how-it-works/      How it works: offline, encrypted on the device, sync only if turned on, export, no account (launch branch)
+  features/          Features: the index, and plan/, notes/, money/, life/ and yours/ (launch branch)
   pictures/          pictures of the app, once they are made (none yet; see "Pictures of the app")
   privacy/index.html https://stonefoldapp.com/privacy/
   support/index.html https://stonefoldapp.com/support/
   404.html           shown for any address that doesn't exist
   styles.css
-  theme.js           the theme picker: one of the site's two scripts, with demo.js
-  demo.js            the demo on Home (allowed 2026-11-18; see "The demo")
+  theme.js           the theme picker: the site's one script (the demo, demo.js, is gone from the launch branch)
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
@@ -80,19 +83,9 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 The same six in dark appearance would let the page show a dark picture to a reader in dark mode; that is a nice extra, not needed. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, and replaces the `<svg class="drawing">` in its figure (`CLAUDE.md`, "Pictures of the app"). When the last drawing is replaced, the line on Home that says the pictures are drawings goes too.
 
-## The demo (allowed 2026-11-18)
+## The demo (allowed 2026-11-18, removed on the launch branch 2026-11-21)
 
-On 2026-11-18 the owner asked whether the site could be a working copy of the app, since there is no free trial (it will cost $24.99 up front). A private prototype was made that morning and held, on his word, until the app's movable panels were installed on his Mac (14:20 that day, app commit `f596a5c`). It is built into Home. The owner allowed the second script, its Privacy paragraph and the push on 2026-11-18 ("Yes, allow and push"); `CLAUDE.md` now names both scripts. The prototype is https://claude.ai/artifact/9z4HKcgpMGwSKRxHGhBHUc (private).
-
-- **Where:** Home's section `#try`, "Try the window", right after the headline, whose button now leads there. The rest of Home is unchanged, so the page reads the same to search engines and to anyone with scripts off; the section then shows one line saying the demo needs scripts and that everything in it is also written further down.
-- **What it is:** `docs/demo.js` builds a copy of the Mac window into `<div id="demo">`: the rail of the four sections, each section's sidebar (at 980 px and wider), the section on screen or Today, the status line, a Lock, a theme menu, and the panels. Its words are the site's own, as notes, reminders, events and budget rows; the new sentences were drafted by Sonnet from a list of allowed facts and checked against the rules. A "Try these" list of eight ticks itself off. The window says Demo in its title bar.
-- **The panels** follow the app's record 0040 and `SPEC.md` §33: Events, Reminders, Notes and Money (Today's four parts), two lists and two folders, and a picture panel with a drawing standing in; docked left, right or along the bottom of the centre; tabs; the pin, the strip and the slide-out; dragging a tab or a title bar, with the place lit; the line between a dock and the centre drags (or takes the arrow keys); a title bar's Control-click menu (or Shift-F10 on a tab) docks, collapses and closes; View ▸ Panels with Hide Panels (⌃⌘P), Next and Previous Panel (⌃⌘] and ⌃⌘[), Layout 1 to 3, Save and Forget. The app's Reset Layout is called "Put All Panels Away" here, because `check.py` refuses the word "reset" anywhere a reader sees it.
-- **The phone's shape:** under 720 px wide the window becomes the iPhone's: one section at a time and a tab bar of the four, no panels and no Today, as the iPhone app has none.
-- **Themes:** the window wears its own theme (`.sfd[data-look]` in `styles.css`), the page's until a reader picks one in the window; picking one there changes the window only and is not kept. The numbers are `LookThemes.swift`'s, with the site's measured word colours; each theme's face, headings (Iowan in Sage and Linen), figures and density are its draft's. Words on the accent use a fill that is the accent, except Night's (`#2f6fe0`), as white on Night's accent measures 3.7 to 1.
-- **It keeps nothing:** no storage of any kind, no requests, no cookies; reload and it starts fresh. `scripts/check.py` pins its SHA-256 like `theme.js`'s, allows it once and on Home alone, refuses any network, storage or `eval` word in it, and runs the house rules' word checks over its strings; `--self-test` plants five faults to prove it. The Privacy page has a paragraph on it, to go live with it.
-- **The page's look, "Lowercase, rounded"** (the owner, 2026-11-18, about 11:35, for the interactive site; the dispatch chat gave it to this branch): every theme's `--display` is the rounded face, and `h1`, `h2` and the kicker are set in lowercase by CSS alone, so the words keep their capitals for screen readers, search and copying; a name that keeps its case goes in `<span class="as-is">` (the kicker's iPhone and Mac). It shows on every page, since the pages share the stylesheet.
-- **Picked, for the owner to change:** rounded headings on all eight themes (not only Sage and Linen), and the window keeping the app's serif headings in Sage and Linen.
-- **Not in it:** the Clock (on the app's `main`, not installed), anything about sync or sharing, and any picture of the app.
+On 2026-11-18 the owner allowed a working copy of the Mac window on Home, "Try the window", built by `docs/demo.js` (a second pinned script, with its styles and a Privacy paragraph). On 2026-11-21 he asked for that section to go ("Lets also get rid of the "try the window" section"). On the launch branch the section, `demo.js`, its styles (the `.sfd` rules), its pin and rules in `scripts/check.py`, and the Privacy paragraph are removed; `git log` holds them if he ever wants them back. **"Lowercase, rounded"** (the owner, 2026-11-18) stays: every theme's `--display` is the rounded face, and `h1`, `h2` and the kicker are set in lowercase by CSS alone, so the words keep their capitals for screen readers, search and copying; a name that keeps its case goes in `<span class="as-is">` (iPhone, Mac, iCloud).
 
 ## The theme picker
 
