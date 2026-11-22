@@ -2406,7 +2406,7 @@ h2 {
 /* Five plain facts, up front: runs on the device, entered by hand, no AI, offline, sync only if wanted. */
 .facts {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.5rem 1.5rem;
   margin: 1rem 0 0;
   padding: 0;
@@ -2443,7 +2443,7 @@ h2 {
 
 @media (max-width: 70rem) {
   .facts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
