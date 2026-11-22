@@ -3297,8 +3297,10 @@ h4 .wm {
 
 /* ===== No top bar (the owner, 2026-11-22: "get rid of the top menu bar", the logo and name "a bit bigger", the theme
    drop down kept "but move it out of the top menu bar"). The header has no fill, stripe or line; the mark and the
-   wordmark are larger; the theme picker floats in the top right corner as a pill, so the themes can be tried while
-   reading. Home's hero has no background picture: the big wordmark and then faint marks were tried there and taken out (the
+   wordmark are larger. Under them is the menu, a row of stones on every page (the owner, 2026-11-22: "I like the menu
+   looking like stones ... This will be our new menu"): How it works, the Guide with the bellwether, and the theme
+   picker as the last stone, with a thin course of small stones under them, so the menu reads as the top of a stone
+   wall, as the old How it works drawing did. Home's hero has no background picture: the big wordmark and then faint marks were tried there and taken out (the
    owner, 2026-11-22: "yes please remove the background logos"). ===== */
 .top {
   background: none;
@@ -3307,8 +3309,11 @@ h4 .wm {
 }
 
 .bar {
-  padding-top: 1.5rem;
-  padding-bottom: 0.25rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+  padding-top: 1.75rem;
+  padding-bottom: 0.5rem;
 }
 
 .bar .brand {
@@ -3325,20 +3330,88 @@ h4 .wm {
   height: 2.25rem;
 }
 
-.themes {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
+.stones {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.stones .themes {
+  position: relative;
   margin: 0;
 }
 
-.theme {
-  background: color-mix(in srgb, var(--raised) 82%, transparent);
-  border-radius: 999px;
-  box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.18);
-  -webkit-backdrop-filter: blur(12px);
-  backdrop-filter: blur(12px);
+/* An older rule set the header's nav apart on narrow screens; the stones keep their own row. */
+.bar .stones {
+  order: 0;
+  flex-basis: auto;
+}
+
+.stone,
+.stones .theme {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  padding: 0 1.25rem;
+  background: var(--fill);
+  border: 0;
+  border-radius: 0.625rem;
+  color: var(--on-fill);
+  font: 600 1rem/1.2 var(--sans);
+  text-decoration: none;
+}
+
+.stone:hover,
+.stones .theme:hover,
+.stones .theme[aria-expanded="true"] {
+  filter: brightness(1.06);
+}
+
+.stone[aria-current="page"] {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--fill);
+}
+
+.stone:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+
+.stones .theme .chevron {
+  color: var(--on-fill);
+}
+
+.stones .theme .swatch {
+  border-color: var(--on-fill);
+}
+
+.stone-sheep .sheep {
+  width: 1.875rem;
+  height: auto;
+  margin: -0.25rem 0;
+}
+
+/* The course under the stones: small stones laid half a stone over, faint, only for the look. */
+.wall {
+  display: flex;
+  justify-content: center;
+  gap: 0.375rem;
+  margin-top: -0.625rem;
+}
+
+.wall span {
+  width: 2.5rem;
+  height: 0.4375rem;
+  background: var(--fill);
+  border-radius: 0.25rem;
+  opacity: 0.3;
+}
+
+.wall span:first-child,
+.wall span:last-child {
+  width: 1.25rem;
 }
 
 
@@ -3356,13 +3429,23 @@ h4 .wm {
     height: 1.625rem;
   }
 
-  .themes {
-    top: 0.75rem;
-    right: 0.75rem;
+  .stone,
+  .stones .theme {
+    min-height: 2.75rem;
+    padding: 0 1rem;
   }
 
-  .theme-name {
+  .stones .theme-name {
     display: none;
+  }
+
+  .wall span {
+    width: 1.75rem;
+  }
+
+  .wall span:first-child,
+  .wall span:last-child {
+    width: 0.875rem;
   }
 }
 
@@ -3478,4 +3561,9 @@ h4 .wm {
 .file-types strong {
   color: var(--text);
   font-weight: 600;
+}
+
+/* How it works opens with its line, then the evergreen band, with room between them. */
+.hero + .band {
+  margin-top: 2.5rem;
 }
