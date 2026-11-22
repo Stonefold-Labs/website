@@ -46,23 +46,30 @@
     return found;
   }
 
-  // Each topic is a heading and the questions after it.
+  // Each topic is a heading and the questions after it. A question also holds its topic's heading, so "price" finds the
+  // questions under "Price and help" (the owner, 2026-11-22, who found the search wanting: "seems to be broken").
   var topics = [];
   var heads = document.querySelectorAll(".article h2.sec");
   for (var i = 0; i < heads.length; i++) {
     var topic = { heading: heads[i], groups: rowsFor(heads[i].id, true), rows: [] };
     for (var el = heads[i].nextElementSibling; el && el.tagName !== "H2"; el = el.nextElementSibling) {
-      if (el.classList.contains("topic")) topic.rows.push({ item: el, words: fold(el.textContent), lines: rowsFor(el.id, false) });
+      if (el.classList.contains("topic")) topic.rows.push({ item: el, words: fold(heads[i].textContent + " " + el.textContent), lines: rowsFor(el.id, false) });
     }
     topics.push(topic);
   }
+
+  // Words that every question could hold, passed over when other words are typed, so a question asked as a sentence
+  // ("how much does it cost") is found by the words that matter. Typed alone, they are searched for.
+  var small = " a an the is are am be do does did can could will would should i me my mine you your it its it's of to in on at for from and or with without what how why when where who which if there this that so much many any ";
 
   function show(list, on) {
     list.forEach(function (one) { if (one) one.hidden = !on; });
   }
 
   function search() {
-    var asked = fold(box.value).split(/\s+/).filter(function (w) { return w.length > 0; });
+    var typed = fold(box.value).split(/\s+/).filter(function (w) { return w.length > 0; });
+    var asked = typed.filter(function (w) { return small.indexOf(" " + w + " ") === -1; });
+    if (!asked.length) asked = typed;
     var found = 0;
     topics.forEach(function (topic) {
       var shown = 0;

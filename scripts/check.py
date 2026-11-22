@@ -49,14 +49,14 @@ THEME_JS_SHA256 = "24f318df9fe375023bde3ddac7feb38089f93c0c292958d40cb44cd64c9c4
 # index is checked against the pages it holds, word for word, so it can never say what a page doesn't.
 SEARCH_JS = "/guide/search.js"
 SEARCH_INDEX_JS = "/guide/search-index.js"
-SEARCH_JS_SHA256 = "8ba0f375f27107d815621020419a00ddf4946dcc251b8e9cf207fd026a01f544"
+SEARCH_JS_SHA256 = "b46909a5c90aaa1649295bf122f328c4a9df287023392677dd2c5ba06ad34cf2"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # The questions' search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't hold your
 # words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, change
 # only which questions show, and mark the row of the question being read in the list down the left, as the guide's does
 # (the owner, 2026-11-22: "add the highlight tracker"); it reaches no network and keeps nothing.
 QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "8886a1dd884079dae729ef19214a69d2e59b27bfd2c22b47713f627651bf69d0"
+QUESTIONS_JS_SHA256 = "4e122691cf999350b83f3b676431b6dddbe45ddbbe465017200d8dcf37884cab"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 # Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
 # pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches

@@ -116,6 +116,7 @@
 
   function show() {
     while (list.firstChild) list.removeChild(list.firstChild);
+    list.hidden = false;
     var found = search(box.value);
     if (!found) {
       wrap.classList.remove("searching");
@@ -168,6 +169,17 @@
       }
     }
   });
+  // A result is a place on this same page, which the results cover, so choosing one empties the box and the page comes back before the
+  // jump. A click that opens a new tab or window leaves the search as it is.
+  list.addEventListener("click", function (event) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (!event.target.closest || !event.target.closest("a")) return;
+    // The results are hidden, not taken away, so the link being followed is still on the page; the next search empties them.
+    box.value = "";
+    wrap.classList.remove("searching");
+    status.textContent = "";
+    list.hidden = true;
+  });
   list.addEventListener("keydown", function (event) {
     var all = links();
     var at = all.indexOf(document.activeElement);
@@ -191,30 +203,31 @@
     }
   });
   // The list down the left follows the page: the row of the topic at the top of the screen is marked, and kept in view in the list, which
-  // scrolls by itself, without moving the page. Nothing is remembered: it is worked out again from where the page is.
-  var list = document.querySelector(".tree-d");
+  // scrolls by itself, without moving the page. Nothing is remembered: it is worked out again from where the page is. (Its names are its
+  // own: on 2026-11-22 the owner found the search broken, because this part had taken the names of the results and of the highlighter.)
+  var tree = document.querySelector(".tree-d");
   var topics = Array.prototype.slice.call(document.querySelectorAll(".article .topic[id]"));
-  if (list && topics.length) {
+  if (tree && topics.length) {
     var rows = {};
-    Array.prototype.slice.call(list.querySelectorAll("li a")).forEach(function (link) {
+    Array.prototype.slice.call(tree.querySelectorAll("li a")).forEach(function (link) {
       var href = link.getAttribute("href") || "";
       var at = href.indexOf("#");
       if (at !== -1) rows[href.slice(at + 1)] = link;
     });
-    var marked = null;
+    var current = null;
     var waiting = false;
 
     function mark(id) {
-      if (id === marked) return;
-      if (marked && rows[marked]) rows[marked].removeAttribute("aria-current");
-      marked = id;
+      if (id === current) return;
+      if (current && rows[current]) rows[current].removeAttribute("aria-current");
+      current = id;
       var link = id && rows[id];
       if (!link) return;
       link.setAttribute("aria-current", "true");
       var top = link.offsetTop;
       var bottom = top + link.offsetHeight;
-      if (top < list.scrollTop + 40) list.scrollTop = Math.max(0, top - 40);
-      else if (bottom > list.scrollTop + list.clientHeight - 40) list.scrollTop = bottom - list.clientHeight + 40;
+      if (top < tree.scrollTop + 40) tree.scrollTop = Math.max(0, top - 40);
+      else if (bottom > tree.scrollTop + tree.clientHeight - 40) tree.scrollTop = bottom - tree.clientHeight + 40;
     }
 
     function follow() {
