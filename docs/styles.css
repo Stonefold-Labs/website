@@ -2416,6 +2416,14 @@ h2 {
 .facts > li {
   padding: 0.875rem 0 0;
   border-top: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.facts .link-more {
+  margin-top: auto;
+  padding-top: 0.875rem;
 }
 
 .facts h3 {
