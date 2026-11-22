@@ -3298,8 +3298,8 @@ h4 .wm {
 /* ===== No top bar (the owner, 2026-11-22: "get rid of the top menu bar", the logo and name "a bit bigger", the theme
    drop down kept "but move it out of the top menu bar"). The header has no fill, stripe or line; the mark and the
    wordmark are larger; the theme picker floats in the top right corner as a pill, so the themes can be tried while
-   reading. Home carries a few of the mark's stones, faint and of several sizes, round its headline (the owner, 2026-11-22: the
-   big wordmark first, then "just have some of the square logos spread throughout in the background"). ===== */
+   reading. Home's hero has no background picture: the big wordmark and then faint marks were tried there and taken out (the
+   owner, 2026-11-22: "yes please remove the background logos"). ===== */
 .top {
   background: none;
   border-top: 0;
@@ -3341,51 +3341,6 @@ h4 .wm {
   backdrop-filter: blur(12px);
 }
 
-.hero {
-  position: relative;
-  isolation: isolate;
-}
-
-.hero-marks {
-  position: absolute;
-  z-index: -1;
-  inset: -2.5rem 0 -1.5rem;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.hero-marks .mark {
-  position: absolute;
-  width: var(--s);
-  height: var(--s);
-  opacity: var(--o);
-}
-
-.hm1 { --s: 5.5rem; --o: 0.16; top: 34%; left: 0; }
-.hm2 { --s: 2rem; --o: 0.22; top: 80%; left: 11%; }
-.hm3 { --s: 1.25rem; --o: 0.28; top: 14%; left: 20%; }
-.hm4 { --s: 3.25rem; --o: 0.18; top: 4%; right: 6%; }
-.hm5 { --s: 6.5rem; --o: 0.12; top: 52%; right: 0; }
-.hm6 { --s: 1.5rem; --o: 0.25; top: 36%; right: 20%; }
-.hm7 { --s: 2.25rem; --o: 0.14; top: 92%; left: 23%; }
-
-@media (max-width: 62rem) {
-  .hm3,
-  .hm6,
-  .hm7 {
-    display: none;
-  }
-}
-
-@media (max-width: 44rem) {
-  .hm1,
-  .hm2,
-  .hm4 {
-    display: none;
-  }
-
-  .hm5 { --s: 4rem; top: 70%; right: -1rem; }
-}
 
 @media (max-width: 44rem) {
   .bar {
