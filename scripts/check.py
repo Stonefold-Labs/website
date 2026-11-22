@@ -102,8 +102,10 @@ NOT_YET = [
     (r"\$(?!24\.99(?!\d))\s?\d|[€£]\s?\d", "no price on the site but the owner's one: $24.99"),
     # Apple's page of which iPhones run iOS 26 has not been read in full (SPEC §7).
     (r"iphone (\d|se\b|air\b|pro\b)|macbook|\bimac\b|mac (mini|pro|studio)", "no iPhone or Mac is named by model"),
-    # The five apps' names went with the five apps (the owner, 2026-11-13). The app is Stonefold.
-    (r"bellwether|teasel|croft", "a retired name: the app is Stonefold"),
+    # The five apps' names went with the five apps (the owner, 2026-11-13). The app is Stonefold. The plain word
+    # "bellwether", the sheep the rest of the flock follows, may be written in lower case (the owner, 2026-11-22: "use
+    # bellwether", for the story in About); "Bellwether" as a name, and Bellwether Budget, may not.
+    (r"(?-i:Bellwether)|bellwether budget|teasel|croft", "a retired name: the app is Stonefold"),
 ]
 
 # The game inside the app is named on the site only by the owner's own line (house rules §11).
