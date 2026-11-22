@@ -3749,3 +3749,35 @@ h4 .wm {
   height: auto;
   margin: -0.25rem 0.375rem -0.25rem 0;
 }
+
+/* ===== The foot of the page, less crammed (the owner, 2026-11-22: "Lets fix the bottom that is all crammed here"). Room
+   under Home's drawing; the footer in two lines: the pages first, then the mark, the legal line and the address. ===== */
+.slot.window {
+  margin-bottom: 2.5rem;
+}
+
+.foot {
+  row-gap: 0.875rem;
+  padding-top: 1.75rem;
+  padding-bottom: 2rem;
+}
+
+.foot nav {
+  order: -1;
+  flex-basis: 100%;
+}
+
+.foot nav ul {
+  gap: 0.25rem 1.5rem;
+}
+
+.foot > a[href^="mailto:"] {
+  margin-left: auto;
+}
+
+@media (max-width: 44rem) {
+  .foot > a[href^="mailto:"] {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
