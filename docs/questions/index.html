@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Questions · Stonefold</title>
+<meta name="description" content="Answers about Stonefold: your data, iCloud sync, the lock and passphrases, the recovery sheet, and the price.">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+<header class="top">
+<a class="corner" href="/" title="Stonefold"><svg class="mark" viewBox="0 0 256 256" width="36" height="36" aria-hidden="true" focusable="false"><g transform="translate(3 2)"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g></svg><span class="sr"><span class="wm">Stonefold</span>, home</span></a>
+<div class="wrap bar">
+<a class="brand" href="/"><span class="brand-marks"><svg class="mark" viewBox="0 0 256 256" width="36" height="36" aria-hidden="true" focusable="false"><g transform="translate(3 2)"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g></svg></span><svg class="wordmark" viewBox="-12.5 -12.5 872 165" width="137.4" height="26" role="img" aria-label="Stonefold" focusable="false"><path d="M72.5 51.5H27.5A16 16 0 0 0 11.5 67.5V74A16 16 0 0 0 27.5 90H56.5A16 16 0 0 1 72.5 106V112.5A16 16 0 0 1 56.5 128.5H11.5M130 25.5V113.3A15.2 15.2 0 0 0 145.2 128.5H149.5M114.5 51.5H149.5M312.5 128.5V51.5H359.5A16 16 0 0 1 375.5 67.5V128.5M417.5 90H486.5V67.5A16 16 0 0 0 470.5 51.5H433.5A16 16 0 0 0 417.5 67.5V112.5A16 16 0 0 0 433.5 128.5H484.5M544 128.5V26.7A15.2 15.2 0 0 1 559.2 11.5H561.5M528.5 51.5H561.5M722.5 11.5V128.5M835.5 11.5V128.5M835.5 51.5H780.5A16 16 0 0 0 764.5 67.5V112.5A16 16 0 0 0 780.5 128.5H835.5" fill="none" stroke="currentColor" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(158.8 18.2) scale(0.57)" fill="currentColor"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g><g transform="translate(568.8 18.2) scale(0.57)" fill="currentColor"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g></svg></a>
+<div class="themes">
+<button type="button" id="theme-toggle" class="theme" aria-label="Choose a theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-menu" hidden><span class="swatch" aria-hidden="true"></span><span class="theme-name">Theme</span><svg class="chevron" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6l5 5 5-5"/></svg></button>
+<div id="theme-menu" class="theme-menu" role="group" aria-label="Themes" hidden>
+<button type="button" class="theme-option" data-look="sage" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Sage</strong><span class="theme-note">Dark green, the app’s start</span></span></button>
+<button type="button" class="theme-option" data-look="linen" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Linen</strong><span class="theme-note">Warm ivory</span></span></button>
+<button type="button" class="theme-option" data-look="night" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Night</strong><span class="theme-note">Near black, blue</span></span></button>
+<button type="button" class="theme-option" data-look="ember" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Ember</strong><span class="theme-note">Warm black, monospace</span></span></button>
+<button type="button" class="theme-option" data-look="paper" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Paper</strong><span class="theme-note">Paper and teal, serif</span></span></button>
+<button type="button" class="theme-option" data-look="dusk" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Dusk</strong><span class="theme-note">Violet, rounded</span></span></button>
+<button type="button" class="theme-option" data-look="clay" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Clay</strong><span class="theme-note">Plaster and terracotta, serif</span></span></button>
+<button type="button" class="theme-option" data-look="editor" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Editor</strong><span class="theme-note">Slate, blue and orange</span></span></button>
+<button type="button" class="theme-option" data-look="plain" aria-pressed="false"><span class="swatch" aria-hidden="true"></span><span><strong>Plain</strong><span class="theme-note">Follows your device</span></span></button>
+</div>
+</div>
+</div>
+</header>
+<div class="frame plain">
+<div class="column">
+<main id="main">
+<div class="wrap page">
+<div class="prose">
+<h1>Questions</h1>
+<p class="lede">Short answers about your data, sync, the lock and the price. The <a href="/guide/">guide</a> has the full detail.</p>
+<ul class="jump"><li><a href="#privacy">Privacy and your data</a></li><li><a href="#sync">Sync and your devices</a></li><li><a href="#lock">The lock, passphrases and the recovery sheet</a></li><li><a href="#using">Using the app</a></li><li><a href="#price">Price and help</a></li></ul>
+<h2 id="privacy">Privacy and your data</h2>
+<div class="faq">
+<details><summary>Can you see what I keep?</summary><p>No. We run no server for the app, so we never receive what you keep, and it is stored on your devices, encrypted.</p></details>
+<details><summary>Do I need an account?</summary><p>No. There is no sign-up and nothing to log in to. There are no ads, no tracking, no analytics and no AI.</p></details>
+<details><summary>Does <span class="wm">Stonefold</span> work offline?</summary><p>Yes. Everything you add is saved on your device first, and alerts are set on your device and ring from it. Only iCloud sync uses the internet, and only if you turn it on.</p></details>
+<details><summary>What leaves my device?</summary><p>With sync off, nothing leaves unless you save it somewhere yourself. With sync on, sealed changes go to your own iCloud, and Apple can see that your Apple Account is syncing, and when. Settings, then What Leaves This Device, says it in plain sentences.</p></details>
+<details><summary>What happens to the documents in Files?</summary><p>Your files stay on your device, each sealed by itself with a key of its own. The words inside a file are found on your device for search, and nothing is sent anywhere.</p></details>
+<details><summary>How do I take my things out?</summary><p>In Settings, choose Export Everything. It writes your events, reminders, notes and budget into one new folder in formats other apps can open. Nothing in that folder is encrypted, so <span class="wm">Stonefold</span> asks first.</p></details>
+<details><summary>What is left out of an export?</summary><p>The alarms, timers and cities of Tools aren’t in it, and Recently Deleted is left out. Some marks and settings stay behind too, such as a calendar’s color and which notes are pinned. Save a Copy of the calendar and reminders carries the Tools items.</p></details>
+</div>
+<h2 id="sync">Sync and your devices</h2>
+<div class="faq">
+<details><summary>Do I have to use iCloud sync?</summary><p>No. Sync is a switch in Settings and it starts off. Every part of <span class="wm">Stonefold</span> works without it.</p></details>
+<details><summary>How does sync keep my things private?</summary><p>When you turn it on, each change is sealed on your device first, with a key only your iPhone and Mac hold. It then travels through your own iCloud, and we run no servers.</p></details>
+<details><summary>What does sync cover?</summary><p>Every section you keep: the Calendar, Reminders, Notes, Budget, Tools and Files. Apple can see that your Apple Account is syncing, and when.</p></details>
+<details><summary>I have a new iPhone or Mac. How do I bring my things over?</summary><p>If you use iCloud sync, a new device gets the key from one of your devices, with a code you scan or type. You can also use Save a Copy on the old device and Open a Saved Copy on the new one, and your recovery sheet opens what it covers too. A saved copy is separate, so what you add on one device doesn’t appear on the other.</p></details>
+<details><summary>What if I lose my iPhone?</summary><p>If you use sync, your other iPhone or Mac still holds what you kept. Either way, your recovery sheet or a saved copy opens it on a new device. If you lose your iPhone and Mac and the sheet, nobody can open what you kept, including us.</p></details>
+</div>
+<h2 id="lock">The lock, passphrases and the recovery sheet</h2>
+<div class="faq">
+<details><summary>How does the lock work?</summary><p>With Lock the app on, opening the app asks once for Face ID or Touch ID, or the device’s passcode or password if that fails, and it locks itself when you leave. By default, anyone who can unlock your device can open the app. You can also lock the budget or the notes with a passphrase of your own.</p></details>
+<details><summary>Can I add a passphrase?</summary><p>You can add one to the budget, the notes, or both, in Settings, then The lock. The calendar and reminders can’t have one, and Files has none of its own because it opens with the one unlock.</p></details>
+<details><summary>What if I forget a passphrase?</summary><p>Nobody can get a forgotten passphrase back, not us and not Apple. Your printed recovery sheet is the way back in, and without it nobody can open the budget or notes you locked.</p></details>
+<details><summary>What is the recovery sheet?</summary><p>It is one printed page with a code for each thing it covers, and it is the way back if a device’s keys are lost or a passphrase is forgotten. Print it and keep it where you would keep a key, because the app never stores a code.</p></details>
+<details><summary>How do I make a recovery sheet?</summary><p>The app offers it when you first use the notes or the budget. You can also open Settings, then The lock, and choose Make the Recovery Sheet. A new sheet stops the old one working, for everything the new one covers.</p></details>
+<details><summary>Does <span class="wm">Stonefold</span> back up what I keep?</summary><p>Once a day, when the app is unlocked, what you keep is backed up if something changed, each part encrypted with its own key. The newest 30 daily backups of each are kept, and 10 made with Back Up Now.</p></details>
+</div>
+<h2 id="using">Using the app</h2>
+<div class="faq">
+<details><summary>Can I use only some parts of <span class="wm">Stonefold</span>?</summary><p>Yes. In Settings, go to Features, then Sections, and switch the Calendar, Reminders, Notes, Budget, Tools or Files on or off. A part that is off is hidden, and everything you put in it is there when you turn it on again.</p></details>
+<details><summary>Can I copy my events from Apple’s Calendar?</summary><p>Yes, once, when you choose to, from Settings, then Bring Mine Over: Calendar. Titles, places, notes, days and times come over, while alerts, invitations and attachments stay behind. Nothing stays linked, and nothing in Apple’s Calendar is changed.</p></details>
+<details><summary>Can I copy my lists from Apple’s Reminders?</summary><p>Yes, once, from Settings, then Bring Mine Over: Reminders. Nothing is copied until you choose Copy, and done reminders, locations, pictures, tags, flags and priorities stay behind. Nothing stays linked, and nothing in Apple’s Reminders is changed.</p></details>
+<details><summary>Does <span class="wm">Stonefold</span> have flashcards?</summary><p>Yes. They are off to start, and you turn them on in Settings, then Features: Notes. A deck can hold basic, reversed, type the answer and cloze cards, with pictures if you like, and you can bring in cards from Anki or Quizlet files.</p></details>
+</div>
+<h2 id="price">Price and help</h2>
+<div class="faq">
+<details><summary>What does <span class="wm">Stonefold</span> cost?</summary><p><span class="wm">Stonefold</span> is $24.99, paid once, for iPhone and Mac together. There is no subscription, no in-app purchases and nothing to renew, and all future updates are included.</p></details>
+<details><summary>How do I get help?</summary><p><span class="wm">Stonefold</span> has its own Help with a search box, on the Mac under Help, then <span class="wm">Stonefold</span> Help, and on the iPhone in Settings. You can also write to <a href="mailto:support@stonefoldlabs.com">support@stonefoldlabs.com</a>, and we answer within two working days. Please don’t send what you keep in the app, because we never need it to help you.</p></details>
+</div>
+</div>
+</div>
+</main>
+<footer>
+<div class="wrap foot">
+<a class="brand" href="/"><svg class="mark" viewBox="0 0 256 256" width="24" height="24" aria-hidden="true" focusable="false"><g transform="translate(3 2)"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g></svg><svg class="wordmark" viewBox="-12.5 -12.5 872 165" width="105.7" height="20" role="img" aria-label="Stonefold" focusable="false"><path d="M72.5 51.5H27.5A16 16 0 0 0 11.5 67.5V74A16 16 0 0 0 27.5 90H56.5A16 16 0 0 1 72.5 106V112.5A16 16 0 0 1 56.5 128.5H11.5M130 25.5V113.3A15.2 15.2 0 0 0 145.2 128.5H149.5M114.5 51.5H149.5M312.5 128.5V51.5H359.5A16 16 0 0 1 375.5 67.5V128.5M417.5 90H486.5V67.5A16 16 0 0 0 470.5 51.5H433.5A16 16 0 0 0 417.5 67.5V112.5A16 16 0 0 0 433.5 128.5H484.5M544 128.5V26.7A15.2 15.2 0 0 1 559.2 11.5H561.5M528.5 51.5H561.5M722.5 11.5V128.5M835.5 11.5V128.5M835.5 51.5H780.5A16 16 0 0 0 764.5 67.5V112.5A16 16 0 0 0 780.5 128.5H835.5" fill="none" stroke="currentColor" stroke-width="23" stroke-linecap="round" stroke-linejoin="round"/><g transform="translate(158.8 18.2) scale(0.57)" fill="currentColor"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g><g transform="translate(568.8 18.2) scale(0.57)" fill="currentColor"><rect x="64" y="38" width="56" height="28" rx="14"/><rect x="130" y="38" width="56" height="28" rx="14"/><rect x="37" y="65" width="28" height="56" rx="14"/><rect x="37" y="131" width="28" height="56" rx="14"/><rect x="185" y="65" width="28" height="56" rx="14"/><rect x="185" y="131" width="28" height="56" rx="14"/><rect x="64" y="186" width="45" height="28" rx="14"/><rect x="141" y="186" width="45" height="28" rx="14"/></g></svg></a>
+<span class="legal">© 2026 Stonefold Labs LLC</span>
+<nav aria-label="Pages">
+<ul>
+<li><a href="/how-it-works/">How it works</a></li>
+<li><a href="/guide/">Guide</a></li>
+<li><a href="/questions/">Questions</a></li>
+<li><a href="/about/">About</a></li>
+<li><a href="/privacy/">Privacy</a></li>
+<li><a href="/support/">Support</a></li>
+</ul>
+</nav>
+<a href="mailto:support@stonefoldlabs.com">support@stonefoldlabs.com</a>
+</div>
+</footer>
+</div>
+</div>
+</body>
+</html>
