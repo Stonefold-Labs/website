@@ -58,3 +58,9 @@ The words come from `SPEC.md`, from the builders' plans in `StonefoldApp/docs/pl
 3. Fold the app's privacy policy and help into `/privacy/` and `/support/` as CLAUDE.md describes, once they are approved. "Data Not Collected" waits until the label is live; the check refuses it until it is changed.
 4. `python3 -I scripts/check.py` must say `clean`. Look at every page wide and at phone width, light and dark.
 5. Merge to `main`, push, then `scripts/check-live.sh`. Each of those is the owner's yes, one at a time.
+
+
+## On launch day, also (added 2026-11-22)
+
+- Take out Home's line "Coming to iPhone and Mac. Not available yet." (the `p.soon` under the headline).
+- Take out or rewrite the Questions answer "When is Stonefold out?" in "Before you decide".

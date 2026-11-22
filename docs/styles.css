@@ -3628,9 +3628,9 @@ h4 .wm {
    different length at each end (the owner: "stagger them a bit", then "have the top stone section be longer on both
    ends then the bottom stone section ... with different lengths hanging off each end"). No joint sits over another.
    Wide, 15 units: How it works 4, Why Stonefold 5, Price 2, Questions 4 across all 15 (joints after 4, 9, 11) over
-   Guide 5, About 4, the theme 3 from the second unit to the thirteenth (joints after 6, 10). Phone, 14 units: How it
-   works 7, Why Stonefold 7 across all 14 (joint 7); Price 3, Questions 4, Guide 4 from the second to the twelfth
-   (joints 4, 8); About 4, the theme 5 from the third to the eleventh (joint 6). ===== */
+   Guide 6, About 5 from the second unit to the twelfth (joint after 7). Phone, 14 units: How it works 7, Why
+   Stonefold 7 across all 14 (joint 7); Price 3, Questions 4, Guide 4 from the second to the twelfth (joints 4, 8);
+   About alone, from the fourth to the eleventh. The theme picker is in Home's footer since 2026-11-22. ===== */
 .hero .actions {
   display: grid;
   grid-template-columns: repeat(15, 2.25rem);
@@ -3642,9 +3642,8 @@ h4 .wm {
 .hero .actions > :nth-child(2) { grid-column: span 5; }
 .hero .actions > :nth-child(3) { grid-column: span 2; }
 .hero .actions > :nth-child(4) { grid-column: span 4; }
-.hero .actions > :nth-child(5) { grid-column: 2 / span 5; }
-.hero .actions > :nth-child(6) { grid-column: span 4; }
-.hero .actions > :nth-child(7) { grid-column: span 3; }
+.hero .actions > :nth-child(5) { grid-column: 2 / span 6; }
+.hero .actions > :nth-child(6) { grid-column: span 5; }
 
 .hero .actions .button,
 .hero .theme {
@@ -3673,8 +3672,7 @@ h4 .wm {
   .hero .actions > :nth-child(3) { grid-column: 2 / span 3; }
   .hero .actions > :nth-child(4) { grid-column: span 4; }
   .hero .actions > :nth-child(5) { grid-column: span 4; }
-  .hero .actions > :nth-child(6) { grid-column: 3 / span 4; }
-  .hero .actions > :nth-child(7) { grid-column: span 5; }
+  .hero .actions > :nth-child(6) { grid-column: 4 / span 8; }
 
   .hero .actions .button,
   .hero .theme {
@@ -3890,4 +3888,28 @@ h4 .wm {
   .flip-card + .flip-card {
     margin-left: calc(82vw * -0.42);
   }
+}
+
+/* The theme picker in Home's footer (the owner, 2026-11-22: "Make all four", to the marketing review's fixes, so the
+   stones are only places to go). It sits at the end of the footer's second line and opens upward. */
+.foot .themes {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 5;
+  order: 3;
+  margin: 0;
+}
+
+.foot .theme-menu {
+  top: auto;
+  bottom: calc(100% + 0.25rem);
+}
+
+/* Home's line that the app isn't out yet (the same answer). */
+.hero .soon {
+  margin: 0.375rem 0 0;
+  color: var(--link);
+  font-size: 0.9375rem;
+  font-weight: 600;
 }
