@@ -3382,3 +3382,17 @@ h4 .wm {
     display: none;
   }
 }
+
+/* What each part holds, a short list under its name (the owner, 2026-11-22: "list features/options under each of these"). */
+.part-list {
+  margin: 0.625rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--quiet);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.part-list li + li {
+  margin-top: 0.25rem;
+}
