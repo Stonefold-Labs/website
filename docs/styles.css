@@ -3624,23 +3624,24 @@ h4 .wm {
 
 /* ===== The hero's stones laid as a wall (the owner, 2026-11-22: "stack the menu stones to look like that wall", "maybe
    make each button/stone slightly smaller", then "make each stone a different/varying length like the wall"). Each stone
-   takes its own number of units of the wall, and each course starts one unit along from the one above, so the ends
-   step in and out (the owner: "Can we not have the ends of the wall line up? Maybe stagger them a bit?") and no joint
-   sits over another. Wide, 13 units: How it works 3, Why Stonefold 4, Price 2, Questions 3 from the first unit (joints
-   after 3, 7, 9) over Guide 5, About 4, the theme 3 from the second (joints after 6, 10). Phone, 13 units: How it works
-   6, Why Stonefold 6 from the first (joint 6); Price 3, Questions 5, Guide 4 from the second (joints 4, 9); About 5, the
-   theme 7 from the first (joint 5). ===== */
+   takes its own number of units of the wall, and the top course is the longest, hanging past the course under it by a
+   different length at each end (the owner: "stagger them a bit", then "have the top stone section be longer on both
+   ends then the bottom stone section ... with different lengths hanging off each end"). No joint sits over another.
+   Wide, 15 units: How it works 4, Why Stonefold 5, Price 2, Questions 4 across all 15 (joints after 4, 9, 11) over
+   Guide 5, About 4, the theme 3 from the second unit to the thirteenth (joints after 6, 10). Phone, 14 units: How it
+   works 7, Why Stonefold 7 across all 14 (joint 7); Price 3, Questions 4, Guide 4 from the second to the twelfth
+   (joints 4, 8); About 4, the theme 5 from the third to the eleventh (joint 6). ===== */
 .hero .actions {
   display: grid;
-  grid-template-columns: repeat(13, 2.625rem);
+  grid-template-columns: repeat(15, 2.25rem);
   gap: 0.5rem;
   justify-content: center;
 }
 
-.hero .actions > :nth-child(1) { grid-column: 1 / span 3; }
-.hero .actions > :nth-child(2) { grid-column: span 4; }
+.hero .actions > :nth-child(1) { grid-column: 1 / span 4; }
+.hero .actions > :nth-child(2) { grid-column: span 5; }
 .hero .actions > :nth-child(3) { grid-column: span 2; }
-.hero .actions > :nth-child(4) { grid-column: span 3; }
+.hero .actions > :nth-child(4) { grid-column: span 4; }
 .hero .actions > :nth-child(5) { grid-column: 2 / span 5; }
 .hero .actions > :nth-child(6) { grid-column: span 4; }
 .hero .actions > :nth-child(7) { grid-column: span 3; }
@@ -3660,20 +3661,20 @@ h4 .wm {
 
 @media (max-width: 44rem) {
   .hero .actions {
-    grid-template-columns: repeat(13, minmax(0, 1fr));
+    grid-template-columns: repeat(14, minmax(0, 1fr));
     gap: 0.375rem;
     max-width: 22rem;
     margin-right: auto;
     margin-left: auto;
   }
 
-  .hero .actions > :nth-child(1) { grid-column: 1 / span 6; }
-  .hero .actions > :nth-child(2) { grid-column: span 6; }
+  .hero .actions > :nth-child(1) { grid-column: 1 / span 7; }
+  .hero .actions > :nth-child(2) { grid-column: span 7; }
   .hero .actions > :nth-child(3) { grid-column: 2 / span 3; }
-  .hero .actions > :nth-child(4) { grid-column: span 5; }
+  .hero .actions > :nth-child(4) { grid-column: span 4; }
   .hero .actions > :nth-child(5) { grid-column: span 4; }
-  .hero .actions > :nth-child(6) { grid-column: 1 / span 5; }
-  .hero .actions > :nth-child(7) { grid-column: span 7; }
+  .hero .actions > :nth-child(6) { grid-column: 3 / span 4; }
+  .hero .actions > :nth-child(7) { grid-column: span 5; }
 
   .hero .actions .button,
   .hero .theme {
