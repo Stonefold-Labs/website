@@ -3228,13 +3228,13 @@ h4 .wm {
 
 /* ===== How it works, on Home (the owner, 2026-11-22: "Can we combine the how it works page into the front page?"). Five
    steps in the evergreen band, each its number and line beside a few sentences, one under the other on a phone. ===== */
-.steps {
+.how-steps {
   margin: 1.75rem 0 0;
   padding: 0;
   list-style: none;
 }
 
-.steps > li {
+.how-steps > li {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
   gap: 0.75rem 2.5rem;
@@ -3243,7 +3243,7 @@ h4 .wm {
   scroll-margin-top: 1rem;
 }
 
-.steps .has-step {
+.how-steps .has-step {
   flex-wrap: nowrap;
   align-items: flex-start;
   justify-content: flex-start;
@@ -3253,28 +3253,28 @@ h4 .wm {
   text-align: left;
 }
 
-.steps .has-step .step {
+.how-steps .has-step .step {
   width: 2rem;
   height: 2rem;
   margin-top: -0.125rem;
   font-size: 1rem;
 }
 
-.steps .step-words p {
+.how-steps .step-words p {
   margin: 0;
   color: var(--quiet);
   line-height: 1.6;
 }
 
-.steps .step-words p:first-child {
+.how-steps .step-words p:first-child {
   color: var(--text);
 }
 
-.steps .step-words p + p {
+.how-steps .step-words p + p {
   margin-top: 0.625rem;
 }
 
-.steps .vault {
+.how-steps .vault {
   max-width: none;
   margin: 1.25rem 0;
 }
@@ -3285,7 +3285,7 @@ h4 .wm {
 }
 
 @media (max-width: 44rem) {
-  .steps > li {
+  .how-steps > li {
     grid-template-columns: minmax(0, 1fr);
   }
 }
