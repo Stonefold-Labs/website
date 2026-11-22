@@ -321,9 +321,6 @@ def check_page(site, file):
     # The guide is one long page, guide/index.html, which has the search; an old address of a topic, guide/<section>/<topic>/, is a tiny
     # page that sends to the topic's place on it, with a meta refresh of 0 and a canonical link, and no search.
     stub = parts[:1] == ("guide",) and len(parts) == 4
-    # How it works was a page of its own until 2026-11-22, when the owner had it folded into Home ("Yes, build it" to
-    # the one-page plan): its old address is a tiny page that sends to its place there, as a guide topic's old address does.
-    moved = parts == ("how-it-works", "index.html")
     in_guide = parts[:1] == ("guide",) and not stub
     if page.script_srcs != (GUIDE_SCRIPTS if in_guide else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
         problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages have its search as well")
@@ -337,15 +334,8 @@ def check_page(site, file):
             problems.append("an old guide address has <link rel=canonical href=\"/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
-    elif moved:
-        if page.refresh != "0; url=/#how-it-works":
-            problems.append("How it works' old address sends to /#how-it-works with <meta http-equiv=refresh content=\"0; url=/#how-it-works\">")
-        if page.canonical != "/":
-            problems.append("How it works' old address has <link rel=canonical href=\"/\">")
-        if "how-it-works" not in ids_of(site, "/"):
-            problems.append("/#how-it-works: Home has no such place")
     elif page.refresh is not None or page.canonical is not None:
-        problems.append("only an old guide address, or How it works' old address, may carry a meta refresh or a canonical link")
+        problems.append("only an old guide address may carry a meta refresh or a canonical link")
     if page.menu_hidden is not True:
         problems.append("the theme menu must exist and start hidden")
     if page.h1 != 1:

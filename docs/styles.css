@@ -3522,3 +3522,8 @@ h4 .wm {
     padding: 0 0.875rem;
   }
 }
+
+/* How it works opens with its line, then the evergreen band, with room between them. */
+.hero + .band {
+  margin-top: 2.5rem;
+}
