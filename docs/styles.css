@@ -3438,7 +3438,6 @@ h4 .wm {
   width: 7rem;
   height: auto;
   margin: 0 0 1.25rem;
-  transform: scaleX(-1);
 }
 
 @media (max-width: 44rem) {
