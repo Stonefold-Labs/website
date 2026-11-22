@@ -56,7 +56,7 @@ GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # only which questions show, and mark the row of the question being read in the list down the left, as the guide's does
 # (the owner, 2026-11-22: "add the highlight tracker"); it reaches no network and keeps nothing.
 QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "4e122691cf999350b83f3b676431b6dddbe45ddbbe465017200d8dcf37884cab"
+QUESTIONS_JS_SHA256 = "3cbbd8d9af788cfa33bba3d22d560b978903e637fc42497cb7ca6891055262ad"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 # Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
 # pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches
@@ -478,8 +478,8 @@ def check_questions_js(file):
         if re.search(pattern, js):
             problems.append(why)
     made = re.findall(rb"createElement\(([^)]*)\)", js)
-    if any(m.strip(b'"') not in {b"input", b"p"} or not m.startswith(b'"') for m in made):
-        problems.append("it may make only its box and one line")
+    if any(m.strip(b'"') not in {b"input", b"p", b"mark"} or not m.startswith(b'"') for m in made):
+        problems.append("it may make only its box, one line and the underlines of the words found")
     if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label", b"autocomplete", b"spellcheck", b"role", b"aria-current"}:
         problems.append("it may set only the box's own labels, the line's role and the mark on the list's current row")
     return problems

@@ -3900,3 +3900,12 @@ h4 .wm {
   font-size: 0.9375rem;
   font-weight: 600;
 }
+
+/* The questions' search underlines the words it found in the questions still showing, as the guide's results do
+   (the owner, 2026-11-22: "Yes, build it"). The underline only: the text keeps its own colour and font, so a wordmark
+   stays the logo. */
+.article .topic mark {
+  background: none;
+  border-bottom: 2px solid var(--stripe);
+  color: inherit;
+}

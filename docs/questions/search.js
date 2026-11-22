@@ -66,10 +66,75 @@
     list.forEach(function (one) { if (one) one.hidden = !on; });
   }
 
+  // The words found are underlined in the questions still showing, as the guide's results are (the owner, 2026-11-22:
+  // "why does questions search not highlight where the letters/word are on the page like guide does?", then "Yes, build
+  // it"). Each underline is a <mark> holding the page's own text, moved into it and never written as markup. Every new
+  // search takes the old ones out first, and an empty box leaves the page as it was. Inside the wordmark the whole name
+  // is underlined, so the logo is never split. Words of one letter are searched for but not underlined.
+  var underlined = [];
+
+  function clearUnderlines() {
+    underlined.forEach(function (one) {
+      var parent = one.parentNode;
+      if (!parent) return;
+      while (one.firstChild) parent.insertBefore(one.firstChild, one);
+      parent.removeChild(one);
+      parent.normalize();
+    });
+    underlined = [];
+  }
+
+  function wrapIn(node) {
+    var one = document.createElement("mark");
+    node.parentNode.insertBefore(one, node);
+    one.appendChild(node);
+    underlined.push(one);
+  }
+
+  function underline(root, words) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    var texts = [];
+    for (var node = walker.nextNode(); node; node = walker.nextNode()) texts.push(node);
+    texts.forEach(function (text) {
+      var value = text.nodeValue;
+      var folded = fold(value);
+      if (folded.length !== value.length) return;
+      if (text.parentNode.closest("svg")) return;
+      if (text.parentNode.closest(".wm")) {
+        if (words.some(function (w) { return folded.indexOf(w) !== -1; })) wrapIn(text);
+        return;
+      }
+      var pieces = [];
+      var from = 0;
+      for (;;) {
+        var best = -1;
+        var length = 0;
+        words.forEach(function (w) {
+          var at = folded.indexOf(w, from);
+          if (at !== -1 && (best === -1 || at < best || (at === best && w.length > length))) {
+            best = at;
+            length = w.length;
+          }
+        });
+        if (best === -1) break;
+        pieces.push([best, best + length]);
+        from = best + length;
+      }
+      // From the last piece back, so the places of the earlier ones don't move.
+      for (var k = pieces.length - 1; k >= 0; k--) {
+        var piece = text.splitText(pieces[k][0]);
+        piece.splitText(pieces[k][1] - pieces[k][0]);
+        wrapIn(piece);
+      }
+    });
+  }
+
   function search() {
     var typed = fold(box.value).split(/\s+/).filter(function (w) { return w.length > 0; });
     var asked = typed.filter(function (w) { return small.indexOf(" " + w + " ") === -1; });
     if (!asked.length) asked = typed;
+    var toUnderline = asked.filter(function (w) { return w.length > 1; });
+    clearUnderlines();
     var found = 0;
     topics.forEach(function (topic) {
       var shown = 0;
@@ -78,6 +143,7 @@
         row.item.hidden = !hit;
         show(row.lines, hit);
         if (hit) shown++;
+        if (hit && toUnderline.length) underline(row.item, toUnderline);
       });
       topic.heading.hidden = shown === 0;
       show(topic.groups, shown > 0);
