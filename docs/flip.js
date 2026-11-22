@@ -44,8 +44,8 @@
   var waiting = false;
   function tilt() {
     waiting = false;
-    var box = track.getBoundingClientRect();
-    var middle = box.left + box.width / 2;
+    // Measured from where each picture lies, not where its turn has put it, so the middle one ends up exactly flat.
+    var middle = track.scrollLeft + track.clientWidth / 2;
     var gap = spacing();
     cards.forEach(function (card) {
       if (still.matches) {
@@ -54,8 +54,7 @@
         card.style.zIndex = "";
         return;
       }
-      var place = card.getBoundingClientRect();
-      var along = (place.left + place.width / 2 - middle) / gap;
+      var along = (card.offsetLeft + card.offsetWidth / 2 - middle) / gap;
       var turn = Math.max(-1, Math.min(1, along));
       var away = Math.min(Math.abs(along), 1);
       card.style.transform = "rotateY(" + (-turn * 48) + "deg) scale(" + (1 - away * 0.2) + ")";

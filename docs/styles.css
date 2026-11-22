@@ -3790,9 +3790,10 @@ h4 .wm {
 }
 
 .flip-track {
+  position: relative;
   display: flex;
   overflow-x: auto;
-  padding: 1rem calc(50% - min(33vw, 21rem)) 0.5rem;
+  padding: 1rem 0 0.5rem;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
@@ -3801,6 +3802,14 @@ h4 .wm {
 
 .flip-track::-webkit-scrollbar {
   display: none;
+}
+
+/* Room before the first picture and after the last, so each can come to the middle. A spacer, not padding: Safari
+   leaves a scrolling row's end padding out, and the last picture then can't reach the middle. */
+.flip-track::before,
+.flip-track::after {
+  content: "";
+  flex: 0 0 calc(50% - min(33vw, 21rem));
 }
 
 .flip-track:focus-visible {
@@ -3869,9 +3878,9 @@ h4 .wm {
 }
 
 @media (max-width: 44rem) {
-  .flip-track {
-    padding-right: 9vw;
-    padding-left: 9vw;
+  .flip-track::before,
+  .flip-track::after {
+    flex-basis: calc(50% - 41vw);
   }
 
   .flip-card {

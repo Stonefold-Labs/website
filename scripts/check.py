@@ -63,7 +63,7 @@ QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 # no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
 # "reduce motion" on.
 FLIP_JS = "/flip.js"
-FLIP_JS_SHA256 = "30dd31ea74113ff88c0ecc5fb5f30bdaa2fcea4f62bfcc5b7e891f5933c8be46"
+FLIP_JS_SHA256 = "f13172544d43ddf7b480b693d1edb20af05874a467ed5f682534f08d83c7d963"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
