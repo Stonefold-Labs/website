@@ -3433,38 +3433,6 @@ h4 .wm {
 .sheep .sh-dark-line { fill: none; stroke: #354348; stroke-width: 9; stroke-linecap: round; }
 .sheep .sh-bell { fill: #D5A239; }
 
-/* In the hero, one of the faint marks keeps the bell sheep: the mark faint, the sheep plain to see. */
-.hero-marks .fold-sheep {
-  position: absolute;
-  width: var(--s);
-  height: var(--s);
-}
-
-.fold-sheep .mark {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.22;
-}
-
-.fold-sheep .in-fold {
-  position: absolute;
-  top: 31%;
-  left: 18%;
-  width: 64%;
-  height: auto;
-}
-
-.hm5.fold-sheep { --s: 7rem; top: 44%; right: 1%; }
-
-.closing-sheep {
-  display: block;
-  width: 4.5rem;
-  height: auto;
-  margin: 0 auto 0.75rem;
-}
-
 .lost-sheep {
   display: block;
   width: 7rem;
@@ -3474,7 +3442,6 @@ h4 .wm {
 }
 
 @media (max-width: 44rem) {
-  .hm5.fold-sheep { display: none; }
 }
 
 .guide-sheep {
@@ -3506,4 +3473,17 @@ h4 .wm {
   height: 3.5rem;
   margin-left: 0.75rem;
   opacity: 0.6;
+}
+
+/* The bellwether leads to the guide, inside its button (the owner, 2026-11-22: "put the sheep in the Guide button"). */
+.button-sheep {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.button-sheep .sheep {
+  width: 1.875rem;
+  height: auto;
+  margin: -0.25rem 0;
 }
