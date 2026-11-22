@@ -3441,3 +3441,41 @@ h4 .wm {
   height: auto;
   margin: -0.25rem 0;
 }
+
+/* Step 4: the file types an export holds (the owner, 2026-11-22: "List the file types they can download their data in"). */
+.file-types {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+.file-types li {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.file-types code {
+  padding: 0.125rem 0.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.375rem;
+  color: var(--text);
+  font: 600 0.8125rem/1.5 ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.file-types span {
+  color: var(--quiet);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.file-types strong {
+  color: var(--text);
+  font-weight: 600;
+}
