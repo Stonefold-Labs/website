@@ -3909,3 +3909,37 @@ h4 .wm {
   border-bottom: 2px solid var(--stripe);
   color: inherit;
 }
+
+/* The flip-through's pictures (2026-11-22): each picture is there in every theme, and only the one for the visitor's
+   theme shows (the owner: "I would like the theme of the screenshots to match the theme that the visitor of the website
+   has selected"). A hidden picture is never fetched, because each is loaded lazily and a hidden one never comes into
+   view. Plain follows the device, light or dark. With no theme set (no script), Sage when the device is dark and Linen
+   when it is light, as theme.js does. */
+.flip-card .shot {
+  display: none;
+}
+
+:root[data-theme="sage"] .flip-card .shot-sage,
+:root[data-theme="linen"] .flip-card .shot-linen,
+:root[data-theme="night"] .flip-card .shot-night,
+:root[data-theme="ember"] .flip-card .shot-ember,
+:root[data-theme="paper"] .flip-card .shot-paper,
+:root[data-theme="dusk"] .flip-card .shot-dusk,
+:root[data-theme="clay"] .flip-card .shot-clay,
+:root[data-theme="editor"] .flip-card .shot-editor,
+:root[data-theme="plain"] .flip-card .shot-plain-light,
+:root:not([data-theme]) .flip-card .shot-linen {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-theme="plain"] .flip-card .shot-plain-light,
+  :root:not([data-theme]) .flip-card .shot-linen {
+    display: none;
+  }
+
+  :root[data-theme="plain"] .flip-card .shot-plain-dark,
+  :root:not([data-theme]) .flip-card .shot-sage {
+    display: block;
+  }
+}

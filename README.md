@@ -13,7 +13,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   index.html         Home: Stonefold, the app
   how-it-works/      How it works: offline, encrypted on the device, sync only if turned on, export, no account (launch branch)
   guide/             the guide: one long page of every topic, tiny pages at the old per-topic addresses that send to it, and its search (launch branch). There is no features/ since 2026-11-21.
-  pictures/          pictures of the app, once they are made (none yet; see "Pictures of the app")
+  pictures/          pictures of the app: 9 shots in 10 looks for Home's flip-through (2026-11-22)
   privacy/index.html https://stonefoldapp.com/privacy/
   support/index.html https://stonefoldapp.com/support/
   404.html           shown for any address that doesn't exist
@@ -71,7 +71,7 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 **Update 2026-11-18:** the owner asked for real screenshots throughout. The pictures from 2026-11-15/16 (kept in `~/Library/Developer/Xcode/DerivedData/Stonefold-pictures.noindex/website`) predate the app's themes and the Mac's are not real windows, so none is used. A fresh brief for an app chat, with Linen and Sage of each and a `<picture>` plan for light and dark, is in the dispatch notes folder (`website-screenshots-brief.md`).
 
-**On hold (the owner, 2026-11-18):** "Hold off on pushing screenshots until app is closer to 100% finished." A trial set of real pictures from the screenshots chat is built and kept on the local branch `screenshots-held` (commit 9ca2503: the eight JPEGs in `docs/pictures/`, Home swapped from drawings to pictures, a Linen and a Sage of each shown to match the theme). It is **not on `main` and not live**; the drawings stay on the site. Do not merge or push that branch until he says. When he does, the pictures are retaken first (the retake keeps the same file names; the brief is `docs-notes/website-screenshots-brief.md`), then merge `screenshots-held`, swap the files, look at every one, run `scripts/check.py`, and ask for his yes to the push. The branch's README has the longer note on how the pictures are shown.
+**Superseded on 2026-11-22** by the flip-through, whose pictures the owner asked for that day and which went up then (`CLAUDE.md`, "One script"); the note below is history. **On hold (the owner, 2026-11-18):** "Hold off on pushing screenshots until app is closer to 100% finished." A trial set of real pictures from the screenshots chat is built and kept on the local branch `screenshots-held` (commit 9ca2503: the eight JPEGs in `docs/pictures/`, Home swapped from drawings to pictures, a Linen and a Sage of each shown to match the theme). It is **not on `main` and not live**; the drawings stay on the site. Do not merge or push that branch until he says. When he does, the pictures are retaken first (the retake keeps the same file names; the brief is `docs-notes/website-screenshots-brief.md`), then merge `screenshots-held`, swap the files, look at every one, run `scripts/check.py`, and ask for his yes to the push. The branch's README has the longer note on how the pictures are shown.
 
 **The pictures wanted,** to be made by the app's build chat at the end of milestone A8, from a made-up household that reads like a real one (no "Made-up" in any name), light appearance, normal text size, a real window on the Mac, no test warnings, and no stand-in icon in view:
 
