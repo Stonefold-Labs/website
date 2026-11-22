@@ -55,7 +55,7 @@ GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, and
 # change only which questions show; it reaches no network and keeps nothing.
 QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "f8c6f7754c6a0fb0714d832b053d5304f66b28b633bacc4a9bed50159f722e7d"
+QUESTIONS_JS_SHA256 = "9150bc6771a9861c62ee571e14fec01082f097d60c8bfb0df2ea99f680e268ec"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button

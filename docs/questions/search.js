@@ -1,7 +1,8 @@
 /* Stonefold questions search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't
-   hold your words and opens the ones that do). It reads only this page's own questions, in this browser. It reaches
-   no network, keeps nothing, and changes nothing but the box, one line under it, and which questions show. Without
-   it the page shows every question. Pinned in scripts/check.py: read the diff before you change it. */
+   hold your words; then the page took the guide's layout). It reads only this page's own questions, in this browser.
+   It reaches no network, keeps nothing, and changes nothing but the box, one line under it, and which questions, topic
+   headings and rows of the lists show. Without it the page shows every question. Pinned in scripts/check.py: read the
+   diff before you change it. */
 (function () {
   "use strict";
   var mount = document.getElementById("questions-search");
@@ -33,16 +34,32 @@
   mount.appendChild(status);
   mount.hidden = false;
 
-  // Each topic is a heading and the list of questions after it.
-  var topics = [];
-  var lists = mount.parentNode.querySelectorAll(".faq");
-  for (var i = 0; i < lists.length; i++) {
-    var rows = [];
-    var items = lists[i].querySelectorAll("details");
-    for (var j = 0; j < items.length; j++) rows.push({ item: items[j], words: fold(items[j].textContent) });
-    topics.push({ list: lists[i], heading: lists[i].previousElementSibling, rows: rows });
+  // The rows that name a place in the lists down the side: a question's row, or a topic's whole group.
+  function rowsFor(id, topic) {
+    var found = [];
+    var links = document.querySelectorAll(".tree a");
+    for (var i = 0; i < links.length; i++) {
+      var to = links[i].getAttribute("href") || "";
+      if (to.slice(to.indexOf("#") + 1) !== id) continue;
+      found.push(topic ? links[i].closest("details") : links[i].closest("li"));
+    }
+    return found;
   }
-  var jump = mount.parentNode.querySelector(".jump");
+
+  // Each topic is a heading and the questions after it.
+  var topics = [];
+  var heads = document.querySelectorAll(".article h2.sec");
+  for (var i = 0; i < heads.length; i++) {
+    var topic = { heading: heads[i], groups: rowsFor(heads[i].id, true), rows: [] };
+    for (var el = heads[i].nextElementSibling; el && el.tagName !== "H2"; el = el.nextElementSibling) {
+      if (el.classList.contains("topic")) topic.rows.push({ item: el, words: fold(el.textContent), lines: rowsFor(el.id, false) });
+    }
+    topics.push(topic);
+  }
+
+  function show(list, on) {
+    list.forEach(function (one) { if (one) one.hidden = !on; });
+  }
 
   function search() {
     var asked = fold(box.value).split(/\s+/).filter(function (w) { return w.length > 0; });
@@ -52,14 +69,13 @@
       topic.rows.forEach(function (row) {
         var hit = asked.every(function (w) { return row.words.indexOf(w) !== -1; });
         row.item.hidden = !hit;
-        row.item.open = asked.length > 0 && hit;
+        show(row.lines, hit);
         if (hit) shown++;
       });
-      topic.list.hidden = shown === 0;
-      if (topic.heading) topic.heading.hidden = shown === 0;
+      topic.heading.hidden = shown === 0;
+      show(topic.groups, shown > 0);
       found += shown;
     });
-    if (jump) jump.hidden = asked.length > 0;
     if (!asked.length) status.textContent = "";
     else if (found === 0) status.textContent = "No answers match. Try other words, or write to us.";
     else status.textContent = found === 1 ? "1 answer" : found + " answers";
