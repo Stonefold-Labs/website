@@ -3686,3 +3686,23 @@ h4 .wm {
     display: inline;
   }
 }
+
+/* Home's line names each part and promise with its sign beside the word (the owner, 2026-11-22: "incorporate everything into a paragraph and the logos show up in the paragraph", then "Yes, push it"). */
+.lede .signed {
+  white-space: nowrap;
+}
+
+.lede .sign {
+  display: inline-block;
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 0.2em;
+  vertical-align: -0.2em;
+}
+
+.hero.center .lede {
+  max-width: 44rem;
+  margin-right: auto;
+  margin-left: auto;
+  line-height: 1.75;
+}
