@@ -82,4 +82,68 @@
   }
 
   box.addEventListener("input", search);
+
+  // The list down the left follows the page, as the guide's does (the owner, 2026-11-22: "add the highlight tracker to
+  // the left menu of the questions page just like in the guide"): the row of the question at the top of the screen is
+  // marked, and kept in view in the list, which scrolls by itself, without moving the page. Questions a search has
+  // hidden are passed over. Nothing is remembered: it is worked out again from where the page is.
+  var list = document.querySelector(".tree-d");
+  var questions = Array.prototype.slice.call(document.querySelectorAll(".article .topic[id]"));
+  if (list && questions.length) {
+    var marks = {};
+    Array.prototype.slice.call(list.querySelectorAll("li a")).forEach(function (link) {
+      var to = link.getAttribute("href") || "";
+      var at = to.indexOf("#");
+      if (at !== -1) marks[to.slice(at + 1)] = link;
+    });
+    var marked = null;
+    var waiting = false;
+
+    function mark(id) {
+      if (id === marked) return;
+      if (marked && marks[marked]) marks[marked].removeAttribute("aria-current");
+      marked = id;
+      var link = id && marks[id];
+      if (!link) return;
+      link.setAttribute("aria-current", "true");
+      var top = link.offsetTop;
+      var bottom = top + link.offsetHeight;
+      if (top < list.scrollTop + 40) list.scrollTop = Math.max(0, top - 40);
+      else if (bottom > list.scrollTop + list.clientHeight - 40) list.scrollTop = bottom - list.clientHeight + 40;
+    }
+
+    function follow() {
+      waiting = false;
+      var line = window.innerHeight * 0.3;
+      var found = null;
+      var last = null;
+      for (var i = 0; i < questions.length; i++) {
+        if (questions[i].hidden) continue;
+        last = questions[i].id;
+        if (questions[i].getBoundingClientRect().top <= line) found = questions[i].id;
+        else break;
+      }
+      // At the foot of the page the last questions can't reach that line, so the last one shown is marked.
+      var end = document.documentElement;
+      if (window.innerHeight + window.scrollY >= end.scrollHeight - 2) {
+        for (var j = questions.length - 1; j >= 0; j--) {
+          if (!questions[j].hidden) { last = questions[j].id; break; }
+        }
+        found = last;
+      }
+      mark(found);
+    }
+
+    function soon() {
+      if (!waiting) {
+        waiting = true;
+        window.requestAnimationFrame(follow);
+      }
+    }
+
+    window.addEventListener("scroll", soon, { passive: true });
+    window.addEventListener("resize", soon);
+    box.addEventListener("input", soon);
+    follow();
+  }
 })();

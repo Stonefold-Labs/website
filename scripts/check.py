@@ -52,10 +52,11 @@ SEARCH_INDEX_JS = "/guide/search-index.js"
 SEARCH_JS_SHA256 = "8ba0f375f27107d815621020419a00ddf4946dcc251b8e9cf207fd026a01f544"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # The questions' search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't hold your
-# words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, and
-# change only which questions show; it reaches no network and keeps nothing.
+# words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, change
+# only which questions show, and mark the row of the question being read in the list down the left, as the guide's does
+# (the owner, 2026-11-22: "add the highlight tracker"); it reaches no network and keeps nothing.
 QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "9150bc6771a9861c62ee571e14fec01082f097d60c8bfb0df2ea99f680e268ec"
+QUESTIONS_JS_SHA256 = "8886a1dd884079dae729ef19214a69d2e59b27bfd2c22b47713f627651bf69d0"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
@@ -440,8 +441,8 @@ def check_questions_js(file):
     made = re.findall(rb"createElement\(([^)]*)\)", js)
     if any(m.strip(b'"') not in {b"input", b"p"} or not m.startswith(b'"') for m in made):
         problems.append("it may make only its box and one line")
-    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label", b"autocomplete", b"spellcheck", b"role"}:
-        problems.append("it may set only the box's own labels and the line's role")
+    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label", b"autocomplete", b"spellcheck", b"role", b"aria-current"}:
+        problems.append("it may set only the box's own labels, the line's role and the mark on the list's current row")
     return problems
 
 
