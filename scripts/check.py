@@ -330,8 +330,15 @@ def check_page(site, file):
     stub = parts[:1] == ("guide",) and len(parts) == 4
     in_guide = parts[:1] == ("guide",) and not stub
     in_questions = parts == ("questions", "index.html")
-    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
-        problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages and the Questions page have their search as well")
+    # The theme picker is on Home only (the owner, 2026-11-22: "lets only have the theme selector on the home page"). Every
+    # page still loads theme.js, so the theme picked there is worn everywhere.
+    on_home = parts == ("index.html",)
+    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]):
+        problems.append(f"scripts {page.script_srcs}; a page loads the theme script, and the guide's pages and the Questions page their search as well")
+    if on_home and (page.buttons != 1 + len(LOOKS) or page.looks != LOOKS):
+        problems.append(f"{page.buttons} buttons; Home has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
+    if not on_home and (page.buttons or page.looks):
+        problems.append("only Home has the theme picker")
     if in_guide != ("guide-search" in page.ids):
         problems.append("the guide's page, and only it, holds the search box's place (id guide-search)")
     if in_questions != ("questions-search" in page.ids):
@@ -346,8 +353,10 @@ def check_page(site, file):
             problems.append(f"{target}: the guide has no such topic")
     elif page.refresh is not None or page.canonical is not None:
         problems.append("only an old guide address may carry a meta refresh or a canonical link")
-    if page.menu_hidden is not True:
-        problems.append("the theme menu must exist and start hidden")
+    if on_home and page.menu_hidden is not True:
+        problems.append("Home's theme menu must exist and start hidden")
+    if not on_home and page.menu_hidden is not None:
+        problems.append("only Home has the theme menu")
     if page.h1 != 1:
         problems.append(f"{page.h1} <h1> headings; a page has exactly one")
     for before, after in zip(page.headings, page.headings[1:]):
@@ -696,7 +705,8 @@ GOOD_PAGE = """<!doctype html>
 
 SEARCH_TAGS = '<script src="/guide/search-index.js"></script><script src="/guide/search.js"></script>'
 # A guide page for the self-test: the same page, with the guide's tree and article, and its search after the content.
-GUIDE_PAGE = GOOD_PAGE.replace("<main><h1>One</h1>{body}</main>", "<main>{body}</main>").replace("</body>", "{scripts}</body>")
+GUIDE_PAGE = (GOOD_PAGE.replace("<main><h1>One</h1>{body}</main>", "<main>{body}</main>").replace("</body>", "{scripts}</body>")
+              .replace('<button type="button" id="theme-toggle" aria-label="Choose a theme" aria-controls="theme-menu" hidden></button><div id="theme-menu" hidden>{looks}</div>', ""))
 GUIDE_HOME = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/#a-b">B</a></nav>'
               '<article class="article"><div class="gsearch" id="guide-search" hidden></div><h1>Guide</h1>'
               '<h2 class="sec" id="a">A</h2>'
