@@ -3479,3 +3479,46 @@ h4 .wm {
   color: var(--text);
   font-weight: 600;
 }
+
+/* On Home the theme picker is the third stone in the hero's row, beside See how it works and Guide (the owner,
+   2026-11-22: "go back to the old version one version ago and just add the theme button"). Elsewhere it floats. */
+.hero .themes {
+  position: relative;
+  top: auto;
+  right: auto;
+  z-index: 20;
+  margin: 0;
+}
+
+.hero .theme {
+  min-height: 2.75rem;
+  padding: 0 1.125rem;
+  background: var(--fill);
+  border: 0;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  color: var(--on-fill);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.hero .theme .chevron {
+  color: var(--on-fill);
+}
+
+.hero .theme .swatch {
+  border-color: var(--on-fill);
+}
+
+@media (max-width: 44rem) {
+  .hero .actions {
+    gap: 0.5rem;
+  }
+
+  .hero .actions .button,
+  .hero .theme {
+    padding: 0 0.875rem;
+  }
+}
