@@ -3706,3 +3706,46 @@ h4 .wm {
   margin-left: auto;
   line-height: 1.75;
 }
+
+/* ===== The way back, on every page but Home (the owner, 2026-11-22: "Should we have a way to get back other than pressing
+   the back button? I noticed the navigation/menu goes away on the other pages", then yes to a smaller stone row): the
+   stones in one short course under the mark, the page you are on ringed. Home keeps its wall and the theme picker. ===== */
+.stones-mini {
+  display: flex;
+  flex-wrap: wrap;
+  flex-basis: 100%;
+  gap: 0.375rem;
+  margin-top: 0.25rem;
+}
+
+.stones-mini a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  background: var(--fill);
+  border-radius: 0.4375rem;
+  color: var(--on-fill);
+  font: 600 0.8125rem/1.2 var(--sans);
+  text-decoration: none;
+}
+
+.stones-mini a:hover {
+  filter: brightness(1.06);
+}
+
+.stones-mini a[aria-current="page"] {
+  box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--fill);
+  text-decoration: none;
+}
+
+.stones-mini a:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
+}
+
+.stones-mini .sheep {
+  width: 1.25rem;
+  height: auto;
+  margin: -0.25rem 0.375rem -0.25rem 0;
+}
