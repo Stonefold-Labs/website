@@ -51,7 +51,13 @@ SEARCH_JS = "/guide/search.js"
 SEARCH_INDEX_JS = "/guide/search-index.js"
 SEARCH_JS_SHA256 = "8ba0f375f27107d815621020419a00ddf4946dcc251b8e9cf207fd026a01f544"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
-ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS)
+# The questions' search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't hold your
+# words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, and
+# change only which questions show; it reaches no network and keeps nothing.
+QUESTIONS_JS = "/questions/search.js"
+QUESTIONS_JS_SHA256 = "f8c6f7754c6a0fb0714d832b053d5304f66b28b633bacc4a9bed50159f722e7d"
+QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
+ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
@@ -322,10 +328,13 @@ def check_page(site, file):
     # page that sends to the topic's place on it, with a meta refresh of 0 and a canonical link, and no search.
     stub = parts[:1] == ("guide",) and len(parts) == 4
     in_guide = parts[:1] == ("guide",) and not stub
-    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
-        problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages have its search as well")
+    in_questions = parts == ("questions", "index.html")
+    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]) or page.buttons != 1 + len(LOOKS) or page.looks != LOOKS:
+        problems.append(f"scripts {page.script_srcs} and {page.buttons} buttons; a page has the theme picker, once, with one button for each of {', '.join(LOOKS)}, and the guide's pages and the Questions page have their search as well")
     if in_guide != ("guide-search" in page.ids):
         problems.append("the guide's page, and only it, holds the search box's place (id guide-search)")
+    if in_questions != ("questions-search" in page.ids):
+        problems.append("the Questions page, and only it, holds its search box's place (id questions-search)")
     if stub:
         target = f"/guide/#{parts[1]}-{parts[2]}"
         if page.refresh != f"0; url={target}":
@@ -396,8 +405,10 @@ def check_js(site, file):
         return check_search_js(file)
     if name == SEARCH_INDEX_JS:
         return check_search_index(site, file)
+    if name == QUESTIONS_JS:
+        return check_questions_js(file)
     if name != THEME_JS:
-        return ["the only scripts are the theme picker, and the guide's search and its index"]
+        return ["the only scripts are the theme picker, the guide's search and its index, and the questions' search"]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -411,6 +422,26 @@ def check_js(site, file):
             problems.append(why)
     if set(re.findall(rb"localStorage\.\w+Item\(\s*\"([^\"]*)\"", js)) - {b"theme"}:
         problems.append("it may remember only \"theme\"")
+    return problems
+
+
+def check_questions_js(file):
+    js = file.read_bytes()
+    problems = []
+    if hashlib.sha256(js).hexdigest() != QUESTIONS_JS_SHA256:
+        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
+    for pattern, why in [
+        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:", "it may not reach the network"),
+        (rb"cookie|localStorage|sessionStorage|indexedDB|caches", "it may keep nothing"),
+        (rb"eval|Function\(|innerHTML|outerHTML|insertAdjacentHTML|document\.write|setTimeout|setInterval", "it may not make or run code"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    made = re.findall(rb"createElement\(([^)]*)\)", js)
+    if any(m.strip(b'"') not in {b"input", b"p"} or not m.startswith(b'"') for m in made):
+        problems.append("it may make only its box and one line")
+    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label", b"autocomplete", b"spellcheck", b"role"}:
+        problems.append("it may set only the box's own labels and the line's role")
     return problems
 
 
