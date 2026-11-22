@@ -58,7 +58,14 @@ GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 QUESTIONS_JS = "/questions/search.js"
 QUESTIONS_JS_SHA256 = "8886a1dd884079dae729ef19214a69d2e59b27bfd2c22b47713f627651bf69d0"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
-ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS)
+# Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
+# pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches
+# no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
+# "reduce motion" on.
+FLIP_JS = "/flip.js"
+FLIP_JS_SHA256 = "30dd31ea74113ff88c0ecc5fb5f30bdaa2fcea4f62bfcc5b7e891f5933c8be46"
+HOME_SCRIPTS = [THEME_JS, FLIP_JS]
+ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
@@ -333,7 +340,8 @@ def check_page(site, file):
     # The theme picker is on Home only (the owner, 2026-11-22: "lets only have the theme selector on the home page"). Every
     # page still loads theme.js, so the theme picked there is worn everywhere.
     on_home = parts == ("index.html",)
-    if page.script_srcs != (GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]):
+    expected = GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]
+    if page.script_srcs != expected and not (on_home and page.script_srcs == HOME_SCRIPTS):
         problems.append(f"scripts {page.script_srcs}; a page loads the theme script, and the guide's pages and the Questions page their search as well")
     if on_home and (page.buttons != 1 + len(LOOKS) or page.looks != LOOKS):
         problems.append(f"{page.buttons} buttons; Home has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
@@ -417,8 +425,10 @@ def check_js(site, file):
         return check_search_index(site, file)
     if name == QUESTIONS_JS:
         return check_questions_js(file)
+    if name == FLIP_JS:
+        return check_flip_js(file)
     if name != THEME_JS:
-        return ["the only scripts are the theme picker, the guide's search and its index, and the questions' search"]
+        return ["the only scripts are the theme picker, the guide's search and its index, the questions' search and Home's flip-through"]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -432,6 +442,26 @@ def check_js(site, file):
             problems.append(why)
     if set(re.findall(rb"localStorage\.\w+Item\(\s*\"([^\"]*)\"", js)) - {b"theme"}:
         problems.append("it may remember only \"theme\"")
+    return problems
+
+
+def check_flip_js(file):
+    js = file.read_bytes()
+    problems = []
+    if hashlib.sha256(js).hexdigest() != FLIP_JS_SHA256:
+        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
+    for pattern, why in [
+        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:", "it may not reach the network"),
+        (rb"cookie|localStorage|sessionStorage|indexedDB|caches", "it may keep nothing"),
+        (rb"eval|Function\(|innerHTML|outerHTML|insertAdjacentHTML|document\.write|setTimeout|setInterval", "it may not make or run code"),
+    ]:
+        if re.search(pattern, js):
+            problems.append(why)
+    made = re.findall(rb"createElement\(([^)]*)\)", js)
+    if any(m != b'"button"' for m in made):
+        problems.append("it may make only its arrow buttons")
+    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label"}:
+        problems.append("it may set only its arrows' labels")
     return problems
 
 

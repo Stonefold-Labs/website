@@ -3781,3 +3781,104 @@ h4 .wm {
     margin-left: 0;
   }
 }
+
+/* ===== Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"). A row that snaps a
+   picture to the middle; flip.js turns and dims the ones beside it as it scrolls. Without the script it is a plain row
+   that scrolls; with "reduce motion" on, the pictures lie flat. ===== */
+.flip {
+  margin: 1.25rem 0 2.5rem;
+}
+
+.flip-track {
+  display: flex;
+  overflow-x: auto;
+  padding: 1rem calc(50% - min(33vw, 21rem)) 0.5rem;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  perspective: 1400px;
+}
+
+.flip-track::-webkit-scrollbar {
+  display: none;
+}
+
+.flip-track:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 4px;
+  border-radius: 0.75rem;
+}
+
+.flip-card {
+  flex: 0 0 min(66vw, 42rem);
+  margin: 0;
+  scroll-snap-align: center;
+  transform-origin: center;
+}
+
+/* The pictures beside the middle one overlap it, as album covers did. */
+.flip-card + .flip-card {
+  margin-left: calc(min(66vw, 42rem) * -0.42);
+}
+
+.flip-card .drawing,
+.flip-card img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28);
+}
+
+.flip-card figcaption {
+  margin-top: 0.625rem;
+  color: var(--quiet);
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.flip-controls {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.flip-controls[hidden] {
+  display: none;
+}
+
+.flip-arrow {
+  width: 2.5rem;
+  height: 2.5rem;
+  background: var(--raised);
+  border: 1px solid var(--rule);
+  border-radius: 50%;
+  color: var(--text);
+  font: 600 1.375rem/1 var(--sans);
+  cursor: pointer;
+}
+
+.flip-arrow:hover {
+  border-color: var(--quiet);
+}
+
+.flip-arrow:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 2px;
+}
+
+@media (max-width: 44rem) {
+  .flip-track {
+    padding-right: 9vw;
+    padding-left: 9vw;
+  }
+
+  .flip-card {
+    flex-basis: 82vw;
+  }
+
+  .flip-card + .flip-card {
+    margin-left: calc(82vw * -0.42);
+  }
+}
