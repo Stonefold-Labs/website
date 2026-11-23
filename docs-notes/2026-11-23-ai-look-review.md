@@ -81,6 +81,9 @@ Status: **done** = fixed and committed (`c7202fd`, `c8ee101`, `e36e9ae` on `clau
 ### 16. `scripts/check.py` and the docs — kept
 - Their long explanatory comments are the repo's own record, outside the published `docs/`, and read as a person's working notes. Not touched.
 
+## Update 2026-11-23, later: the owner said "do all six"
+Items 5 to 10 were all done on his word: Privacy's picker sentence (and, because it was also wrong, "the one small script": the site has four scripts, so it now says which one keeps anything), How it works steps 3 and 5 trimmed to say each claim once, Home's paragraph no longer says "brings ... together in one app" after a headline that says it (the signs and the six parts stay), Why Stonefold folded into About (its six "Because" reasons under his words, the duplicate price tile dropped, the page deleted, the wall re-laid with six stones), and Price's "so $24.99 is the whole price" now "so that is the whole price". About's own sentence with $24.99 is left as his words, so the number is on Price (twice), About and Questions.
+
 ## What only the owner can decide (from the list above)
 - 5, 6, 7: the three small wording fixes on Privacy and How it works (claims about privacy and sync).
 - 8, 9, 10: whether Home's headline and paragraph should stop listing the same parts, whether Why Stonefold should fold into About, and where the price is stated.
