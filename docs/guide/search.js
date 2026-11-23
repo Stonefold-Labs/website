@@ -1,7 +1,6 @@
-/* Stonefold guide search (the owner, 2026-11-21: "Yes, build search").
+/* Stonefold guide search.
    It reads the page text from /guide/search-index.js, which is loaded beside it, and finds pages by their words
-   in this browser. It also marks, in the list down the left, the topic you are reading as you scroll (the owner,
-   2026-11-21: "have it track/highlight the left menu as you scroll"). It reaches no network, keeps nothing and writes
+   in this browser. It also marks, in the list down the left, the topic you are reading as you scroll. It reaches no network, keeps nothing and writes
    nothing but the box, the list of results and that one mark. Pinned in scripts/check.py: read the diff before you
    change it. */
 (function () {
@@ -203,8 +202,8 @@
     }
   });
   // The list down the left follows the page: the row of the topic at the top of the screen is marked, and kept in view in the list, which
-  // scrolls by itself, without moving the page. Nothing is remembered: it is worked out again from where the page is. (Its names are its
-  // own: on 2026-11-22 the owner found the search broken, because this part had taken the names of the results and of the highlighter.)
+  // scrolls by itself, without moving the page. Nothing is remembered: it is worked out again from where the page is. Its names are its own, so
+  // it can't take the ones the results and the highlighter use.
   var tree = document.querySelector(".tree-d");
   var topics = Array.prototype.slice.call(document.querySelectorAll(".article .topic[id]"));
   if (tree && topics.length) {

@@ -1,4 +1,4 @@
-/* The theme picker. It and the home page's demo (demo.js) are the only scripts on stonefoldapp.com.
+/* The theme picker. One of the site's four small scripts; it reaches no network.
 
    The page can wear any of the app's nine themes. This script sets one word on the page, such as "sage" or "linen",
    and keeps that word in this browser, and only after a theme has been picked. Until then the page follows the

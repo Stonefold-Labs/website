@@ -1,5 +1,4 @@
-/* Stonefold questions search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't
-   hold your words; then the page took the guide's layout). It reads only this page's own questions, in this browser.
+/* Stonefold questions search. It reads only this page's own questions, in this browser.
    It reaches no network, keeps nothing, and changes nothing but the box, one line under it, and which questions, topic
    headings and rows of the lists show. Without it the page shows every question. Pinned in scripts/check.py: read the
    diff before you change it. */
@@ -47,7 +46,7 @@
   }
 
   // Each topic is a heading and the questions after it. A question also holds its topic's heading, so "price" finds the
-  // questions under "Price and help" (the owner, 2026-11-22, who found the search wanting: "seems to be broken").
+  // questions under "Price and help".
   var topics = [];
   var heads = document.querySelectorAll(".article h2.sec");
   for (var i = 0; i < heads.length; i++) {
@@ -66,9 +65,8 @@
     list.forEach(function (one) { if (one) one.hidden = !on; });
   }
 
-  // The words found are underlined in the questions still showing, as the guide's results are (the owner, 2026-11-22:
-  // "why does questions search not highlight where the letters/word are on the page like guide does?", then "Yes, build
-  // it"). Each underline is a <mark> holding the page's own text, moved into it and never written as markup. Every new
+  // The words found are underlined in the questions still showing, as the guide's results are.
+  // Each underline is a <mark> holding the page's own text, moved into it and never written as markup. Every new
   // search takes the old ones out first, and an empty box leaves the page as it was. Inside the wordmark the whole name
   // is underlined, so the logo is never split. Words of one letter are searched for but not underlined.
   var underlined = [];
@@ -156,8 +154,7 @@
 
   box.addEventListener("input", search);
 
-  // The list down the left follows the page, as the guide's does (the owner, 2026-11-22: "add the highlight tracker to
-  // the left menu of the questions page just like in the guide"): the row of the question at the top of the screen is
+  // The list down the left follows the page, as the guide's does: the row of the question at the top of the screen is
   // marked, and kept in view in the list, which scrolls by itself, without moving the page. Questions a search has
   // hidden are passed over. Nothing is remembered: it is worked out again from where the page is.
   var list = document.querySelector(".tree-d");

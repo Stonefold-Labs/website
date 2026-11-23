@@ -1,4 +1,4 @@
-/* Stonefold's front-page flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"). The picture
+/* Stonefold's front-page flip-through of pictures of the app. The picture
    in the middle faces you; the ones beside it turn away and dim as you swipe, scroll or use the arrows. With "reduce
    motion" on, they lie flat. It reaches no network and keeps nothing; without it the pictures are a plain row that
    scrolls. Pinned in scripts/check.py: read the diff before you change it. */

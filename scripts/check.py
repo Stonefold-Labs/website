@@ -43,27 +43,27 @@ FONT_FACE = """@font-face {
 # every theme the app has). Its exact contents are pinned here, so a change to it is always a decision:
 # read the new file, then put its SHA-256 here (shasum -a 256 docs/theme.js).
 THEME_JS = "/theme.js"
-THEME_JS_SHA256 = "24f318df9fe375023bde3ddac7feb38089f93c0c292958d40cb44cd64c9c49ad"
+THEME_JS_SHA256 = "cf0bc6f246d72d018a1fe3d4c95dd91577cd631ad16dc1610d13baf3b1bd5050"
 # The guide's search (the owner, 2026-11-21: "Yes, build search"): a second script and its data file, on the guide's
 # pages only. The script is pinned like theme.js, and may do no more than make a box, read the index and list links; the
 # index is checked against the pages it holds, word for word, so it can never say what a page doesn't.
 SEARCH_JS = "/guide/search.js"
 SEARCH_INDEX_JS = "/guide/search-index.js"
-SEARCH_JS_SHA256 = "b46909a5c90aaa1649295bf122f328c4a9df287023392677dd2c5ba06ad34cf2"
+SEARCH_JS_SHA256 = "0511aeac8705c93e50d78b298f78d2af5bf79996b8454b30ddcfdcdbecb4074e"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # The questions' search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't hold your
 # words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, change
 # only which questions show, and mark the row of the question being read in the list down the left, as the guide's does
 # (the owner, 2026-11-22: "add the highlight tracker"); it reaches no network and keeps nothing.
 QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "3cbbd8d9af788cfa33bba3d22d560b978903e637fc42497cb7ca6891055262ad"
+QUESTIONS_JS_SHA256 = "4a26c22dfa1d891ceef92106a65e0491adecd7e5f2db84dfbcf3a1bbd7be6904"
 QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 # Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
 # pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches
 # no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
 # "reduce motion" on.
 FLIP_JS = "/flip.js"
-FLIP_JS_SHA256 = "f13172544d43ddf7b480b693d1edb20af05874a467ed5f682534f08d83c7d963"
+FLIP_JS_SHA256 = "627f420b27745e02a58ef2f00eb92e760b6148a71bd1f0f641fa649188dcf921"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button

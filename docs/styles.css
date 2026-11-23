@@ -1,11 +1,8 @@
 /* Stonefold Labs. One stylesheet, no imports, no fonts from anywhere but the reader's own device.
 
-   The shape is a sibling of longlinelabs.com, the owner's other company: a stripe along the top, the mark
-   and a serif wordmark, a rail down the left, a headline beside a picture, hairlines between sections.
-   Stonefold's own: the four sections of the one app each beside a drawing, and a band for
-   encryption, privacy and security.
+   The shape is a sibling of longlinelabs.com: the mark and a wordmark, a headline, hairlines between sections.
    The brand colours are Stonefold's own: evergreen #293b36, sage #a9b8a1, warm ivory #f2f0e8, amber #d5a96c.
-   The page wears one of the app's eight themes. Until a reader picks one it follows the device's light or dark
+   The page wears one of the app's nine themes. Until a reader picks one it follows the device's light or dark
    setting; the picker is theme.js, the site's one script, and it sets data-theme on <html>. */
 
 @font-face {
@@ -26,8 +23,7 @@
 
 /* Every theme the app has. The colours are the app's own (LookThemes.swift) turned into the site's roles, and each theme's
    face is a font that comes with the reader's device: nothing is loaded. The display face is the rounded one in every
-   theme: the owner's "Lowercase, rounded" (2026-11-18, about 11:35), on all eight themes as built (Picked; his to
-   change to Sage and Linen only). Where nobody has chosen, the page follows the device:
+   theme: rounded and lowercase, on all nine themes. Where nobody has chosen, the page follows the device:
    Sage when it is dark, Linen when it is light. */
 
 :root {
@@ -529,16 +525,16 @@ a:focus-visible {
   height: 2.25rem;
 }
 
-/* The name is drawn, not typed (the owner picked draft A on 2026-11-18): the mark's own parts, one stroke with round
+/* The name is drawn, not typed: the mark's own parts, one stroke with round
    ends, square bowls and the gate at the bottom of each o. It takes the text colour, so every theme draws it the same
-   shape in its own ink. The drawing is ../StonefoldApp/docs/drafts/wordmark. */
+   shape in its own ink. The drawing is../StonefoldApp/docs/drafts/wordmark. */
 .brand .wordmark {
   display: block;
   width: auto;
   height: 1.625rem;
 }
 
-/* The theme picker: one button that opens a short list of the app's eight themes. Hidden until theme.js is
+/* The theme picker: one button that opens a short list of the app's nine themes. Hidden until theme.js is
    running, so it is never a dead button. */
 
 .top {
@@ -718,8 +714,7 @@ nav a[aria-current="page"] {
 
 /* Headings and text */
 
-/* Headings are set as written, with regular capitals (the owner, 2026-11-21, who had asked on 2026-11-18 for
-   lowercase headings: "Lets go back to regular grammar and formatting for capitalization"). The rounded face stays. */
+/* Headings are set as written, with regular capitals. The rounded face stays. */
 h1,
 h2 {
   font-family: var(--display);
@@ -1162,8 +1157,6 @@ footer {
   }
 }
 
-/* ===== The launch version (2026-11-21): the features pages, How it works and the closing links ===== */
-
 .has-step {
   display: flex;
   align-items: center;
@@ -1261,8 +1254,7 @@ footer {
   }
 }
 
-/* Home, launch version: a centered hero with the app's window drawn under it, and one big sentence over each section
-   (ideas from the three sites the owner named: ProjectionLab, Notion, Thunderbird). */
+/* Home: a centered hero with the app's window under it, and one big sentence over each section. */
 .hero.center {
   display: block;
   padding-top: 4.5rem;
@@ -1361,8 +1353,7 @@ footer {
   color: var(--band);
 }
 
-/* ===== Compact, and fewer boxes (the owner, 2026-11-21: "more compact and less spread out, more data in one area",
-   and "get rid of so many squares"). Cards become columns under a hairline; spacing is tightened. ===== */
+/* ===== Compact, and fewer boxes. Cards become columns under a hairline; spacing is tightened. ===== */
 
 h2 {
   font-size: 1.5rem;
@@ -1513,7 +1504,7 @@ h2 {
 @media (max-width: 44rem) {
 }
 
-/* ===== Headings in Stonefold Display, the font drawn from the logo's letters (the owner, 2026-11-21). It has one weight,
+/* ===== Headings in Stonefold Display, the font drawn from the logo's letters. It has one weight,
    already the logo's, so nothing is made bolder. Small labels (the side menu, the kicker, questions) keep the device's face. ===== */
 h1,
 h2,
@@ -1878,7 +1869,7 @@ kbd {
   display: none;
 }
 
-/* No rail and no corner since 2026-11-21 (the owner: two or three pages, so visitors don't get lost): the mark sits
+/* No rail and no corner: the mark sits
    beside the wordmark at every width, and the page runs under the header. */
 .top,
 .frame.plain {
@@ -1893,8 +1884,7 @@ kbd {
   display: inline-flex;
 }
 
-/* The name, set as the logo wherever it is written (the owner, 2026-11-21: "make stonefold match the logo everywhere that it is
-   named"). The word stays text. Set in the heading font, whose ligature for "Stonefold" is the wordmark with its two stones, so
+/* The name, set as the logo wherever it is written. The word stays text. Set in the heading font, whose ligature for "Stonefold" is the wordmark with its two stones, so
    the letters must not be spaced apart or the ligature does not form. */
 .wm {
   font-family: var(--f-brand);
@@ -1914,9 +1904,8 @@ h4 .wm {
   font-size: 1em;
 }
 
-/* Editor (the owner, 2026-11-21, after he found the terminal themes hard to read: "one theme ... what coding or IDEs look like. Maybe with
-   multiple colors within one theme"): dark slate with a code editor's several colours, blue for links, orange for the mark and code,
-   green and purple for the rest. The company's own values, not any named outside palette. Words stay a soft white-blue for reading. Now the app's own values (its Editor theme, 2026-11-21: the pane #1f2330, quieter words #a3acc0, on-accent #1b1e26); only the hairline #333a4b and the bands' card colours are the site's. */
+/* Editor: dark slate with a code editor's several colours, blue for links, orange for the mark and code,
+   green and purple for the rest. The company's own values, not any named outside palette. Words stay a soft white-blue for reading. These are the app's own values (its Editor theme: the pane #1f2330, quieter words #a3acc0, on-accent #1b1e26); only the hairline #333a4b and the bands' card colours are the site's. */
 :root[data-theme="editor"] {
   color-scheme: dark;
   --page: #1b1e26;
@@ -1958,8 +1947,7 @@ h4 .wm {
   --sw-accent: #6cb2ff;
 }
 
-/* The guide, a little denser, in the same shape as before: the list down the left, one topic on the page beside it (the owner, 2026-11-21, after
-   he went back from whole-section pages: "make the vertical more dense"). Tighter type and spacing, a compact list with a count beside each
+/* The guide, a little denser, in the same shape as before: the list down the left, one topic on the page beside it. Tighter type and spacing, a compact list with a count beside each
    section, a wider page, and a front page in three columns. The words and the pages are the same. */
 .guide {
   gap: 2rem;
@@ -2036,7 +2024,7 @@ h4 .wm {
   }
 }
 
-/* The guide as one long page (the owner, 2026-11-21: "just have endless scrolling"): each section a heading, each topic under it, the list down
+/* The guide as one long page: each section a heading, each topic under it, the list down
    the left open on every section and jumping to a place on the page. */
 .article h2.sec {
   display: flex;
@@ -2110,7 +2098,7 @@ h4 .wm {
   display: flex;
 }
 
-/* ===== How it works, on Home (the owner, 2026-11-22: "Can we combine the how it works page into the front page?"). Five
+/* ===== How it works, on Home. Five
    steps in the evergreen band, each its number and line beside a few sentences, one under the other on a phone. ===== */
 .how-steps {
   margin: 1.75rem 0 0;
@@ -2174,11 +2162,9 @@ h4 .wm {
   text-wrap: balance;
 }
 
-/* ===== No top bar (the owner, 2026-11-22: "get rid of the top menu bar", the logo and name "a bit bigger", the theme
-   drop down kept "but move it out of the top menu bar"). The header has no fill, stripe or line; the mark and the
+/* ===== No top bar. The header has no fill, stripe or line; the mark and the
    wordmark are larger; the theme picker floats in the top right corner as a pill, so the themes can be tried while
-   reading. Home's hero has no background picture: the big wordmark and then faint marks were tried there and taken out (the
-   owner, 2026-11-22: "yes please remove the background logos"). ===== */
+   reading. Home's hero has no background picture: the big wordmark and then faint marks were tried there and taken out. ===== */
 .top {
   background: none;
   border-top: 0;
@@ -2244,8 +2230,7 @@ h4 .wm {
   }
 }
 
-/* ===== The owners' sheep (their flock-v2 drawing, the game's sheep), in a few places (the owner, 2026-11-22: a sheep
-   as the mascot, "use the sheep style from the game"). Its own colours in every theme, as the owners drew it. ===== */
+/* ===== The sheep, drawn by the owners. In a few places, in its own colours in every theme. ===== */
 .sheep .sh-wool { fill: #FFFFFF; }
 .sheep .sh-edge { stroke: color-mix(in srgb, var(--text) 22%, #E5E8E2); stroke-width: 1.5; }
 .sheep .sh-dark { fill: #354348; }
@@ -2293,7 +2278,7 @@ h4 .wm {
   opacity: 0.6;
 }
 
-/* The bellwether leads to the guide, inside its button (the owner, 2026-11-22: "put the sheep in the Guide button"). */
+/* The bellwether leads to the guide, inside its button. */
 .button-sheep {
   display: inline-flex;
   align-items: center;
@@ -2306,7 +2291,7 @@ h4 .wm {
   margin: -0.25rem 0;
 }
 
-/* Step 4: the file types an export holds (the owner, 2026-11-22: "List the file types they can download their data in"). */
+/* Step 4: the file types an export holds. */
 .file-types {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -2344,8 +2329,7 @@ h4 .wm {
   font-weight: 600;
 }
 
-/* On Home the theme picker is the third stone in the hero's row, beside See how it works and Guide (the owner,
-   2026-11-22: "go back to the old version one version ago and just add the theme button"). Elsewhere it floats. */
+/* On Home the theme picker is the third stone in the hero's row, beside See how it works and Guide. Elsewhere it floats. */
 .hero .themes {
   position: relative;
   top: auto;
@@ -2405,8 +2389,7 @@ h4 .wm {
   display: none;
 }
 
-/* ===== Denser pages (the owner, 2026-11-22: "tighten up each page and make each one more dense. Get rid of some of the
-   empty space up here"). Less room round the header, the hero, sections, the band and the cards. ===== */
+/* ===== Denser pages. Less room round the header, the hero, sections, the band and the cards. ===== */
 .bar {
   padding-top: 1rem;
 }
@@ -2474,16 +2457,13 @@ h4 .wm {
   }
 }
 
-/* ===== The hero's stones laid as a wall (the owner, 2026-11-22: "stack the menu stones to look like that wall", "maybe
-   make each button/stone slightly smaller", then "make each stone a different/varying length like the wall"). Each stone
+/* ===== The hero's stones laid as a wall. Each stone
    takes its own number of units of the wall, and the top course is the longest, hanging past the course under it by a
-   different length at each end (the owner: "stagger them a bit", then "have the top stone section be longer on both
-   ends then the bottom stone section ... with different lengths hanging off each end"). No joint sits over another.
+   different length at each end. No joint sits over another.
    Wide, 15 units: How it works 4, Why Stonefold 5, Price 2, Questions 4 across all 15 (joints after 4, 9, 11) over
    Guide 5, About 4, the theme 3 from the second unit to the thirteenth (joints after 6, 10). Phone, 14 units: How it
    works 7, Why Stonefold 7 across all 14 (joint 7); Price 3, Questions 4, Guide 4 from the second to the twelfth
-   (joints 4, 8); About 4, the theme 5 from the third to the eleventh (joint 6). The theme picker went to the footer for
-   a few minutes on 2026-11-22 and came back (the owner: "put the theme picker back up with the stone menu"). ===== */
+   (joints 4, 8); About 4, the theme 5 from the third to the eleventh (joint 6). ===== */
 .hero .actions {
   display: grid;
   grid-template-columns: repeat(15, 2.25rem);
@@ -2540,7 +2520,7 @@ h4 .wm {
   }
 }
 
-/* Home's line names each part and promise with its sign beside the word (the owner, 2026-11-22: "incorporate everything into a paragraph and the logos show up in the paragraph", then "Yes, push it"). */
+/* Home's line names each part and promise with its sign beside the word. */
 .lede .signed {
   white-space: nowrap;
 }
@@ -2560,8 +2540,7 @@ h4 .wm {
   line-height: 1.75;
 }
 
-/* ===== The way back, on every page but Home (the owner, 2026-11-22: "Should we have a way to get back other than pressing
-   the back button? I noticed the navigation/menu goes away on the other pages", then yes to a smaller stone row): the
+/* ===== The way back, on every page but Home: the
    stones in one short course under the mark, the page you are on ringed. Home keeps its wall and the theme picker. ===== */
 .stones-mini {
   display: flex;
@@ -2603,7 +2582,7 @@ h4 .wm {
   margin: -0.25rem 0.375rem -0.25rem 0;
 }
 
-/* ===== The foot of the page, less crammed (the owner, 2026-11-22: "Lets fix the bottom that is all crammed here"). Room
+/* ===== The foot of the page, less crammed. Room
    under Home's drawing; the footer in two lines: the pages first, then the mark, the legal line and the address. ===== */
 
 .foot {
@@ -2632,7 +2611,7 @@ h4 .wm {
   }
 }
 
-/* ===== Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"). A row that snaps a
+/* ===== Home's flip-through of pictures of the app. A row that snaps a
    picture to the middle; flip.js turns and dims the ones beside it as it scrolls. Without the script it is a plain row
    that scrolls; with "reduce motion" on, the pictures lie flat. ===== */
 .flip {
@@ -2741,7 +2720,7 @@ h4 .wm {
   }
 }
 
-/* Home's line that the app is coming (the owner, 2026-11-22; "Not available yet." was taken off it the same day). */
+/* Home's line that the app is coming. */
 .hero .soon {
   margin: 0.375rem 0 0;
   color: var(--link);
@@ -2749,8 +2728,7 @@ h4 .wm {
   font-weight: 600;
 }
 
-/* The questions' search underlines the words it found in the questions still showing, as the guide's results do
-   (the owner, 2026-11-22: "Yes, build it"). The underline only: the text keeps its own colour and font, so a wordmark
+/* The questions' search underlines the words it found in the questions still showing, as the guide's results do. The underline only: the text keeps its own colour and font, so a wordmark
    stays the logo. */
 .article .topic mark {
   background: none;
@@ -2758,9 +2736,8 @@ h4 .wm {
   color: inherit;
 }
 
-/* The flip-through's pictures (2026-11-22): each picture is there in every theme, and only the one for the visitor's
-   theme shows (the owner: "I would like the theme of the screenshots to match the theme that the visitor of the website
-   has selected"). A hidden picture is never fetched, because each is loaded lazily and a hidden one never comes into
+/* The flip-through's pictures: each picture is there in every theme, and only the one for the visitor's
+   theme shows. A hidden picture is never fetched, because each is loaded lazily and a hidden one never comes into
    view. Plain follows the device, light or dark. With no theme set (no script), Sage when the device is dark and Linen
    when it is light, as theme.js does. */
 .flip-card .shot {
