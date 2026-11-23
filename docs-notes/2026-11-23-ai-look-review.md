@@ -84,6 +84,12 @@ Status: **done** = fixed and committed (`c7202fd`, `c8ee101`, `e36e9ae` on `clau
 ## Update 2026-11-23, later: the owner said "do all six"
 Items 5 to 10 were all done on his word: Privacy's picker sentence (and, because it was also wrong, "the one small script": the site has four scripts, so it now says which one keeps anything), How it works steps 3 and 5 trimmed to say each claim once, Home's paragraph no longer says "brings ... together in one app" after a headline that says it (the signs and the six parts stay), Why Stonefold folded into About (its six "Because" reasons under his words, the duplicate price tile dropped, the page deleted, the wall re-laid with six stones), and Price's "so $24.99 is the whole price" now "so that is the whole price". About's own sentence with $24.99 is left as his words, so the number is on Price (twice), About and Questions.
 
+## Update 2026-11-23, later still: his "All six", item by item
+The owner's answer to items 5 to 10 was "All six" (relayed by the status chat, who had shown him each with its wording or options). What each became, beyond the first pass above:
+- 8: Home's headline is now "One private app for everything you keep." (it replaces the "Use A" headline of 2026-11-22: his newer decision wins); the paragraph under it lists the six parts with their signs. The page title and the descriptions still open with the parts.
+- 9: `/why/` is a tiny page that sends to `/about/#why`, as an old guide address does (check.py allows it for that one page). The second reason's body, which didn't answer its heading, now reads "Stonefold has no AI, and we run no server, so we never receive what you keep and have nothing to train anything on." (only claims the site already makes elsewhere).
+- 10: the price is stated on Price; About's and Questions' figures are now links to Price. About's own sentence is otherwise as he wrote it.
+
 ## What only the owner can decide (from the list above)
 - 5, 6, 7: the three small wording fixes on Privacy and How it works (claims about privacy and sync).
 - 8, 9, 10: whether Home's headline and paragraph should stop listing the same parts, whether Why Stonefold should fold into About, and where the price is stated.

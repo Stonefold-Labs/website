@@ -359,8 +359,16 @@ def check_page(site, file):
             problems.append("an old guide address has <link rel=canonical href=\"/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
+    elif parts == ("why", "index.html"):
+        # Why Stonefold was folded into About on 2026-11-23; its old address sends there, as an old guide address does.
+        if page.refresh != "0; url=/about/#why":
+            problems.append("the old Why address sends to /about/#why with <meta http-equiv=refresh content=\"0; url=/about/#why\">")
+        if page.canonical != "/about/":
+            problems.append("the old Why address has <link rel=canonical href=\"/about/\">")
+        if "why" not in ids_of(site, "/about/"):
+            problems.append("About has no place called why")
     elif page.refresh is not None or page.canonical is not None:
-        problems.append("only an old guide address may carry a meta refresh or a canonical link")
+        problems.append("only an old guide address, and the old Why address, may carry a meta refresh or a canonical link")
     if on_home and page.menu_hidden is not True:
         problems.append("Home's theme menu must exist and start hidden")
     if not on_home and page.menu_hidden is not None:
