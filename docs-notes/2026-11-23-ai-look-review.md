@@ -4,7 +4,7 @@ The owner's words, 2026-11-23 about 00:15: "Ask Claude to change/update/get rid 
 
 The good news first. The words are already plain. Across Home, How it works, Why, Price, Questions, About, Privacy, Support, 404 and the guide there are no em dashes, no exclamation marks, no sparkle or emoji, no gradients, and none of seamless, effortless, powerful, unlock (as marketing), elevate, all-in-one, reimagined, "ready to get started". The questions are specific and the answers are short. What reads as machine-made is structure and repetition, and the code underneath.
 
-Status: **done** = fixed and pushed, **proposal** = changes what a claim says or is the owner's own wording, so it needs his yes, **kept** = looked at and left alone on purpose.
+Status: **done** = fixed and committed (`c7202fd`, `c8ee101`, `e36e9ae` on `claude/ai-look-site-d5d182`; the push to `main` was refused by the permission check on 2026-11-23, so they are not live yet), **proposal** = changes what a claim says or is the owner's own wording, so it needs his yes, **kept** = looked at and left alone on purpose.
 
 ## Pages
 
