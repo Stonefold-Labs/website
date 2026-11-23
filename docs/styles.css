@@ -694,65 +694,6 @@ nav a[aria-current="page"] {
   min-width: 0;
 }
 
-.rail {
-  position: relative;
-  z-index: 2;
-  background: var(--raised);
-  border-right: 1px solid var(--rule);
-}
-
-/* Narrow, the rail shows each section's sign. Pointed at or tabbed into, it opens over the page to show the names. */
-.rail ul {
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  width: var(--rail);
-  height: 100vh;
-  max-height: 100%;
-  margin: 0;
-  padding: 0.75rem 0.375rem;
-  overflow: hidden;
-  background: var(--raised);
-  list-style: none;
-}
-
-.rail:hover ul,
-.rail:focus-within ul {
-  width: 15.5rem;
-  border-right: 1px solid var(--rule);
-  box-shadow: 0.5rem 0 1.5rem rgba(20, 30, 27, 0.12);
-}
-
-.rail a {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 2.75rem;
-  padding: 0 0.5rem;
-  border-radius: 0.5rem;
-  color: var(--text);
-  font: 500 1.0625rem/1.25 var(--display);
-  text-decoration: none;
-  white-space: nowrap;
-}
-
-.rail a:hover,
-.rail a[aria-current="page"] {
-  background: var(--page);
-  font-weight: 500;
-  text-decoration: none;
-}
-
-.rail a:focus-visible {
-  outline-offset: -2px;
-}
-
-.rail .glyph {
-  flex: none;
-}
-
 /* The signs: line drawings made for the site, in the text's colour, with one part in amber or sage. */
 
 .glyph {
@@ -817,15 +758,6 @@ ul {
   color: var(--quiet);
 }
 
-.label {
-  margin: 0;
-  color: var(--quiet);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-}
-
 /* Home: the headline beside the mark */
 
 .hero {
@@ -835,14 +767,6 @@ ul {
   align-items: center;
   padding-top: 4rem;
   padding-bottom: 4rem;
-}
-
-.kicker {
-  margin: 0 0 0.75rem;
-  color: var(--link);
-  font-family: var(--display);
-  font-size: 1.0625rem;
-  font-weight: 600;
 }
 
 .lede {
@@ -878,28 +802,12 @@ ul {
   text-decoration: underline;
 }
 
-.hero-art svg {
-  width: 100%;
-  max-width: 24rem;
-  height: auto;
-  margin: 0 auto;
-}
-
-.hero-art .stones {
-  fill: var(--stone);
-}
-
 /* Sections, parted by a hairline */
 
 .section {
   padding-top: 3rem;
   padding-bottom: 3.5rem;
   border-top: 1px solid var(--rule);
-}
-
-.intro {
-  font-size: 1.0625rem;
-  line-height: 1.55;
 }
 
 /* The reasons: each a belief, in the display face, with one plain sentence about what the app does. */
@@ -957,220 +865,11 @@ ul {
   line-height: 1.55;
 }
 
-/* One section of the app: its words beside a drawing. Every other one is turned round. */
-
-.part {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: 2rem 3.5rem;
-  align-items: center;
-  margin-top: 3rem;
-  padding-top: 3rem;
-  border-top: 1px solid var(--rule);
-  scroll-margin-top: 1rem;
-}
-
-.part:nth-of-type(even) .part-words {
-  order: 2;
-}
-
-.part-name {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0 0 0.75rem;
-  font: 500 1.75rem/1.2 var(--display);
-  letter-spacing: -0.005em;
-}
-
-.part-lede {
-  color: var(--quiet);
-  font-size: 1.0625rem;
-  line-height: 1.55;
-}
-
-.points {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.points p {
-  margin: 0.125rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-/* Where a picture of the app goes. Until the app's own pictures are made, a drawing stands there:
-   shapes only, no words. A picture is an <img> in the same figure, and keeps the caption. */
-
-.slot {
-  margin: 0;
-}
-
-.slot .drawing,
-.slot img {
-  width: 100%;
-  height: auto;
-  border-radius: 0.75rem;
-  box-shadow: 0 0.75rem 2rem rgba(20, 30, 27, 0.08);
-}
-
-.slot img {
-  background: var(--raised);
-  border: 1px solid var(--rule);
-}
-
-.slot figcaption,
 .vault figcaption {
   margin-top: 0.75rem;
   color: var(--quiet);
   font-size: 0.875rem;
   line-height: 1.45;
-}
-
-.d-panel {
-  fill: var(--raised);
-  stroke: var(--rule);
-}
-
-.d-rule,
-.d-rule2 {
-  fill: none;
-  stroke: var(--rule);
-}
-
-.d-rule2 {
-  stroke: var(--quiet);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-}
-
-.d-ink {
-  fill: var(--text);
-}
-
-.d-soft {
-  fill: var(--quiet);
-  opacity: 0.45;
-}
-
-.d-faint {
-  fill: var(--quiet);
-  opacity: 0.25;
-}
-
-.d-quietfill {
-  fill: var(--quiet);
-  opacity: 0.7;
-}
-
-.d-linkfill {
-  fill: var(--link);
-  opacity: 0.6;
-}
-
-.d-pill,
-.d-tile {
-  fill: var(--page);
-  stroke: var(--rule);
-}
-
-.d-sel {
-  fill: var(--page);
-}
-
-.d-today {
-  fill: none;
-  stroke: var(--amber-mark);
-  stroke-width: 1.5;
-}
-
-.d-event {
-  fill: var(--event);
-}
-
-.d-ring {
-  fill: none;
-  stroke: var(--quiet);
-  stroke-width: 1.5;
-}
-
-.d-bill {
-  fill: none;
-  stroke: var(--amber-mark);
-  stroke-width: 1.6;
-  stroke-linejoin: round;
-}
-
-.d-done,
-.d-sagefill {
-  fill: var(--sage-mark);
-}
-
-.d-amberfill {
-  fill: var(--amber-mark);
-}
-
-.d-tick {
-  fill: none;
-  stroke: var(--raised);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.aside {
-  margin: 3rem 0 0;
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--rule);
-  color: var(--quiet);
-  font: italic 1.0625rem/1.5 var(--display);
-  text-align: center;
-}
-
-/* How the sections work together: three cards, each headed by the two signs it joins. */
-
-.flows {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0;
-  padding: 0;
-  list-style: none;
-}
-
-.flows li {
-  padding: 1.125rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.5rem;
-}
-
-.flow-signs {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin: 0 0 0.75rem;
-}
-
-.arrow {
-  color: var(--quiet);
-}
-
-.flows h3 {
-  font: 500 1.25rem/1.75rem var(--display);
-}
-
-.flows li > p:last-child {
-  margin: 0.375rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.5;
 }
 
 /* Encryption, privacy and security: an evergreen band from edge to edge. Inside it the page's
@@ -1189,10 +888,6 @@ ul {
   border-top: 3px solid var(--stripe);
   color: var(--text);
   scroll-margin-top: 0;
-}
-
-.band .intro {
-  color: var(--quiet);
 }
 
 .vault {
@@ -1288,49 +983,6 @@ ul {
   font-size: 0.875rem;
 }
 
-.keeps {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.keeps li {
-  padding: 1.125rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.5rem;
-}
-
-.keeps h3 {
-  font: 500 1.25rem/1.75rem var(--display);
-}
-
-.keeps p {
-  margin: 0.375rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.55;
-}
-
-.minor {
-  margin-top: 1.75rem;
-  font: 500 1.25rem/1.75rem var(--display);
-}
-
-.minor + p {
-  margin-top: 0.375rem;
-}
-
-.split {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 2rem 3rem;
-  align-items: start;
-}
-
 .prose {
   max-width: 40rem;
 }
@@ -1413,31 +1065,11 @@ footer {
 /* Narrower screens */
 
 @media (max-width: 62rem) {
-  .keeps {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 
 }
 
 @media (max-width: 56rem) {
   .reasons {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .split,
-  .part {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .part:nth-of-type(even) .part-words {
-    order: 0;
-  }
-
-  .slot {
-    max-width: 30rem;
-  }
-
-  .flows {
     grid-template-columns: minmax(0, 1fr);
   }
 }
@@ -1449,8 +1081,7 @@ footer {
     grid-template-columns: minmax(0, 1fr);
   }
 
-  .corner,
-  .rail {
+  .corner {
     display: none;
   }
 
@@ -1485,27 +1116,9 @@ footer {
     padding-bottom: 2.5rem;
   }
 
-  .hero-art {
-    display: none;
-  }
-
   .section {
     padding-top: 2.25rem;
     padding-bottom: 2.5rem;
-  }
-
-  .part {
-    margin-top: 2.25rem;
-    padding-top: 2.25rem;
-  }
-
-  .part-name {
-    font-size: 1.5rem;
-  }
-
-  .points,
-  .keeps {
-    grid-template-columns: minmax(0, 1fr);
   }
 
   .band {
@@ -1550,32 +1163,6 @@ footer {
 }
 
 /* ===== The launch version (2026-11-21): the features pages, How it works and the closing links ===== */
-
-.d-area {
-  fill: var(--sage-mark);
-  stroke: none;
-  opacity: 0.16;
-}
-
-.d-line {
-  fill: none;
-  stroke: var(--sage-mark);
-  stroke-width: 3;
-  stroke-linecap: round;
-}
-
-.d-line2 {
-  fill: none;
-  stroke: var(--amber-mark);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-}
-
-.part.bare {
-  margin-top: 1.5rem;
-  padding-top: 0;
-  border-top: 0;
-}
 
 .has-step {
   display: flex;
@@ -1624,348 +1211,19 @@ footer {
   border-color: var(--quiet);
 }
 
-.link-more {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  margin-top: 0.875rem;
-  color: var(--link);
-  font-size: 0.9375rem;
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.link-more:hover {
-  text-decoration: underline;
-}
-
-/* Cards: a sign, a name, a few plain sentences. */
-.cards,
-.groups {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.groups {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.cards > li,
-.groups > li {
-  padding: 1.25rem 1.375rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.75rem;
-  scroll-margin-top: 1rem;
-}
-
-.groups > li {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.groups .link-more {
-  margin-top: auto;
-  padding-top: 0.875rem;
-}
-
-.card-head {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0 0 0.5rem;
-}
-
-.group-signs {
-  display: flex;
-  gap: 0.625rem;
-  margin: 0 0 0.75rem;
-}
-
-.cards h3,
-.groups h3 {
-  margin: 0;
-  font: 500 1.375rem/1.3 var(--display);
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
-
-.cards p,
-.groups p {
-  margin: 0.5rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.55;
-}
-
-.groups p {
-  margin-bottom: 0;
-}
-
-.ticks {
-  display: grid;
-  gap: 0.375rem;
-  margin: 0.875rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.ticks li {
-  position: relative;
-  padding-left: 1.375rem;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-.ticks li::before {
-  content: "";
-  position: absolute;
-  top: 0.55em;
-  left: 0;
-  width: 0.75rem;
-  height: 0.3125rem;
-  border-radius: 0.2rem;
-  background: var(--stripe);
-}
-
-.part-words > p {
-  max-width: 34em;
-}
-
-/* "Stays here" beside "can leave", for the hard idea. */
-.compare {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1rem;
-  margin: 1.5rem 0 0;
-}
-
-.compare > div {
-  padding: 1.25rem 1.375rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.75rem;
-}
-
-.compare .stay {
-  border-left: 3px solid var(--sage-mark);
-}
-
-.compare .leave {
-  border-left: 3px solid var(--amber-mark);
-}
-
-.compare h3 {
-  margin: 0;
-  font: 500 1.25rem/1.4 var(--display);
-}
-
-.compare p {
-  margin: 0.25rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-}
-
-/* The features index: every feature in one line. */
-.hub-title {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.hub-title a {
-  color: var(--text);
-  text-decoration: none;
-}
-
-.hub-title a:hover {
-  text-decoration: underline;
-}
-
-.hub {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 2.5rem;
-  margin: 1.25rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.hub li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  gap: 0 0.875rem;
-  padding: 0.875rem 0;
-  border-top: 1px solid var(--rule);
-}
-
-.hub a {
-  color: var(--text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.hub a:hover {
-  text-decoration: underline;
-}
-
-.hub p {
-  margin: 0.125rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.5;
-}
-
-/* Short answers that open in place. */
-.faq {
-  max-width: 44rem;
-  margin: 1.5rem 0 0;
-}
-
-.faq details {
-  border-top: 1px solid var(--rule);
-}
-
-.faq details:last-child {
-  border-bottom: 1px solid var(--rule);
-}
-
-.faq summary {
-  position: relative;
-  display: block;
-  padding: 1rem 2rem 1rem 0;
-  font: 500 1.125rem/1.4 var(--display);
-  cursor: pointer;
-  list-style: none;
-}
-
-.faq summary::-webkit-details-marker {
-  display: none;
-}
-
-.faq summary::after {
-  content: "+";
-  position: absolute;
-  top: 1rem;
-  right: 0;
-  color: var(--quiet);
-  font-weight: 400;
-}
-
-.faq details[open] summary::after {
-  content: "\2212";
-}
-
-.faq summary:focus-visible {
-  outline: 2px solid var(--link);
-  outline-offset: 2px;
-}
-
-.faq details p {
-  margin: 0 0 1rem;
-  color: var(--quiet);
-  line-height: 1.6;
-}
-
-/* The other groups, at the foot of a features page. */
-.next {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(13.5rem, 1fr));
-  gap: 0.75rem;
-  margin: 1.5rem 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.next a {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 3.25rem;
-  padding: 0.5rem 0.875rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 0.625rem;
-  color: var(--text);
-  font: 500 1.0625rem/1.3 var(--display);
-  text-decoration: none;
-}
-
-.next a:hover {
-  border-color: var(--quiet);
-}
-
-.closing {
-  text-align: center;
-}
-
-.closing h2 {
-  margin-bottom: 0;
-}
-
-.closing .actions {
-  justify-content: center;
-}
-
 @media (max-width: 62rem) {
-  .groups {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 56rem) {
-  .cards,
-  .compare,
-  .hub {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 @media (max-width: 44rem) {
-  .groups {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .part.bare {
-    margin-top: 1.25rem;
-  }
-}
-
-.cards.three {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
-.cards > li > .link-more {
-  display: inline-flex;
-}
-
-.minor-h {
-  margin-top: 3rem;
-  padding-top: 3rem;
-  border-top: 1px solid var(--rule);
 }
 
 @media (max-width: 62rem) {
-  .cards.three {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 56rem) {
-  .cards.three {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-.ticks + p {
-  margin-top: 1rem;
 }
 
 /* Four encrypted files, when Files is kept. */
@@ -2003,10 +1261,6 @@ footer {
   }
 }
 
-.cards > li.wide {
-  grid-column: 1 / -1;
-}
-
 /* Home, launch version: a centered hero with the app's window drawn under it, and one big sentence over each section
    (ideas from the three sites the owner named: ProjectionLab, Notion, Thunderbird). */
 .hero.center {
@@ -2036,27 +1290,6 @@ footer {
 
 .hl {
   color: var(--link);
-}
-
-.slot.window {
-  max-width: 62rem;
-  margin: 2.5rem auto 0;
-}
-
-.slot.window figcaption {
-  text-align: center;
-}
-
-.section.airy {
-  padding-top: 4.5rem;
-  padding-bottom: 4.5rem;
-}
-
-/* A section that follows a picture needs no line over it (the owner, 2026-11-22). */
-.section.airy.flush {
-  border-top: 0;
-  padding-top: 2.5rem;
-  padding-bottom: 3.75rem;
 }
 
 .lead {
@@ -2091,11 +1324,6 @@ footer {
     font-size: 2.25rem;
   }
 
-  .section.airy {
-    padding-top: 3rem;
-    padding-bottom: 3rem;
-  }
-
   .lead h2 {
     font-size: 1.75rem;
   }
@@ -2104,14 +1332,6 @@ footer {
 /* The same centered opening on the features pages and How it works. */
 .hero.center .jump {
   justify-content: center;
-}
-
-.hero.center .hero-art {
-  margin-top: 2.5rem;
-}
-
-.hero.center .hero-art svg {
-  max-width: 22rem;
 }
 
 .has-step {
@@ -2135,12 +1355,6 @@ footer {
   }
 }
 
-.has-step + .intro {
-  margin-right: auto;
-  margin-left: auto;
-  text-align: center;
-}
-
 /* In the evergreen band the badge takes the band's own light and dark, so it shows in every theme. */
 .band .step {
   background: var(--band-text);
@@ -2155,11 +1369,6 @@ h2 {
 }
 
 .section {
-  padding-top: 2rem;
-  padding-bottom: 2.25rem;
-}
-
-.section.airy {
   padding-top: 2rem;
   padding-bottom: 2.25rem;
 }
@@ -2193,25 +1402,6 @@ h2 {
   margin-top: 1.25rem;
 }
 
-.hero.center .hero-art {
-  margin-top: 1rem;
-}
-
-.hero.center .hero-art svg {
-  max-width: 14rem;
-}
-
-.slot.window {
-  max-width: 58rem;
-  margin-top: 1.5rem;
-}
-
-.slot .drawing,
-.slot img {
-  border-radius: 0.5rem;
-  box-shadow: none;
-}
-
 .lead {
   margin-bottom: 1.25rem;
 }
@@ -2236,31 +1426,6 @@ h2 {
   font-size: 1rem;
 }
 
-.part {
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: 1.5rem 2.5rem;
-  margin-top: 1.75rem;
-  padding-top: 1.75rem;
-}
-
-.part.bare {
-  margin-top: 0.75rem;
-}
-
-.part .slot {
-  max-width: 24rem;
-}
-
-.part-name {
-  margin-bottom: 0.5rem;
-  font-size: 1.5rem;
-}
-
-.points {
-  gap: 0.625rem;
-  margin-top: 1rem;
-}
-
 .band {
   padding-top: 2.25rem;
   padding-bottom: 2.5rem;
@@ -2272,12 +1437,7 @@ h2 {
 }
 
 /* Cards: no boxes. Each is a column under a hairline. */
-.cards > li,
-.groups > li,
-.reasons li,
-.flows li,
-.keeps li,
-.compare > div {
+.reasons li {
   padding: 0.875rem 0 0;
   background: none;
   border: 0;
@@ -2285,27 +1445,9 @@ h2 {
   border-radius: 0;
 }
 
-.compare .stay {
-  border-top: 2px solid var(--sage-mark);
-}
-
-.compare .leave {
-  border-top: 2px solid var(--amber-mark);
-}
-
-.cards,
-.groups,
-.reasons,
-.flows,
-.keeps,
-.compare {
+.reasons {
   gap: 0.5rem 2rem;
   margin-top: 1rem;
-}
-
-.cards h3,
-.groups h3 {
-  font-size: 1.25rem;
 }
 
 .reasons h3 {
@@ -2316,26 +1458,9 @@ h2 {
   font-size: 1.75rem;
 }
 
-.reasons p,
-.cards p,
-.groups p,
-.keeps p,
-.flows li > p:last-child {
+.reasons p {
   margin-top: 0.25rem;
   font-size: 0.9375rem;
-}
-
-.keeps h3,
-.flows h3 {
-  font-size: 1.125rem;
-}
-
-.groups > li {
-  padding-bottom: 0.5rem;
-}
-
-.group-signs {
-  margin-bottom: 0.5rem;
 }
 
 /* Jump links and "more in Stonefold": plain links, not pills or boxes. */
@@ -2358,40 +1483,11 @@ h2 {
   text-decoration-color: var(--text);
 }
 
-.next {
-  gap: 0.25rem 1.75rem;
-  margin-top: 1rem;
-}
-
-.next a {
-  min-height: 0;
-  padding: 0.375rem 0;
-  background: none;
-  border: 0;
-  border-radius: 0;
-}
-
-.hub li {
-  padding: 0.625rem 0;
-}
-
-.faq summary {
-  padding: 0.75rem 2rem 0.75rem 0;
-}
-
-.faq summary::after {
-  top: 0.75rem;
-}
-
 @media (min-width: 62.01rem) {
-  .hub {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 @media (max-width: 44rem) {
-  .section,
-  .section.airy {
+  .section {
     padding-top: 1.5rem;
     padding-bottom: 1.75rem;
   }
@@ -2410,84 +1506,11 @@ h2 {
   }
 }
 
-/* Four plain facts, one centered strip under the window's drawing: runs locally, no AI, offline, iCloud sync if enabled
-   (the owner, 2026-11-22). */
-.facts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem 3rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.facts .card-head {
-  margin: 0;
-}
-
-.facts h3 {
-  margin: 0;
-  font: 500 1.0625rem/1.3 var(--display);
-  white-space: nowrap;
-}
-
-/* The six parts, one centered row of signs and names (the owner, 2026-11-22). */
-.parts {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 2.25rem 1rem;
-  margin: 2.5rem 0 0;
-  padding: 0;
-  list-style: none;
-  text-align: center;
-}
-
-.parts > li {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.parts .group-signs {
-  justify-content: center;
-  margin: 0 0 0.75rem;
-}
-
-.parts h3 {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.3;
-}
-
-/* The side menu: wide enough for its longest name, and names that never run past the edge. */
-.rail:hover ul,
-.rail:focus-within ul {
-  width: 18.5rem;
-}
-
-.rail a span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 @media (max-width: 62rem) {
-  .parts {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 /* On a phone the facts stand one under the other, their signs in a line, the list centered. */
 @media (max-width: 44rem) {
-  .facts {
-    display: grid;
-    justify-content: center;
-    gap: 0.875rem;
-  }
-
-  .parts {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
 
 /* ===== Headings in Stonefold Display, the font drawn from the logo's letters (the owner, 2026-11-21). It has one weight,
@@ -2495,30 +1518,14 @@ h2 {
 h1,
 h2,
 h3,
-.part-name,
 .lead h2,
 .has-step,
 .reasons .figure,
-.reasons h3,
-.cards h3,
-.groups h3,
-.facts h3,
-.keeps h3,
-.flows h3,
-.compare h3 {
+.reasons h3 {
   font-family: var(--f-brand);
   font-weight: 400;
   font-synthesis: none;
   letter-spacing: 0;
-}
-
-.compare .stay,
-.compare .leave {
-  border-left: 0;
-}
-
-.part + .prose {
-  margin-top: 1rem;
 }
 
 /* ===== The guide: a tree of pages down the left, the page beside it. No script: groups open and close with details. ===== */
@@ -2682,77 +1689,6 @@ kbd {
   color: var(--quiet);
 }
 
-.pager {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-top: 2.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--rule);
-}
-
-.pager a {
-  display: flex;
-  flex-direction: column;
-  max-width: 48%;
-  color: var(--text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.pager a:hover {
-  text-decoration: underline;
-}
-
-.pager a span {
-  color: var(--quiet);
-  font-size: 0.8125rem;
-  font-weight: 400;
-}
-
-.pager .next-page {
-  align-items: flex-end;
-  text-align: right;
-}
-
-.toc-h {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-}
-
-.toc {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 2rem;
-  margin: 0.5rem 0 1.25rem;
-  padding: 0;
-  list-style: none;
-}
-
-.toc li {
-  margin: 0;
-  padding: 0.625rem 0;
-  border-top: 1px solid var(--rule);
-}
-
-.toc a {
-  color: var(--text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.toc a:hover {
-  text-decoration: underline;
-}
-
-.toc p {
-  margin: 0.125rem 0 0;
-  color: var(--quiet);
-  font-size: 0.9375rem;
-  line-height: 1.45;
-}
-
 @media (max-width: 56rem) {
   .guide {
     grid-template-columns: minmax(0, 1fr);
@@ -2782,10 +1718,6 @@ kbd {
   .tree-m > nav {
     padding-bottom: 0.75rem;
   }
-
-  .toc {
-    grid-template-columns: minmax(0, 1fr);
-  }
 }
 
 .article .keys {
@@ -2794,10 +1726,6 @@ kbd {
 
 .tree ul {
   display: block;
-}
-
-.pager {
-  flex-wrap: wrap;
 }
 
 .article code {
@@ -2965,11 +1893,6 @@ kbd {
   display: inline-flex;
 }
 
-.toc-intro {
-  margin: 0.25rem 0 0;
-  color: var(--quiet);
-}
-
 /* The name, set as the logo wherever it is written (the owner, 2026-11-21: "make stonefold match the logo everywhere that it is
    named"). The word stays text. Set in the heading font, whose ligature for "Stonefold" is the wordmark with its two stones, so
    the letters must not be spaced apart or the ligature does not form. */
@@ -3106,49 +2029,10 @@ h4 .wm {
   margin: 0.15rem 0;
 }
 
-.pager {
-  margin-top: 1.5rem;
-  padding-top: 0.75rem;
-}
-
-/* The front page: three columns of titles, each with its one line. */
-.toc {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 1.5rem;
-  margin: 0.25rem 0 0.75rem;
-}
-
-.toc li {
-  padding: 0.4rem 0;
-}
-
-.toc a {
-  font-size: 0.9375rem;
-}
-
-.toc p {
-  font-size: 0.8125rem;
-  line-height: 1.35;
-}
-
-.toc-h {
-  margin: 1rem 0 0.1rem;
-  font-size: 1.125rem;
-}
-
-.toc-intro {
-  margin: 0;
-  font-size: 0.875rem;
-}
-
 @media (max-width: 56rem) {
   .guide {
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
-  }
-
-  .toc {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 
@@ -3279,11 +2163,6 @@ h4 .wm {
   margin: 1.25rem 0;
 }
 
-.section .lead + .faq {
-  margin-right: auto;
-  margin-left: auto;
-}
-
 @media (max-width: 44rem) {
   .how-steps > li {
     grid-template-columns: minmax(0, 1fr);
@@ -3341,7 +2220,6 @@ h4 .wm {
   backdrop-filter: blur(12px);
 }
 
-
 @media (max-width: 44rem) {
   .bar {
     padding-top: 1rem;
@@ -3364,20 +2242,6 @@ h4 .wm {
   .theme-name {
     display: none;
   }
-}
-
-/* What each part holds, a short list under its name (the owner, 2026-11-22: "list features/options under each of these"). */
-.part-list {
-  margin: 0.625rem 0 0;
-  padding: 0;
-  list-style: none;
-  color: var(--quiet);
-  font-size: 0.875rem;
-  line-height: 1.45;
-}
-
-.part-list li + li {
-  margin-top: 0.25rem;
 }
 
 /* ===== The owners' sheep (their flock-v2 drawing, the game's sheep), in a few places (the owner, 2026-11-22: a sheep
@@ -3529,9 +2393,7 @@ h4 .wm {
 }
 
 /* The questions' search hides what doesn't match; these keep their own display otherwise. */
-.jump[hidden],
-.faq[hidden],
-.faq details[hidden] {
+.jump[hidden] {
   display: none;
 }
 
@@ -3566,19 +2428,9 @@ h4 .wm {
   margin-top: 1rem;
 }
 
-.slot.window {
-  margin-top: 1.25rem;
-}
-
-.section,
-.section.airy {
+.section {
   padding-top: 1.75rem;
   padding-bottom: 2rem;
-}
-
-.section.airy.flush {
-  padding-top: 1.5rem;
-  padding-bottom: 1.75rem;
 }
 
 .lead {
@@ -3753,9 +2605,6 @@ h4 .wm {
 
 /* ===== The foot of the page, less crammed (the owner, 2026-11-22: "Lets fix the bottom that is all crammed here"). Room
    under Home's drawing; the footer in two lines: the pages first, then the mark, the legal line and the address. ===== */
-.slot.window {
-  margin-bottom: 2.5rem;
-}
 
 .foot {
   row-gap: 0.875rem;
@@ -3831,7 +2680,6 @@ h4 .wm {
   margin-left: calc(min(66vw, 42rem) * -0.42);
 }
 
-.flip-card .drawing,
 .flip-card img {
   display: block;
   width: 100%;
