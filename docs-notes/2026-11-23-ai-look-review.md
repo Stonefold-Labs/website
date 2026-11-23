@@ -86,7 +86,7 @@ Items 5 to 10 were all done on his word: Privacy's picker sentence (and, because
 
 ## Update 2026-11-23, later still: his "All six", item by item
 The owner's answer to items 5 to 10 was "All six" (relayed by the status chat, who had shown him each with its wording or options). What each became, beyond the first pass above:
-- 8: Home's headline is now "One private app for everything you keep." (it replaces the "Use A" headline of 2026-11-22: his newer decision wins); the paragraph under it lists the six parts with their signs. The page title and the descriptions still open with the parts.
+- 8: Home's headline is now "One private app for the things you keep." (first "…for everything you keep."; on 2026-11-23 he answered "Yes, change it" to dropping "everything", which he had dropped from the positioning on 2026-11-22; the description and the link-preview description open with the same words, the title still names the parts) (it replaces the "Use A" headline of 2026-11-22: his newer decision wins); the paragraph under it lists the six parts with their signs. The page title and the descriptions still open with the parts.
 - 9: `/why/` is a tiny page that sends to `/about/#why`, as an old guide address does (check.py allows it for that one page). The second reason's body, which didn't answer its heading, now reads "Stonefold has no AI, and we run no server, so we never receive what you keep and have nothing to train anything on." (only claims the site already makes elsewhere).
 - 10: the price is stated on Price; About's and Questions' figures are now links to Price. About's own sentence is otherwise as he wrote it.
 
