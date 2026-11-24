@@ -25,6 +25,11 @@ SITE = ROOT / "docs"
 # "Stonefold Labs LLC" in its footer, and the privacy page says it runs the website.
 COMPANY_FORMED = True
 
+# The site's own address. Every page but the "not here" page carries a canonical link to its own address there (an old
+# guide address to the guide, the old Why address to About), and sitemap.xml lists the pages (Batch 4 of the pre-launch
+# review, 2026-11-24: "a new address" is found sooner with both).
+ADDRESS = "https://stonefoldapp.com"
+
 CSP = "default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; font-src 'self'; base-uri 'none'; form-action 'none'"
 
 # The one font file (the owner, 2026-11-21: "Draw our own heading font from the logo"): Stonefold Display, drawn from the
@@ -82,7 +87,7 @@ OUTSIDE_LINKS = {
 # and lives only under /pictures/. There are none until the app's own pictures are made.
 # .png and .ico are the company's mark as pictures (the owner, 2026-11-18: "add the PNG and icon set"): the tab icon,
 # the home-screen icon and the mark at a few sizes, from the app's docs/brand, with nothing but the picture in them.
-ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg", ".png", ".ico", ".woff2"}
+ALLOWED_FILES = {".html", ".css", ".svg", ".txt", ".js", ".jpg", ".png", ".ico", ".woff2", ".xml"}
 SCREENSHOTS = "/pictures/"
 ALLOWED_NAMES = {"CNAME", ".nojekyll"}
 
@@ -137,6 +142,7 @@ class Page(HTMLParser):
         self.script_srcs = []
         self.refresh = None
         self.canonical = None
+        self.canonicals = 0
         self.buttons = 0
         self.looks = []
         self.menu_hidden = None
@@ -195,6 +201,10 @@ class Page(HTMLParser):
             href = a.get("href") or ""
             if rel == "canonical":
                 self.canonical = href
+                self.canonicals += 1
+                # Written in full, with the site's address; checked as the page it names.
+                if href.startswith(ADDRESS + "/"):
+                    href = href[len(ADDRESS):]
             elif rel not in ("stylesheet", "icon", "apple-touch-icon"):
                 self.problems.append(f"<link rel={rel!r}>: only the stylesheet and the icons")
             if not href.startswith("/") or href.startswith("//"):
@@ -310,6 +320,34 @@ def ids_of(site, path):
     return _IDS[key]
 
 
+def own_path(parts):
+    """A page's address on the site: docs/price/index.html is /price/, docs/index.html is /."""
+    return "/" + "".join(part + "/" for part in parts[:-1])
+
+
+def sitemap_text(site):
+    """sitemap.xml as the pages make it: every page a person reads, and not an old address that sends elsewhere or the
+    "not here" page. No dates, so it never goes stale."""
+    paths = []
+    for file in sorted(site.rglob("*.html")):
+        parts = file.relative_to(site).parts
+        if file.name != "index.html" or (parts[:1] == ("guide",) and len(parts) == 4) or parts == ("why", "index.html"):
+            continue
+        paths.append(own_path(parts))
+    paths.sort(key=lambda path: (path != "/", path))
+    rows = "".join(f"<url><loc>{ADDRESS}{path}</loc></url>\n" for path in paths)
+    return ('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+            + rows + "</urlset>\n")
+
+
+def check_sitemap(site, file):
+    if file.relative_to(site).parts != ("sitemap.xml",):
+        return ["the only .xml file is sitemap.xml, at the top of the site"]
+    if file.read_text(encoding="utf-8") != sitemap_text(site):
+        return ["it is not the site's pages: rebuild it with python3 -I scripts/check.py --sitemap"]
+    return []
+
+
 def check_page(site, file):
     page = Page()
     raw = file.read_text(encoding="utf-8")
@@ -355,20 +393,28 @@ def check_page(site, file):
         target = f"/guide/#{parts[1]}-{parts[2]}"
         if page.refresh != f"0; url={target}":
             problems.append(f"an old guide address sends to {target} with <meta http-equiv=refresh content=\"0; url={target}\">")
-        if page.canonical != "/guide/":
-            problems.append("an old guide address has <link rel=canonical href=\"/guide/\">")
+        if page.canonical != ADDRESS + "/guide/":
+            problems.append(f"an old guide address has <link rel=canonical href=\"{ADDRESS}/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
     elif parts == ("why", "index.html"):
         # Why Stonefold was folded into About on 2026-11-23; its old address sends there, as an old guide address does.
         if page.refresh != "0; url=/about/#why":
             problems.append("the old Why address sends to /about/#why with <meta http-equiv=refresh content=\"0; url=/about/#why\">")
-        if page.canonical != "/about/":
-            problems.append("the old Why address has <link rel=canonical href=\"/about/\">")
+        if page.canonical != ADDRESS + "/about/":
+            problems.append(f"the old Why address has <link rel=canonical href=\"{ADDRESS}/about/\">")
         if "why" not in ids_of(site, "/about/"):
             problems.append("About has no place called why")
-    elif page.refresh is not None or page.canonical is not None:
-        problems.append("only an old guide address, and the old Why address, may carry a meta refresh or a canonical link")
+    else:
+        if page.refresh is not None:
+            problems.append("only an old guide address, and the old Why address, may carry a meta refresh")
+        if parts == ("404.html",):
+            if page.canonical is not None:
+                problems.append("the \"not here\" page has no canonical link: it is shown at any address")
+        elif page.canonical != ADDRESS + own_path(parts):
+            problems.append(f"no <link rel=canonical href=\"{ADDRESS + own_path(parts)}\">: every page names its own address")
+    if page.canonicals > 1:
+        problems.append("more than one canonical link")
     if on_home and page.menu_hidden is not True:
         problems.append("Home's theme menu must exist and start hidden")
     if not on_home and page.menu_hidden is not None:
@@ -723,6 +769,8 @@ def check_site(site):
             problems = check_ico(file)
         elif file.suffix == ".woff2":
             problems = check_font(site, file)
+        elif file.suffix == ".xml":
+            problems = check_sitemap(site, file)
         else:
             problems = []
         if problems:
@@ -736,7 +784,7 @@ GOOD_PAGE = """<!doctype html>
 <meta http-equiv="Content-Security-Policy" content="{csp}">
 <meta name="referrer" content="no-referrer">
 <title>T</title><meta name="description" content="D">
-<link rel="stylesheet" href="/styles.css"><script src="/theme.js"></script>{head}</head>
+<link rel="canonical" href="https://stonefoldapp.com/"><link rel="stylesheet" href="/styles.css"><script src="/theme.js"></script>{head}</head>
 <body><header><nav><a href="/">Home</a></nav><button type="button" id="theme-toggle" aria-label="Choose a theme" aria-controls="theme-menu" hidden></button><div id="theme-menu" hidden>{looks}</div></header>
 <main><h1>One</h1>{body}</main><footer>© 2026 Stonefold Labs LLC</footer></body></html>
 """
@@ -744,13 +792,15 @@ GOOD_PAGE = """<!doctype html>
 SEARCH_TAGS = '<script src="/guide/search-index.js"></script><script src="/guide/search.js"></script>'
 # A guide page for the self-test: the same page, with the guide's tree and article, and its search after the content.
 GUIDE_PAGE = (GOOD_PAGE.replace("<main><h1>One</h1>{body}</main>", "<main>{body}</main>").replace("</body>", "{scripts}</body>")
+              .replace('<link rel="canonical" href="https://stonefoldapp.com/">', "{canon}")
               .replace('<button type="button" id="theme-toggle" aria-label="Choose a theme" aria-controls="theme-menu" hidden></button><div id="theme-menu" hidden>{looks}</div>', ""))
 GUIDE_HOME = ('<div class="wrap guide"><nav class="tree tree-d" aria-label="Guide"><a href="/guide/#a-b">B</a></nav>'
               '<article class="article"><div class="gsearch" id="guide-search" hidden></div><h1>Guide</h1>'
               '<h2 class="sec" id="a">A</h2>'
               '<section class="topic" id="a-b"><h3>B</h3><p>Some words here.</p></section></article></div>')
 GUIDE_STUB = '<h1>B</h1><p>This page moved. It is now <a href="/guide/#a-b">A: B</a>.</p>'
-STUB_HEAD = '<meta http-equiv="refresh" content="0; url=/guide/#a-b"><link rel="canonical" href="/guide/">'
+STUB_HEAD = '<meta http-equiv="refresh" content="0; url=/guide/#a-b">'
+GUIDE_CANON = '<link rel="canonical" href="https://stonefoldapp.com/guide/">'
 
 LOOK_BUTTONS = "".join(f'<button type="button" data-look="{name}"></button>' for name in LOOKS)
 
@@ -936,9 +986,10 @@ def self_test():
         search = (SITE / "guide" / "search.js").read_bytes()
         (site / "guide" / "a" / "b").mkdir(parents=True)
 
-        def guide(scripts=SEARCH_TAGS, home=GUIDE_HOME, stub=GUIDE_STUB, stub_head=STUB_HEAD, home_head=""):
-            for where, body, head, tags in (("guide/index.html", home, home_head, scripts), ("guide/a/b/index.html", stub, stub_head, "")):
-                (site / where).write_text(GUIDE_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head=head, body=body, scripts=tags))
+        def guide(scripts=SEARCH_TAGS, home=GUIDE_HOME, stub=GUIDE_STUB, stub_head=STUB_HEAD, home_head="", stub_canon=GUIDE_CANON):
+            for where, body, head, tags, canon in (("guide/index.html", home, home_head, scripts, GUIDE_CANON),
+                                                   ("guide/a/b/index.html", stub, stub_head, "", stub_canon)):
+                (site / where).write_text(GUIDE_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head=head, body=body, scripts=tags, canon=canon))
             (site / "guide" / "search.js").write_bytes(search)
             (site / "guide" / "search-index.js").write_text(guide_index_text(site), encoding="utf-8")
 
@@ -968,9 +1019,31 @@ def self_test():
         guide(stub_head=STUB_HEAD.replace("#a-b", "#a-c"))
         if not check_site(site):
             missed.append("an old guide address that sends to the wrong place")
-        guide(stub_head=STUB_HEAD.replace('<link rel="canonical" href="/guide/">', ""))
+        guide(stub_canon="")
         if not check_site(site):
             missed.append("an old guide address without its canonical link")
+        guide()
+        no_canon = GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body="")
+        for name, html in [("a page without its canonical link", no_canon.replace('<link rel="canonical" href="https://stonefoldapp.com/">', "")),
+                           ("a canonical link to another site", no_canon.replace("https://stonefoldapp.com/", "https://example.com/")),
+                           ("a canonical link to another page", no_canon.replace('href="https://stonefoldapp.com/"', 'href="https://stonefoldapp.com/guide/"')),
+                           ("two canonical links", no_canon.replace("</head>", '<link rel="canonical" href="https://stonefoldapp.com/"></head>'))]:
+            page.write_text(html)
+            if not check_site(site):
+                missed.append(name)
+        page.write_text(no_canon)
+        (site / "sitemap.xml").write_text(sitemap_text(site), encoding="utf-8")
+        if check_site(site):
+            print("self-test: the sitemap was refused:", check_site(site))
+            return 1
+        (site / "sitemap.xml").write_text(sitemap_text(site).replace("/guide/", "/nowhere/"), encoding="utf-8")
+        if not check_site(site):
+            missed.append("a sitemap that is not the site's pages")
+        (site / "sitemap.xml").unlink()
+        (site / "feed.xml").write_text("<rss/>")
+        if not check_site(site):
+            missed.append("an .xml file other than the sitemap")
+        (site / "feed.xml").unlink()
         guide(home_head=STUB_HEAD)
         if not check_site(site):
             missed.append("a meta refresh on the guide's own page")
@@ -981,14 +1054,19 @@ def self_test():
     if missed:
         print("self-test: these slipped through:", ", ".join(missed))
         return 1
-    print(f"self-test: all {len(BAD) + 29} planted faults were caught")
+    print(f"self-test: all {len(BAD) + 35} planted faults were caught")
     return 0
 
 
 def main():
     if "--self-test" in sys.argv:
         return self_test()
+    if "--sitemap" in sys.argv:
+        (SITE / "sitemap.xml").write_text(sitemap_text(SITE), encoding="utf-8")
+        print("wrote docs/sitemap.xml")
     failures = check_site(SITE)
+    if not (SITE / "sitemap.xml").is_file():
+        failures["sitemap.xml"] = ["missing: make it with python3 -I scripts/check.py --sitemap"]
     if failures:
         for name, problems in failures.items():
             for problem in problems:

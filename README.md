@@ -24,6 +24,7 @@ docs/              the published pages (GitHub Pages only publishes a folder wit
   favicon.svg        the company's mark on a warm ivory tile, for the browser tab
   brand/             the mark, for light and for dark: the owner's, moved to the middle of its square on 2026-11-17
   robots.txt
+  sitemap.xml        the pages a person reads, for search engines; python3 -I scripts/check.py --sitemap rebuilds it
   CNAME              tells GitHub Pages the site's address
   .nojekyll          tells GitHub Pages to publish the files as they are
 scripts/

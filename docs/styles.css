@@ -2769,3 +2769,50 @@ h4 .wm {
     display: block;
   }
 }
+
+/* ===== About, Support, Privacy and the "not here" page sit as How it works and Price do: the heading in the middle
+   over one column in the middle of the page, its words set from the left. ===== */
+.page .prose {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.page h1,
+.page h1 + .quiet {
+  text-align: center;
+}
+
+.page .flock {
+  justify-content: center;
+}
+
+.page .lost-sheep {
+  display: block;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* ===== On a phone, every stone, every link in the foot and the flip-through's arrows are at least 44 points tall, a thumb's width. ===== */
+@media (max-width: 44rem) {
+  .hero .actions .button,
+  .hero .theme,
+  .stones-mini a {
+    min-height: 2.75rem;
+  }
+
+  .foot a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0;
+  }
+
+  .foot nav ul {
+    row-gap: 0;
+  }
+
+  .flip-arrow {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+}
