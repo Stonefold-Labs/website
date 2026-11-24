@@ -1,6 +1,6 @@
 # Questions buyers will ask: drafts for the owner (Batch 4, Part C, 2026-11-24)
 
-Drafted by Sonnet from a brief of facts the site and `SPEC.md` already state, then checked sentence by sentence against `CLAUDE.md` and `SPEC.md` §6, and edited. Apple's pages were read on 2026-11-24 and their words checked against the pages themselves. **None of this is on the site.** Each answer is a claim, and goes up only on the owner's yes, word for word. "Who makes it?" is left out: a name on the site (R5) is his.
+Drafted by Sonnet from a brief of facts the site and `SPEC.md` already state, then checked sentence by sentence against `CLAUDE.md` and `SPEC.md` §6, and edited. Apple's pages were read on 2026-11-24 and their words checked against the pages themselves. **On the site since 2026-11-24, on the owner's yes:** "Yes, family version (b)", to all eight as written below, with version (b) for the family question. "Who makes it?" is left out: a name on the site (R5) is his.
 
 Where they would go: 1 to 7 in Questions' first group, "Before you decide"; 8 in "Using the app", before "Can I copy my events from Apple's Calendar?".
 

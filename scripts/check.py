@@ -81,6 +81,11 @@ SUPPORT = "mailto:support@stonefoldlabs.com"
 # Every link that leaves the site is listed here, so a new one is a decision.
 OUTSIDE_LINKS = {
     "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+    # Questions (the owner's yes of 2026-11-24 to the buyers' answers, Batch 4): Apple's page on iCloud's encryption,
+    # quoted beside the comparison with Apple's apps, and where Apple takes refund requests, with its page on them.
+    "https://support.apple.com/en-us/102651",
+    "https://support.apple.com/en-us/118223",
+    "https://reportaproblem.apple.com/",
 }
 
 # The only files that may be published. A .jpg is a picture of the app (the owner, 2026-11-13),
