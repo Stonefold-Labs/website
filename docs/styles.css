@@ -2632,11 +2632,12 @@ h4 .wm {
 }
 
 /* Room before the first picture and after the last, so each can come to the middle. A spacer, not padding: Safari
-   leaves a scrolling row's end padding out, and the last picture then can't reach the middle. */
+   leaves a scrolling row's end padding out, and the last picture then can't reach the middle. The row runs the
+   page's whole width, outside the column, so the picture in the middle is as wide as the page allows. */
 .flip-track::before,
 .flip-track::after {
   content: "";
-  flex: 0 0 calc(50% - min(33vw, 21rem));
+  flex: 0 0 calc(50% - min(44vw, 32rem));
 }
 
 .flip-track:focus-visible {
@@ -2646,7 +2647,7 @@ h4 .wm {
 }
 
 .flip-card {
-  flex: 0 0 min(66vw, 42rem);
+  flex: 0 0 min(88vw, 64rem);
   margin: 0;
   scroll-snap-align: center;
   transform-origin: center;
@@ -2654,13 +2655,15 @@ h4 .wm {
 
 /* The pictures beside the middle one overlap it, as album covers did. */
 .flip-card + .flip-card {
-  margin-left: calc(min(66vw, 42rem) * -0.42);
+  margin-left: calc(min(88vw, 64rem) * -0.42);
 }
 
+/* Each picture is a link to itself at full size. Until it arrives, its place shows in the theme's raised colour. */
 .flip-card img {
   display: block;
   width: 100%;
   height: auto;
+  background: var(--raised);
   border-radius: 0.75rem;
   box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.28);
 }
@@ -2706,15 +2709,15 @@ h4 .wm {
 @media (max-width: 44rem) {
   .flip-track::before,
   .flip-track::after {
-    flex-basis: calc(50% - 41vw);
+    flex-basis: calc(50% - 46vw);
   }
 
   .flip-card {
-    flex-basis: 82vw;
+    flex-basis: 92vw;
   }
 
   .flip-card + .flip-card {
-    margin-left: calc(82vw * -0.42);
+    margin-left: calc(92vw * -0.42);
   }
 }
 
@@ -2736,7 +2739,7 @@ h4 .wm {
 
 /* The flip-through's pictures: each picture is there in every theme, and only the one for the visitor's
    theme shows. A hidden picture is never fetched, because each is loaded lazily and a hidden one never comes into
-   view. Plain follows the device, light or dark. With no theme set (no script), Sage when the device is dark and Linen
+   view; flip.js loads the first card's shown picture at once. The class is on the link around each picture. Plain follows the device, light or dark. With no theme set (no script), Sage when the device is dark and Linen
    when it is light, as theme.js does. */
 .flip-card .shot {
   display: none;

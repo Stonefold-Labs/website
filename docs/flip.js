@@ -11,6 +11,12 @@
   if (!cards.length) return;
   var still = window.matchMedia("(prefers-reduced-motion: reduce)");
 
+  // The first card's picture loads at once, so it never shows blank. Only the one the visitor's theme shows: the
+  // others stay lazy and hidden, and a hidden picture never loads.
+  Array.prototype.forEach.call(cards[0].querySelectorAll("img"), function (picture) {
+    if (picture.offsetParent !== null) picture.loading = "eager";
+  });
+
   // The pictures overlap, so one step is the gap between two pictures' middles, not a picture's width.
   function spacing() {
     if (cards.length < 2) return cards[0].getBoundingClientRect().width;

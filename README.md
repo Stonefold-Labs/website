@@ -73,18 +73,30 @@ The app's own tests write pictures of its screens, but on 2026-11-15 none was fi
 
 **Superseded on 2026-11-22** by the flip-through, whose pictures the owner asked for that day and which went up then (`CLAUDE.md`, "One script"); the note below is history. **On hold (the owner, 2026-11-18):** "Hold off on pushing screenshots until app is closer to 100% finished." A trial set of real pictures from the screenshots chat is built and kept on the local branch `screenshots-held` (commit 9ca2503: the eight JPEGs in `docs/pictures/`, Home swapped from drawings to pictures, a Linen and a Sage of each shown to match the theme). It is **not on `main` and not live**; the drawings stay on the site. Do not merge or push that branch until he says. When he does, the pictures are retaken first (the retake keeps the same file names; the brief is `docs-notes/website-screenshots-brief.md`), then merge `screenshots-held`, swap the files, look at every one, run `scripts/check.py`, and ask for his yes to the push. The branch's README has the longer note on how the pictures are shown.
 
-**The pictures wanted,** to be made by the app's build chat at the end of milestone A8, from a made-up household that reads like a real one (no "Made-up" in any name), light appearance, normal text size, a real window on the Mac, no test warnings, and no stand-in icon in view:
+**The pictures wanted (rewritten 2026-11-24, Batch 4 of the pre-launch review).** Home's flip-through has nine pictures of the Mac window, each in the ten looks (`CLAUDE.md`, "One script"). Since Batch 4 the middle one is as wide as the page allows, each is a link to its full size, and the first loads at once, but a 1,600-point Mac window is still hard to read at a phone's width, and most visitors will be on a phone. These are wanted next, to be taken by the app's build chat once the app's polish batches (1 to 3) have landed, never from this repo. The 90 pictures up now stay until these replace or join them.
 
-| Goes in | Picture | Device |
-|---|---|---|
-| `#picture-calendar` | The month with a day chosen, showing an event, a reminder and a bill on that day (Reminders on the Calendar and Bills on the Calendar both on) | Mac |
-| `#picture-reminders` | Today, with a bill waiting above the day's reminders | iPhone |
-| `#picture-notes` | The list with search above it and a note open, with a checklist in it | Mac |
-| `#picture-budget` | The budget's Home: the headline, the three answers and "Can I afford it?" | iPhone |
-| The band on encryption | Settings ▸ What Leaves This Device, top of the page, once builds are signed and the owner has approved its words | iPhone |
-| The band on encryption | The recovery sheet as the app shows it, with made-up codes | Mac |
+Two things are the owner's to choose before they are taken, and are left open here: **which screens** (the column "Suggested" is only a starting point), and **which look**. The review asks for one "hero look" for the store and the site; if he picks one, the set is taken in that look alone, and the site shows it in every theme; if not, each in the ten looks as now (`<shot>-<look>.jpg`).
 
-The same six in dark appearance would let the page show a dark picture to a reader in dark mode; that is a nice extra, not needed. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, and replaces the `<svg class="drawing">` in its figure (`CLAUDE.md`, "Pictures of the app"). When the last drawing is replaced, the line on Home that says the pictures are drawings goes too.
+| Device | Picture | Suggested screen (his choice) | Look (his choice) |
+|---|---|---|---|
+| iPhone | 1 | Today, with a bill waiting above the day's reminders | hero look, or all ten |
+| iPhone | 2 | The calendar's month, a day chosen, its events, reminders and a bill | |
+| iPhone | 3 | The budget's Home, after Batch 1's sample budget fix | |
+| iPhone | 4 | A note open: a checklist, a recipe or a flashcard deck | |
+| iPhone | 5 | Settings ▸ What Leaves This Device, once its words are approved | |
+| iPad | 1 | Today, landscape | |
+| iPad | 2 | The budget's grid, landscape | |
+| iPad | 3 | Notes with the list and a note side by side | |
+| Mac | 1 | The window on its desks as tabs (records 0083, 0085), Today in front | |
+| Mac | 2 | The calendar's year or month | |
+| Mac | 3 | Reminders as a board | |
+| Mac | 4 | The budget's grid | |
+
+How they are taken and shown:
+
+- **From a made-up household** that reads like a real one: no "Made-up" or "Sample" in a name, no real person, no price, no "LLC", no old app name, no test warning, no stand-in icon; normal text size; a real window on the Mac, in front, so its controls are not greyed.
+- **Sizes:** the iPhone at the App Store's largest portrait size, the iPad landscape, the Mac at 1,600 by 1,000 as now. Each goes through `scripts/strip-jpeg.py` into `docs/pictures/`, named `<device>-<n>-<screen>[-<look>].jpg`, and is read before it goes up.
+- **On the page:** on a narrow screen the iPhone pictures come first, then the iPad's and the Mac's; each is a link to its full size, the first loaded at once, the rest lazily (as the Mac's now). Alt text says what is on screen. The page's layout for portrait pictures is a small change to the flip-through's CSS, made when they arrive, and put to the owner with the pictures.
 
 ## The demo (allowed 2026-11-18, removed on the launch branch 2026-11-21)
 
