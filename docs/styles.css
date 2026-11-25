@@ -856,6 +856,15 @@ ul {
   text-align: center;
 }
 
+/* The price's one short list (2026-11-25, in place of six cards that each said a thing was included): the reasons'
+   centred column, each line in the text's own colour with nothing over it. */
+.reasons.price-list p {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  text-wrap: balance;
+}
+
 .why-price {
   text-align: center;
   text-wrap: balance;
