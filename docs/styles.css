@@ -2473,8 +2473,8 @@ h4 .wm {
 
 /* ===== The hero's stones in one course: Questions and Guide. How it works, Why, Price and About are sections of this
    page now, so they have no stones (the owner, 2026-11-25). Under them, on a line of its own just above the pictures,
-   the theme picker with its label, "Try a theme": it is a thing to play with, not a place to go, and the pictures
-   change with it. ===== */
+   the theme picker alone, with no words beside it (the owner, 2026-11-25: "get rid of these"): it is a thing to play
+   with, not a place to go, and the pictures change with it. ===== */
 .hero .actions {
   display: grid;
   grid-template-columns: repeat(10, 2.25rem);
@@ -2494,29 +2494,9 @@ h4 .wm {
   margin-top: 1rem;
 }
 
-/* Without the script there is no picker, so no line about it either. */
+/* Without the script there is no picker, so its line takes no room either. */
 .try-theme:has(#theme-toggle[hidden]) {
   display: none;
-}
-
-.try-theme .try-label {
-  color: var(--text);
-  font-size: 0.9375rem;
-  font-weight: 600;
-}
-
-.try-theme .try-hint {
-  color: var(--quiet);
-  font-size: 0.875rem;
-}
-
-/* On a phone the label and the picker share a line, and the hint goes under them. */
-@media (max-width: 44rem) {
-  .try-theme .try-hint {
-    order: 3;
-    flex-basis: 100%;
-    text-align: center;
-  }
 }
 
 .try-theme .theme-menu {
