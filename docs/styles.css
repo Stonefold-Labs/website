@@ -2829,3 +2829,177 @@ h4 .wm {
   color: inherit;
   text-decoration: none;
 }
+
+/* ===== Home on one screen (the owner, 2026-11-25: "Fit on one screen", so that nobody scrolls past the pictures). On a
+   computer or tablet the whole of Home fits the window: the Guide button and the theme picker share a row, the price
+   is one line, the footer is one slim course, and the pictures take whatever height is left, growing on a tall screen
+   and shrinking on a short one. Below a floor the page scrolls rather than shrink them further. A phone scrolls as
+   before: its column is too narrow to fit. ===== */
+@media (min-width: 45rem) {
+  body:has(.flip) {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+  }
+
+  body:has(.flip) .frame {
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  body:has(.flip) .column {
+    min-height: 0;
+  }
+
+  body:has(.flip) main {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  body:has(.flip) .bar {
+    padding-top: 1rem;
+    padding-bottom: 0;
+  }
+
+  body:has(.flip) .hero.center {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0 0.75rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0;
+  }
+
+  body:has(.flip) .hero.center > h1,
+  body:has(.flip) .hero.center > p {
+    flex-basis: 100%;
+  }
+
+  /* One line where the window is wide enough, so the pictures get the height a second line would take. */
+  body:has(.flip) .hero.center h1 {
+    max-width: none;
+    font-size: clamp(2rem, 5.5vh, 3.5rem);
+  }
+
+  /* The line keeps its measure but fills the row, so the button and the picker go under it, not beside it. */
+  body:has(.flip) .hero.center .lede {
+    max-width: none;
+    margin: 0.625rem 0 0.875rem;
+    padding: 0 max(0px, calc(50% - 17em));
+  }
+
+  body:has(.flip) .hero .actions {
+    display: flex;
+    margin: 0;
+  }
+
+  body:has(.flip) .hero .actions .button {
+    width: auto;
+    padding: 0 1.25rem;
+  }
+
+  body:has(.flip) .try-theme {
+    margin-top: 0;
+  }
+
+  body:has(.flip) .flip {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    min-height: 16rem;
+    margin: 0.5rem 0 0.25rem;
+  }
+
+  /* The row is as tall as the room left, and each picture as wide as that height allows (the pictures are 16 by 10). */
+  body:has(.flip) .flip-track {
+    flex: 1 1 0;
+    min-height: 0;
+    padding: 0.5rem 0 0.75rem;
+    container-type: size;
+  }
+
+  body:has(.flip) .flip-card {
+    flex-basis: min(88cqw, 64rem, 160cqh);
+  }
+
+  body:has(.flip) .flip-card + .flip-card {
+    margin-left: calc(min(88cqw, 64rem, 160cqh) * -0.42);
+  }
+
+  body:has(.flip) .flip-track::before,
+  body:has(.flip) .flip-track::after {
+    flex-basis: calc(50% - min(44cqw, 32rem, 80cqh));
+  }
+
+  /* The arrows sit over the pictures' sides, not on a row of their own under them. */
+  body:has(.flip) .flip {
+    position: relative;
+  }
+
+  body:has(.flip) .flip-controls {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    z-index: 200;
+    justify-content: space-between;
+    margin: -1.25rem 0 0;
+    padding: 0 1.5rem;
+    pointer-events: none;
+  }
+
+  body:has(.flip) .flip-arrow {
+    pointer-events: auto;
+  }
+
+  body:has(.flip) #price.section {
+    padding-top: 0.75rem;
+    padding-bottom: 0.875rem;
+  }
+
+  body:has(.flip) #price .wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem 1.25rem;
+  }
+
+  body:has(.flip) #price .lead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.25rem 1.25rem;
+    margin: 0;
+  }
+
+  body:has(.flip) #price .lead h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  body:has(.flip) #price .lead p,
+  body:has(.flip) #price .price-list {
+    margin: 0;
+  }
+
+  body:has(.flip) #price .price-list li,
+  body:has(.flip) #price .price-list p {
+    padding: 0;
+  }
+
+  body:has(.flip) .foot {
+    row-gap: 0.25rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+
+  body:has(.flip) .foot nav {
+    order: 0;
+    flex-basis: auto;
+  }
+}
