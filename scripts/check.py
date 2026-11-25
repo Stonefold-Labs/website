@@ -26,7 +26,7 @@ SITE = ROOT / "docs"
 COMPANY_FORMED = True
 
 # The site's own address. Every page but the "not here" page carries a canonical link to its own address there (an old
-# guide address to the guide, the old Why address to About), and sitemap.xml lists the pages (Batch 4 of the pre-launch
+# guide address to the guide), and sitemap.xml lists the pages (Batch 4 of the pre-launch
 # review, 2026-11-24: "a new address" is found sooner with both).
 ADDRESS = "https://stonefoldapp.com"
 
@@ -337,7 +337,7 @@ def sitemap_text(site):
     paths = []
     for file in sorted(site.rglob("*.html")):
         parts = file.relative_to(site).parts
-        if file.name != "index.html" or (parts[:1] == ("guide",) and len(parts) == 4) or parts == ("why", "index.html"):
+        if file.name != "index.html" or (parts[:1] == ("guide",) and len(parts) == 4):
             continue
         paths.append(own_path(parts))
     paths.sort(key=lambda path: (path != "/", path))
@@ -403,17 +403,9 @@ def check_page(site, file):
             problems.append(f"an old guide address has <link rel=canonical href=\"{ADDRESS}/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
-    elif parts == ("why", "index.html"):
-        # Why Stonefold was folded into About on 2026-11-23; its old address sends there, as an old guide address does.
-        if page.refresh != "0; url=/about/#why":
-            problems.append("the old Why address sends to /about/#why with <meta http-equiv=refresh content=\"0; url=/about/#why\">")
-        if page.canonical != ADDRESS + "/about/":
-            problems.append(f"the old Why address has <link rel=canonical href=\"{ADDRESS}/about/\">")
-        if "why" not in ids_of(site, "/about/"):
-            problems.append("About has no place called why")
     else:
         if page.refresh is not None:
-            problems.append("only an old guide address, and the old Why address, may carry a meta refresh")
+            problems.append("only an old guide address may carry a meta refresh")
         if parts == ("404.html",):
             if page.canonical is not None:
                 problems.append("the \"not here\" page has no canonical link: it is shown at any address")
