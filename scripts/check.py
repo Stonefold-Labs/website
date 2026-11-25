@@ -70,6 +70,9 @@ QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 FLIP_JS = "/flip.js"
 # Pages that became sections of Home on 2026-11-25; their old addresses forward to /#<name>.
 OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",)}
+# An old page whose section has since left Home too (About, the owner, 2026-11-25: "get rid of this"): its address
+# leads to the top of Home.
+GONE_SECTIONS = {"about"}
 FLIP_JS_SHA256 = "d2e921c8ba03756b55a783d5fccf2c392e38b3657357273e4cab7ec69ce75805"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
@@ -382,7 +385,8 @@ def check_page(site, file):
     # page that sends to the topic's place on it, with a meta refresh of 0 and a canonical link, and no search.
     stub = parts[:1] == ("guide",) and len(parts) == 4
     # How it works, Why Stonefold, Price and About became sections of Home (the owner, 2026-11-25: "Yes, build it"); each old
-    # address is a tiny page that sends to its section, like an old guide address.
+    # address is a tiny page that sends to its section, like an old guide address. About's section was taken out the same
+    # day, so its address sends to Home itself (GONE_SECTIONS).
     old_page = len(parts) == 2 and parts[:1] in OLD_PAGES
     in_guide = parts[:1] == ("guide",) and not stub
     in_questions = parts == ("questions", "index.html")
@@ -409,13 +413,14 @@ def check_page(site, file):
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
     elif old_page:
-        target = f"/#{parts[0]}"
+        gone = parts[0] in GONE_SECTIONS
+        target = "/" if gone else f"/#{parts[0]}"
         if page.refresh != f"0; url={target}":
             problems.append(f"an old page's address sends to {target} with <meta http-equiv=refresh content=\"0; url={target}\">")
         if page.canonical != ADDRESS + "/":
             problems.append(f"an old page's address has <link rel=canonical href=\"{ADDRESS}/\">")
-        if parts[0] not in ids_of(site, "/"):
-            problems.append(f"{target}: Home has no such section")
+        if gone == (parts[0] in ids_of(site, "/")):
+            problems.append(f"{parts[0]}: Home has no such section" if not gone else f"{parts[0]}: the section is back on Home, so take it out of GONE_SECTIONS")
     else:
         if page.refresh is not None:
             problems.append("only an old guide or page address may carry a meta refresh")

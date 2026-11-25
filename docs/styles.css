@@ -856,8 +856,8 @@ ul {
   text-align: center;
 }
 
-/* The price's one short list (2026-11-25, in place of six cards that each said a thing was included): the reasons'
-   centred column, each line in the text's own colour with nothing over it. */
+/* The price's one line under its heading (2026-11-25: six cards became four lines, and the owner then had three of
+   them taken out): the reasons' centred column, in the text's own colour with nothing over it. */
 .reasons.price-list p {
   margin: 0;
   color: var(--text);
@@ -2268,30 +2268,6 @@ h4 .wm {
   margin: 0 0 0.5rem;
 }
 
-/* About: the bellwether leads two sheep toward the fold. */
-.flock {
-  display: flex;
-  align-items: flex-end;
-  gap: 0.5rem;
-  margin: 1.25rem 0 1.5rem;
-}
-
-.flock .sheep {
-  width: 3.25rem;
-  height: auto;
-}
-
-.flock .sheep:nth-child(3) {
-  width: 3.75rem;
-}
-
-.flock-fold {
-  width: 3.5rem;
-  height: 3.5rem;
-  margin-left: 0.75rem;
-  opacity: 0.6;
-}
-
 /* The bellwether leads to the guide, inside its button. */
 .button-sheep {
   display: inline-flex;
@@ -2816,10 +2792,6 @@ h4 .wm {
   text-align: center;
 }
 
-.page .flock {
-  justify-content: center;
-}
-
 .page .lost-sheep {
   display: block;
   margin-right: auto;
@@ -2858,12 +2830,8 @@ h4 .wm {
   padding-top: 0.5rem;
 }
 
-/* Home holds How it works, Why Stonefold, Price and About as sections (the owner, 2026-11-25). A jump from the stones
-   lands with room above the heading, and the flock sits under About's centred words. */
+/* Home holds How it works, Why Stonefold and Price as sections (the owner, 2026-11-25; About was one too until he had
+   it taken out that day). A jump from the footer lands with room above the heading. */
 .home-part {
   scroll-margin-top: 1.5rem;
-}
-
-.home-part .flock {
-  justify-content: center;
 }
