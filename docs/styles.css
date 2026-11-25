@@ -847,6 +847,12 @@ ul {
   text-wrap: balance;
 }
 
+/* Why Stonefold's price line sits centred under the heading (the owner, 2026-11-25). */
+.why-price {
+  text-align: center;
+  text-wrap: balance;
+}
+
 /* On Why Stonefold the reasons are the page's own headings (h2), set as the h3s they were on About. */
 .prose .reasons h2 {
   margin: 0;
