@@ -70,7 +70,7 @@ QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 FLIP_JS = "/flip.js"
 # Pages that became sections of Home on 2026-11-25; their old addresses forward to /#<name>.
 OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",)}
-FLIP_JS_SHA256 = "114e00f40af4468b9d4a7b21044ee471ceeb02513402dbe9fcc2271db3d16f99"
+FLIP_JS_SHA256 = "24240c37fd7d118501d8958d1118383a4745d946ac4ad1e7d0be0d33ec79e46d"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
