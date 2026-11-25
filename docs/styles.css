@@ -2055,11 +2055,6 @@ h4 .wm {
   line-height: 1.2;
 }
 
-.article .topic .lede {
-  margin: 0 0 0.6rem;
-  color: var(--quiet);
-}
-
 .article .topic h4 {
   margin: 0.9rem 0 0.2rem;
   font-size: 1.0625rem;
