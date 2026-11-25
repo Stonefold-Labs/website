@@ -56,26 +56,24 @@ SEARCH_JS = "/guide/search.js"
 SEARCH_INDEX_JS = "/guide/search-index.js"
 SEARCH_JS_SHA256 = "0511aeac8705c93e50d78b298f78d2af5bf79996b8454b30ddcfdcdbecb4074e"
 GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
-# The questions' search (the owner, 2026-11-22: "Yes, build it", to a box that hides the questions that don't hold your
-# words): a third script, on the Questions page only, pinned like the others. It may make only its box and one line, change
-# only which questions show, and mark the row of the question being read in the list down the left, as the guide's does
-# (the owner, 2026-11-22: "add the highlight tracker"); it reaches no network and keeps nothing.
-QUESTIONS_JS = "/questions/search.js"
-QUESTIONS_JS_SHA256 = "4a26c22dfa1d891ceef92106a65e0491adecd7e5f2db84dfbcf3a1bbd7be6904"
-QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
+# The Questions page had a search of its own (2026-11-22) until the owner had Questions and How it works folded into the
+# guide (2026-11-25: "Can we combine questions into guide ..."); the guide's one search now finds them too.
 # Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
 # pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches
 # no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
 # "reduce motion" on.
 FLIP_JS = "/flip.js"
 # Pages that became sections of Home on 2026-11-25; their old addresses forward to /#<name>.
-OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",)}
+OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",), ("questions",)}
+# Old pages whose words became chapters of the guide (the owner, 2026-11-25: "Can we combine questions into guide and can
+# we combine the how it works info into the guide/questions?"); their addresses forward to /guide/#<name>.
+MOVED_TO_GUIDE = {"how-it-works", "questions"}
 # An old page whose section has since left Home too (About, the owner, 2026-11-25: "get rid of this"): its address
 # leads to the top of Home.
 GONE_SECTIONS = {"about", "why"}  # Why Stonefold went too, the same day ("remove this section")
 FLIP_JS_SHA256 = "d2e921c8ba03756b55a783d5fccf2c392e38b3657357273e4cab7ec69ce75805"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
-ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
+ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
 # that opens a menu with one button for each; no other button is allowed.
 # (The launch branch of 2026-11-21 has no demo: the owner asked for the "Try the window" section to go, so the
@@ -389,21 +387,18 @@ def check_page(site, file):
     # day, so its address sends to Home itself (GONE_SECTIONS).
     old_page = len(parts) == 2 and parts[:1] in OLD_PAGES
     in_guide = parts[:1] == ("guide",) and not stub
-    in_questions = parts == ("questions", "index.html")
     # The theme picker is on Home only (the owner, 2026-11-22: "lets only have the theme selector on the home page"). Every
     # page still loads theme.js, so the theme picked there is worn everywhere.
     on_home = parts == ("index.html",)
-    expected = GUIDE_SCRIPTS if in_guide else QUESTIONS_SCRIPTS if in_questions else [THEME_JS]
+    expected = GUIDE_SCRIPTS if in_guide else [THEME_JS]
     if page.script_srcs != expected and not (on_home and page.script_srcs == HOME_SCRIPTS):
-        problems.append(f"scripts {page.script_srcs}; a page loads the theme script, and the guide's pages and the Questions page their search as well")
+        problems.append(f"scripts {page.script_srcs}; a page loads the theme script, and the guide's page its search as well")
     if on_home and (page.buttons != 1 + len(LOOKS) or page.looks != LOOKS):
         problems.append(f"{page.buttons} buttons; Home has the theme picker, once, with one button for each of {', '.join(LOOKS)}")
     if not on_home and (page.buttons or page.looks):
         problems.append("only Home has the theme picker")
     if in_guide != ("guide-search" in page.ids):
         problems.append("the guide's page, and only it, holds the search box's place (id guide-search)")
-    if in_questions != ("questions-search" in page.ids):
-        problems.append("the Questions page, and only it, holds its search box's place (id questions-search)")
     if stub:
         target = f"/guide/#{parts[1]}-{parts[2]}"
         if page.refresh != f"0; url={target}":
@@ -412,6 +407,14 @@ def check_page(site, file):
             problems.append(f"an old guide address has <link rel=canonical href=\"{ADDRESS}/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
+    elif old_page and parts[0] in MOVED_TO_GUIDE:
+        target = f"/guide/#{parts[0]}"
+        if page.refresh != f"0; url={target}":
+            problems.append(f"an old page's address sends to {target} with <meta http-equiv=refresh content=\"0; url={target}\">")
+        if page.canonical != ADDRESS + "/guide/":
+            problems.append(f"an old page's address has <link rel=canonical href=\"{ADDRESS}/guide/\">")
+        if parts[0] not in ids_of(site, "/guide/"):
+            problems.append(f"{target}: the guide has no such chapter")
     elif old_page:
         gone = parts[0] in GONE_SECTIONS
         target = "/" if gone else f"/#{parts[0]}"
@@ -493,12 +496,10 @@ def check_js(site, file):
         return check_search_js(file)
     if name == SEARCH_INDEX_JS:
         return check_search_index(site, file)
-    if name == QUESTIONS_JS:
-        return check_questions_js(file)
     if name == FLIP_JS:
         return check_flip_js(file)
     if name != THEME_JS:
-        return ["the only scripts are the theme picker, the guide's search and its index, the questions' search and Home's flip-through"]
+        return ["the only scripts are the theme picker, the guide's search and its index, and Home's flip-through"]
     js = file.read_bytes()
     problems = []
     if hashlib.sha256(js).hexdigest() != THEME_JS_SHA256:
@@ -532,26 +533,6 @@ def check_flip_js(file):
         problems.append("it may make only its arrow buttons")
     if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label"}:
         problems.append("it may set only its arrows' labels")
-    return problems
-
-
-def check_questions_js(file):
-    js = file.read_bytes()
-    problems = []
-    if hashlib.sha256(js).hexdigest() != QUESTIONS_JS_SHA256:
-        problems.append("it changed. Read it, and if it is right, put its new SHA-256 in scripts/check.py")
-    for pattern, why in [
-        (rb"fetch|XMLHttpRequest|sendBeacon|WebSocket|EventSource|\.src\b|\.href\b|location|navigator|import|https?:", "it may not reach the network"),
-        (rb"cookie|localStorage|sessionStorage|indexedDB|caches", "it may keep nothing"),
-        (rb"eval|Function\(|innerHTML|outerHTML|insertAdjacentHTML|document\.write|setTimeout|setInterval", "it may not make or run code"),
-    ]:
-        if re.search(pattern, js):
-            problems.append(why)
-    made = re.findall(rb"createElement\(([^)]*)\)", js)
-    if any(m.strip(b'"') not in {b"input", b"p", b"mark"} or not m.startswith(b'"') for m in made):
-        problems.append("it may make only its box, one line and the underlines of the words found")
-    if set(re.findall(rb"setAttribute\(\s*\"([^\"]*)\"", js)) - {b"aria-label", b"autocomplete", b"spellcheck", b"role", b"aria-current"}:
-        problems.append("it may set only the box's own labels, the line's role and the mark on the list's current row")
     return problems
 
 

@@ -11,7 +11,8 @@ It exists for three reasons, in order: Apple requires an organization to have a 
 ```
 docs/              the published pages (GitHub Pages only publishes a folder with this name)
   index.html         Home: Stonefold, the app
-  how-it-works/      How it works: offline, encrypted on the device, sync only if turned on, export, no account (launch branch)
+  how-it-works/      forwards to the guide's first chapter, How it works (2026-11-25)
+  questions/         forwards to the guide's last chapter, Questions (2026-11-25)
   guide/             the guide: one long page of every topic, tiny pages at the old per-topic addresses that send to it, and its search (launch branch). There is no features/ since 2026-11-21.
   pictures/          pictures of the app: 9 shots in 10 looks for Home's flip-through (2026-11-22)
   privacy/index.html https://stonefoldapp.com/privacy/
