@@ -2816,3 +2816,10 @@ h4 .wm {
     height: 2.75rem;
   }
 }
+
+/* How it works sits on the page's own background like the other pages (the owner, 2026-11-25);
+   its steps carry their own hairlines, so the section adds none of its own. */
+#how-it-works.section {
+  border-top: 0;
+  padding-top: 0.5rem;
+}
