@@ -59,7 +59,8 @@ GUIDE_SCRIPTS = [THEME_JS, SEARCH_INDEX_JS, SEARCH_JS]
 # The Questions page had a search of its own (2026-11-22) until the owner had Questions and How it works folded into the
 # guide (2026-11-25: "Can we combine questions into guide ..."); the guide's one search now finds them too.
 # Home's flip-through of pictures of the app (the owner, 2026-11-22: "Tilting, like iTunes"): a fourth script, on Home only,
-# pinned like the others. It may make only its two arrow buttons and turn and dim the pictures as they scroll; it reaches
+# pinned like the others. It turns and dims the pictures as they scroll and carries them round so the row never ends
+# (its two arrow buttons went on 2026-11-25, the owner: "remove arrows"; it may still make no other element); it reaches
 # no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
 # "reduce motion" on.
 FLIP_JS = "/flip.js"
@@ -71,7 +72,7 @@ MOVED_TO_GUIDE = {"how-it-works", "questions"}
 # An old page whose section has since left Home too (About, the owner, 2026-11-25: "get rid of this"): its address
 # leads to the top of Home.
 GONE_SECTIONS = {"about", "why"}  # Why Stonefold went too, the same day ("remove this section")
-FLIP_JS_SHA256 = "d2e921c8ba03756b55a783d5fccf2c392e38b3657357273e4cab7ec69ce75805"
+FLIP_JS_SHA256 = "d8e42e9c5983f65149871ce64d46dd205ef84d223f7999dba86c9254927802f8"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button

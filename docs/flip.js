@@ -1,18 +1,19 @@
 /* Stonefold's front-page flip-through of pictures of the app. The picture
-   in the middle faces you; the ones beside it turn away and dim. The row follows a sideways drag of a finger or a
-   sideways trackpad scroll as it happens, then comes to rest on the nearest picture; the arrows, the arrow keys and a
-   click on a picture at the side move it too. An up-and-down swipe or wheel over it always scrolls the page, never the
-   row. With "reduce motion" on, the pictures lie flat and the row moves without gliding. It reaches no network and
-   keeps nothing; without it the pictures are a plain row that scrolls. Pinned in scripts/check.py: read the diff
-   before you change it. */
+   in the middle faces you; the ones beside it turn away and dim. It starts with the first picture in the middle and
+   others on both sides, and it goes round: past the last picture comes the first again, either way, without end. The
+   row follows a sideways drag of a finger or a sideways trackpad scroll as it happens, then comes to rest on the
+   nearest picture; the arrow keys and a click on a picture at the side move it too. An up-and-down swipe or wheel
+   over it always scrolls the page, never the row. With "reduce motion" on, the pictures lie flat and the row moves
+   without gliding. It reaches no network and keeps nothing; without it the pictures are a plain row that scrolls.
+   Pinned in scripts/check.py: read the diff before you change it. */
 (function () {
   "use strict";
   var track = document.getElementById("flip-track");
-  var controls = document.getElementById("flip-controls");
-  if (!track || !controls) return;
+  if (!track) return;
   var cards = Array.prototype.slice.call(track.querySelectorAll(".flip-card"));
   if (!cards.length) return;
   var still = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var middle = Math.floor(cards.length / 2);
   var current = 0;
 
   // The row stops being a scroller of its own (styles.css, .flip-on); only this script moves it.
@@ -36,6 +37,39 @@
     return card.offsetLeft + card.offsetWidth / 2 - track.clientWidth / 2;
   }
 
+  // The row goes round. Whichever picture is nearest the middle of the screen is kept in the middle of the row, with
+  // as many pictures on one side as on the other: when it moves off, a picture from the far end is carried round to
+  // the near one, out of sight, and the row is shifted back by one step so nothing seems to move.
+  var drag = null;
+  function goRound() {
+    if (cards.length < 3) return;
+    var gap = spacing();
+    var off = Math.round((track.scrollLeft - place(0)) / gap) - middle;
+    while (off > 0) {
+      track.appendChild(cards[0]);
+      cards.push(cards.shift());
+      track.scrollLeft -= gap;
+      if (drag) drag.from -= gap;
+      current -= 1;
+      off -= 1;
+    }
+    while (off < 0) {
+      track.insertBefore(cards[cards.length - 1], cards[0]);
+      cards.unshift(cards.pop());
+      track.scrollLeft += gap;
+      if (drag) drag.from += gap;
+      current += 1;
+      off += 1;
+    }
+  }
+
+  // Once the row is at rest, go round, then sit exactly on the middle picture: each shift by one step can be off by a
+  // part of a pixel, and those would add up.
+  function rest() {
+    goRound();
+    track.scrollLeft = place(current);
+  }
+
   // A short glide to a place in the row. Any new drag, scroll or glide ends the one under way.
   var gliding = 0;
   function glide(to, instant) {
@@ -43,6 +77,7 @@
     var from = track.scrollLeft;
     if (instant || still.matches || Math.abs(to - from) < 1) {
       track.scrollLeft = to;
+      rest();
       return;
     }
     var began = null;
@@ -52,6 +87,7 @@
       var done = Math.min(1, (now - began) / 260);
       track.scrollLeft = from + (to - from) * (1 - Math.pow(1 - done, 3));
       if (done < 1) window.requestAnimationFrame(frame);
+      else rest();
     }
     window.requestAnimationFrame(frame);
   }
@@ -72,20 +108,12 @@
     go(nearest);
   }
 
-  function step(direction) { go(current + direction); }
-
-  function arrow(label, direction, mark) {
-    var button = document.createElement("button");
-    button.type = "button";
-    button.className = "flip-arrow";
-    button.setAttribute("aria-label", label);
-    button.textContent = mark;
-    button.addEventListener("click", function () { step(direction); });
-    return button;
+  // Each press is one step on from wherever the row is, even mid-glide, and the row goes round first so it never runs out.
+  function step(direction) {
+    gliding++;
+    goRound();
+    go(current + direction);
   }
-  controls.appendChild(arrow("Previous picture", -1, "‹"));
-  controls.appendChild(arrow("Next picture", 1, "›"));
-  controls.hidden = false;
 
   track.addEventListener("keydown", function (event) {
     if (event.key === "ArrowLeft") { event.preventDefault(); step(-1); }
@@ -93,13 +121,14 @@
   });
 
   // A picture at the side comes to the middle when clicked; only the middle one opens at full size.
-  cards.forEach(function (card, index) {
+  cards.forEach(function (card) {
     card.addEventListener("click", function (event) {
       // A swipe that ends on a picture is not also a click on it.
       if (event.timeStamp - swipedAt < 500) {
         event.preventDefault();
         return;
       }
+      var index = cards.indexOf(card);
       if (index !== current) {
         event.preventDefault();
         go(index);
@@ -144,6 +173,7 @@
     }
     gliding++;
     track.scrollLeft += event.deltaX;
+    goRound();
     if (!watching) {
       watching = true;
       window.requestAnimationFrame(watch);
@@ -152,7 +182,6 @@
 
   // A finger drags the row sideways and it follows at once. The browser keeps up-and-down swipes for the page
   // (touch-action: pan-y in styles.css), so this only hears the sideways ones.
-  var drag = null;
   var swipedAt = -1000;
   track.addEventListener("pointerdown", function (event) {
     if (event.pointerType === "mouse") return;
@@ -168,14 +197,16 @@
       gliding++;
     }
     track.scrollLeft = drag.from - dx;
+    goRound();
   });
   function release(event) {
     if (!drag || event.pointerId !== drag.id) return;
-    if (drag.moved) {
+    var moved = drag.moved;
+    drag = null;
+    if (moved) {
       swipedAt = event.timeStamp;
       settle();
     }
-    drag = null;
   }
   track.addEventListener("pointerup", release);
   track.addEventListener("pointercancel", release);
@@ -185,7 +216,7 @@
   function tilt() {
     waiting = false;
     // Measured from where each picture lies, not where its turn has put it, so the middle one ends up exactly flat.
-    var middle = track.scrollLeft + track.clientWidth / 2;
+    var centre = track.scrollLeft + track.clientWidth / 2;
     var gap = spacing();
     cards.forEach(function (card) {
       if (still.matches) {
@@ -194,7 +225,7 @@
         card.style.zIndex = "";
         return;
       }
-      var along = (card.offsetLeft + card.offsetWidth / 2 - middle) / gap;
+      var along = (card.offsetLeft + card.offsetWidth / 2 - centre) / gap;
       var turn = Math.max(-1, Math.min(1, along));
       var away = Math.min(Math.abs(along), 1);
       card.style.transform = "rotateY(" + (-turn * 48) + "deg) scale(" + (1 - away * 0.2) + ")";

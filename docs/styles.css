@@ -2619,37 +2619,6 @@ h4 .wm {
   text-align: center;
 }
 
-.flip-controls {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
-}
-
-.flip-controls[hidden] {
-  display: none;
-}
-
-.flip-arrow {
-  width: 2.5rem;
-  height: 2.5rem;
-  background: var(--raised);
-  border: 1px solid var(--rule);
-  border-radius: 50%;
-  color: var(--text);
-  font: 600 1.375rem/1 var(--sans);
-  cursor: pointer;
-}
-
-.flip-arrow:hover {
-  border-color: var(--quiet);
-}
-
-.flip-arrow:focus-visible {
-  outline: 2px solid var(--link);
-  outline-offset: 2px;
-}
-
 @media (max-width: 44rem) {
   .flip-track::before,
   .flip-track::after {
@@ -2741,11 +2710,6 @@ h4 .wm {
 
   .foot nav ul {
     row-gap: 0;
-  }
-
-  .flip-arrow {
-    width: 2.75rem;
-    height: 2.75rem;
   }
 }
 
@@ -2935,31 +2899,6 @@ h4 .wm {
   }
 
   /* The arrows sit over the pictures' sides, not on a row of their own under them. */
-  /* Each arrow sits a little way out from the middle picture's edge (the owner, 2026-11-25: "make the arrows closer to
-     the picture"). The middle picture is as wide as the row's height allows (see .flip-track below), so the arrows'
-     span is worked out the same way from the strip's own size. */
-  body:has(.flip) .flip {
-    position: relative;
-    container-type: size;
-  }
-
-  body:has(.flip) .flip-controls {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 200;
-    justify-content: space-between;
-    width: min(100cqw - 1rem, min(88cqw, 64rem, (100cqh - 1.25rem) * 1.6) + 6.5rem);
-    margin: -1.25rem 0 0;
-    padding: 0;
-    transform: translateX(-50%);
-    pointer-events: none;
-  }
-
-  body:has(.flip) .flip-arrow {
-    pointer-events: auto;
-  }
-
   body:has(.flip) #price.section {
     padding-top: 0.75rem;
     padding-bottom: 0.875rem;
