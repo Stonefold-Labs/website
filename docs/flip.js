@@ -243,6 +243,9 @@
 
   track.addEventListener("scroll", soon, { passive: true });
   window.addEventListener("resize", function () { go(current, true); soon(); });
+  // The row's size also changes without the window's, as the page's fonts arrive and the pictures take the height left
+  // over; the middle picture is put back in the middle each time.
+  if (window.ResizeObserver) new window.ResizeObserver(function () { go(current, true); soon(); }).observe(track);
   if (still.addEventListener) still.addEventListener("change", soon);
   go(0, true);
   tilt();

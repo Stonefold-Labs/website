@@ -72,7 +72,7 @@ MOVED_TO_GUIDE = {"how-it-works", "questions"}
 # An old page whose section has since left Home too (About, the owner, 2026-11-25: "get rid of this"): its address
 # leads to the top of Home.
 GONE_SECTIONS = {"about", "why"}  # Why Stonefold went too, the same day ("remove this section")
-FLIP_JS_SHA256 = "d8e42e9c5983f65149871ce64d46dd205ef84d223f7999dba86c9254927802f8"
+FLIP_JS_SHA256 = "c64e32470a9967c1d274206a5fb6e4508c072ea679da0b2efd6bf38fe02dcb5d"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(HOME_SCRIPTS)
 # The app's eight themes (LookThemes.swift, 2026-11-18) and Editor (the owner, 2026-11-21, asked for it in place of the terminal themes), in the order the picker lists them. The picker is one button
