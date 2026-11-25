@@ -1,9 +1,10 @@
 /* Stonefold's front-page flip-through of pictures of the app. The picture
-   in the middle faces you; the ones beside it turn away and dim. The row moves one picture at a time: by a sideways
-   swipe or a sideways trackpad scroll, by the arrows, the arrow keys, or a click on a picture at the side. An
-   up-and-down swipe or wheel over it always scrolls the page, never the row. With "reduce motion" on, the pictures lie
-   flat. It reaches no network and keeps nothing; without it the pictures are a plain row that scrolls. Pinned in
-   scripts/check.py: read the diff before you change it. */
+   in the middle faces you; the ones beside it turn away and dim. The row follows a sideways drag of a finger or a
+   sideways trackpad scroll as it happens, then comes to rest on the nearest picture; the arrows, the arrow keys and a
+   click on a picture at the side move it too. An up-and-down swipe or wheel over it always scrolls the page, never the
+   row. With "reduce motion" on, the pictures lie flat and the row moves without gliding. It reaches no network and
+   keeps nothing; without it the pictures are a plain row that scrolls. Pinned in scripts/check.py: read the diff
+   before you change it. */
 (function () {
   "use strict";
   var track = document.getElementById("flip-track");
@@ -29,14 +30,46 @@
     return cards[1].offsetLeft - cards[0].offsetLeft;
   }
 
+  // Where the row sits when picture number `index` is in the middle.
+  function place(index) {
+    var card = cards[index];
+    return card.offsetLeft + card.offsetWidth / 2 - track.clientWidth / 2;
+  }
+
+  // A short glide to a place in the row. Any new drag, scroll or glide ends the one under way.
+  var gliding = 0;
+  function glide(to, instant) {
+    var mine = ++gliding;
+    var from = track.scrollLeft;
+    if (instant || still.matches || Math.abs(to - from) < 1) {
+      track.scrollLeft = to;
+      return;
+    }
+    var began = null;
+    function frame(now) {
+      if (mine !== gliding) return;
+      if (began === null) began = now;
+      var done = Math.min(1, (now - began) / 260);
+      track.scrollLeft = from + (to - from) * (1 - Math.pow(1 - done, 3));
+      if (done < 1) window.requestAnimationFrame(frame);
+    }
+    window.requestAnimationFrame(frame);
+  }
+
   // Bring picture number `index` to the middle.
   function go(index, instant) {
     current = Math.max(0, Math.min(cards.length - 1, index));
-    var card = cards[current];
-    track.scrollTo({
-      left: card.offsetLeft + card.offsetWidth / 2 - track.clientWidth / 2,
-      behavior: instant || still.matches ? "auto" : "smooth"
-    });
+    glide(place(current), instant);
+  }
+
+  // After a drag or a scroll, rest on the nearest picture; a short push still carries to the next one.
+  function settle() {
+    var gap = spacing();
+    var along = (track.scrollLeft - place(0)) / gap;
+    var nearest = Math.round(along);
+    var enough = Math.min(0.12, 30 / gap);
+    if (nearest === current && Math.abs(along - current) > enough) nearest = current + (along > current ? 1 : -1);
+    go(nearest);
   }
 
   function step(direction) { go(current + direction); }
@@ -74,48 +107,78 @@
     });
   });
 
-  // A trackpad's sideways scroll moves one picture per gesture. Mostly up-and-down scrolling is left alone, so the page
-  // scrolls past. A gesture ends when no scroll has come for a moment (a trackpad keeps sending them as it coasts).
-  var pushed = 0;
+  // A trackpad's sideways scroll moves the row with the fingers. Mostly up-and-down scrolling is left alone, so the
+  // page scrolls past. A trackpad keeps sending small scrolls as it coasts: once they have died down the row comes to
+  // rest, and the rest of that coast is passed over unless a new push begins.
   var lastWheel = -1000;
-  var spent = false;
+  var strongest = 0;
+  var rested = false;
+  var watching = false;
+  function watch(now) {
+    if (rested) { watching = false; return; }
+    if (now - lastWheel > 110) {
+      watching = false;
+      rested = true;
+      settle();
+      return;
+    }
+    window.requestAnimationFrame(watch);
+  }
   track.addEventListener("wheel", function (event) {
     if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
     event.preventDefault();
-    if (event.timeStamp - lastWheel > 180) {
-      pushed = 0;
-      spent = false;
+    var now = window.performance.now();
+    var size = Math.abs(event.deltaX);
+    if (now - lastWheel > 110) { rested = false; strongest = 0; }
+    lastWheel = now;
+    if (rested) {
+      if (size < 12) return;
+      rested = false;
+      strongest = 0;
     }
-    lastWheel = event.timeStamp;
-    if (spent) return;
-    pushed += event.deltaX;
-    if (Math.abs(pushed) > 30) {
-      spent = true;
-      step(pushed > 0 ? 1 : -1);
+    strongest = Math.max(strongest, size);
+    if (strongest >= 12 && size < 4) {
+      rested = true;
+      settle();
+      return;
+    }
+    gliding++;
+    track.scrollLeft += event.deltaX;
+    if (!watching) {
+      watching = true;
+      window.requestAnimationFrame(watch);
     }
   }, { passive: false });
 
-  // A finger's sideways swipe moves one picture. The browser keeps up-and-down swipes for the page (touch-action:
-  // pan-y in styles.css), so this only hears the sideways ones.
-  var startX = null;
-  var startY = 0;
+  // A finger drags the row sideways and it follows at once. The browser keeps up-and-down swipes for the page
+  // (touch-action: pan-y in styles.css), so this only hears the sideways ones.
+  var drag = null;
   var swipedAt = -1000;
   track.addEventListener("pointerdown", function (event) {
     if (event.pointerType === "mouse") return;
-    startX = event.clientX;
-    startY = event.clientY;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, from: track.scrollLeft, moved: false };
   });
-  track.addEventListener("pointerup", function (event) {
-    if (startX === null) return;
-    var dx = event.clientX - startX;
-    var dy = event.clientY - startY;
-    startX = null;
-    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
-      swipedAt = event.timeStamp;
-      step(dx < 0 ? 1 : -1);
+  track.addEventListener("pointermove", function (event) {
+    if (!drag || event.pointerId !== drag.id) return;
+    var dx = event.clientX - drag.x;
+    var dy = event.clientY - drag.y;
+    if (!drag.moved) {
+      if (Math.abs(dx) < 6 || Math.abs(dx) < Math.abs(dy)) return;
+      drag.moved = true;
+      gliding++;
     }
+    track.scrollLeft = drag.from - dx;
   });
-  track.addEventListener("pointercancel", function () { startX = null; });
+  function release(event) {
+    if (!drag || event.pointerId !== drag.id) return;
+    if (drag.moved) {
+      swipedAt = event.timeStamp;
+      settle();
+    }
+    drag = null;
+  }
+  track.addEventListener("pointerup", release);
+  track.addEventListener("pointercancel", release);
 
   // How far each picture is from the middle, in steps: 0 faces you, 1 is the next picture along.
   var waiting = false;
