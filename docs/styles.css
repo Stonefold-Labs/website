@@ -847,7 +847,11 @@ ul {
   text-wrap: balance;
 }
 
-/* Why Stonefold's price line and reasons sit centred (the owner, 2026-11-25). */
+/* Why Stonefold's price line and reasons sit centred, the reasons in one column of six (the owner, 2026-11-25). */
+.reasons.why-reasons {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .why-reasons li {
   text-align: center;
 }
