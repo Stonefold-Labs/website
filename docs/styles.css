@@ -865,6 +865,17 @@ ul {
   text-wrap: balance;
 }
 
+/* No hairline between the price's heading and its one line (the owner, 2026-11-25: "remove the line between these"),
+   and the line sits close under "Covers iPhone, iPad, and Mac." */
+.reasons.price-list {
+  margin-top: 0;
+}
+
+.reasons.price-list li {
+  padding-top: 0;
+  border-top: 0;
+}
+
 .why-price {
   text-align: center;
   text-wrap: balance;
