@@ -122,8 +122,9 @@ NOT_YET = [
     (r"data not collected", "house rules §4: waits until a privacy label is live"),
     # The app is not released.
     (r"download|available (on|now|in|for)|app store|testflight|\bbuy\b|\bget it\b|pre.?order|coming soon", "the app is not released; nothing may read as available"),
-    # The one price is the owner's, 2026-11-18: $24.99, paid once, for iPhone and Mac together.
-    (r"\$(?!24\.99(?!\d))\s?\d|[€£]\s?\d", "no price on the site but the owner's one: $24.99"),
+    # The one price is the owner's, 2026-11-25 ("Yes, $29.99", after the price research; $24.99 from 2026-11-18 until then):
+    # $29.99, paid once, for iPhone, iPad and Mac together.
+    (r"\$(?!29\.99(?!\d))\s?\d|[€£]\s?\d", "no price on the site but the owner's one: $29.99"),
     # Apple's page of which iPhones run iOS 26 has not been read in full (SPEC §7).
     (r"iphone (\d|se\b|air\b|pro\b)|macbook|\bimac\b|mac (mini|pro|studio)", "no iPhone or Mac is named by model"),
     # The five apps' names went with the five apps (the owner, 2026-11-13). The app is Stonefold. The plain word
@@ -844,8 +845,9 @@ BAD = [
     ("download", "body", "<p>Download it today.</p>"),
     ("the store", "body", "<p>Soon on the App Store.</p>"),
     ("a price", "body", "<p>$9.99 once.</p>"),
-    ("a price that only starts like the owner's", "body", "<p>$24.995 once.</p>"),
-    ("the owner's price in euros", "body", "<p>€24.99 once.</p>"),
+    ("a price that only starts like the owner's", "body", "<p>$29.995 once.</p>"),
+    ("the owner's price in euros", "body", "<p>€29.99 once.</p>"),
+    ("the old price", "body", "<p>$24.99 once.</p>"),
     ("a working title", "body", "<p>Teasel Notes</p>"),
     ("recovery", "body", "<p>We can recover your passphrase.</p>"),
     ("recovering, beside the sheet", "body", "<p>Print the recovery sheet. We can do the recovery for you.</p>"),
@@ -879,7 +881,7 @@ def self_test():
             print("self-test: the good page was refused:", check_site(site))
             return 1
 
-        allowed = f"<p>The recovery sheet is a page you print. It costs $24.99, paid once.</p><p>Sync is end-to-end encrypted, through your own iCloud.</p><p>{FLOCK_LINE}</p>"
+        allowed = f"<p>The recovery sheet is a page you print. It costs $29.99, paid once.</p><p>Sync is end-to-end encrypted, through your own iCloud.</p><p>{FLOCK_LINE}</p>"
         page.write_text(GOOD_PAGE.format(looks=LOOK_BUTTONS, csp=CSP, head="", body=allowed))
         if check_site(site):
             print("self-test: the recovery sheet, the owner's price or the game's line was refused:", check_site(site))
