@@ -72,7 +72,7 @@ FLIP_JS = "/flip.js"
 OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",)}
 # An old page whose section has since left Home too (About, the owner, 2026-11-25: "get rid of this"): its address
 # leads to the top of Home.
-GONE_SECTIONS = {"about"}
+GONE_SECTIONS = {"about", "why"}  # Why Stonefold went too, the same day ("remove this section")
 FLIP_JS_SHA256 = "d2e921c8ba03756b55a783d5fccf2c392e38b3657357273e4cab7ec69ce75805"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)

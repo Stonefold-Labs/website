@@ -866,7 +866,7 @@ ul {
 }
 
 /* No hairline between the price's heading and its one line (the owner, 2026-11-25: "remove the line between these"),
-   and the line sits close under "Covers iPhone, iPad, and Mac." */
+   and the line sits close under the price's own line */
 .reasons.price-list {
   margin-top: 0;
 }
@@ -2841,8 +2841,8 @@ h4 .wm {
   padding-top: 0.5rem;
 }
 
-/* Home holds How it works, Why Stonefold and Price as sections (the owner, 2026-11-25; About was one too until he had
-   it taken out that day). A jump from the footer lands with room above the heading. */
+/* Home holds How it works and Price as sections (the owner, 2026-11-25; About and Why Stonefold were too until he had
+   them taken out that day). A jump from the footer lands with room above the heading. */
 .home-part {
   scroll-margin-top: 1.5rem;
 }
