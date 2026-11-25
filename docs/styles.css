@@ -847,7 +847,11 @@ ul {
   text-wrap: balance;
 }
 
-/* Why Stonefold's price line sits centred under the heading (the owner, 2026-11-25). */
+/* Why Stonefold's price line and reasons sit centred (the owner, 2026-11-25). */
+.why-reasons li {
+  text-align: center;
+}
+
 .why-price {
   text-align: center;
   text-wrap: balance;
