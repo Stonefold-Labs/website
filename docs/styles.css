@@ -3002,4 +3002,77 @@ h4 .wm {
     order: 0;
     flex-basis: auto;
   }
+
+  /* Lighter type above and below the pictures (the owner, 2026-11-25: "play with the font size up top and below to
+     make it not look so crowded"): smaller words with more air between them. The height they give back goes to the
+     pictures. */
+  body:has(.flip) .bar {
+    padding-top: 0.875rem;
+  }
+
+  body:has(.flip) .bar .brand .mark {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  body:has(.flip) .bar .brand .wordmark {
+    height: 1.625rem;
+  }
+
+  body:has(.flip) .hero.center h1 {
+    font-size: clamp(1.75rem, 4.6vh, 2.875rem);
+  }
+
+  body:has(.flip) .hero .soon {
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    letter-spacing: 0.01em;
+  }
+
+  body:has(.flip) .hero.center .lede {
+    margin: 0.75rem 0 1.125rem;
+    padding: 0 max(0px, calc(50% - 20em));
+    font-size: 0.9375rem;
+    line-height: 1.65;
+  }
+
+  body:has(.flip) .hero .actions .button,
+  body:has(.flip) .hero .try-theme .theme {
+    min-height: 2.125rem;
+    font-size: 0.8125rem;
+  }
+
+  body:has(.flip) #price.section {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  body:has(.flip) #price .wrap,
+  body:has(.flip) #price .lead {
+    gap: 0.25rem 1.75rem;
+  }
+
+  body:has(.flip) #price .lead h2 {
+    font-size: 1.1875rem;
+  }
+
+  body:has(.flip) #price .lead p,
+  body:has(.flip) #price .price-list p {
+    font-size: 0.875rem;
+  }
+
+  body:has(.flip) .foot {
+    padding-top: 0.875rem;
+    padding-bottom: 1rem;
+    font-size: 0.8125rem;
+  }
+
+  body:has(.flip) .foot .brand .mark {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  body:has(.flip) .foot .brand .wordmark {
+    height: 1rem;
+  }
 }
