@@ -68,6 +68,8 @@ QUESTIONS_SCRIPTS = [THEME_JS, QUESTIONS_JS]
 # no network and keeps nothing. Its motion is the pictures following the reader's own scrolling, and it lies flat with
 # "reduce motion" on.
 FLIP_JS = "/flip.js"
+# Pages that became sections of Home on 2026-11-25; their old addresses forward to /#<name>.
+OLD_PAGES = {("how-it-works",), ("why",), ("price",), ("about",)}
 FLIP_JS_SHA256 = "114e00f40af4468b9d4a7b21044ee471ceeb02513402dbe9fcc2271db3d16f99"
 HOME_SCRIPTS = [THEME_JS, FLIP_JS]
 ALLOWED_SCRIPTS = set(GUIDE_SCRIPTS) | set(QUESTIONS_SCRIPTS) | set(HOME_SCRIPTS)
@@ -337,7 +339,7 @@ def sitemap_text(site):
     paths = []
     for file in sorted(site.rglob("*.html")):
         parts = file.relative_to(site).parts
-        if file.name != "index.html" or (parts[:1] == ("guide",) and len(parts) == 4):
+        if file.name != "index.html" or (parts[:1] == ("guide",) and len(parts) == 4) or parts[:1] in OLD_PAGES:
             continue
         paths.append(own_path(parts))
     paths.sort(key=lambda path: (path != "/", path))
@@ -379,6 +381,9 @@ def check_page(site, file):
     # The guide is one long page, guide/index.html, which has the search; an old address of a topic, guide/<section>/<topic>/, is a tiny
     # page that sends to the topic's place on it, with a meta refresh of 0 and a canonical link, and no search.
     stub = parts[:1] == ("guide",) and len(parts) == 4
+    # How it works, Why Stonefold, Price and About became sections of Home (the owner, 2026-11-25: "Yes, build it"); each old
+    # address is a tiny page that sends to its section, like an old guide address.
+    old_page = len(parts) == 2 and parts[:1] in OLD_PAGES
     in_guide = parts[:1] == ("guide",) and not stub
     in_questions = parts == ("questions", "index.html")
     # The theme picker is on Home only (the owner, 2026-11-22: "lets only have the theme selector on the home page"). Every
@@ -403,9 +408,17 @@ def check_page(site, file):
             problems.append(f"an old guide address has <link rel=canonical href=\"{ADDRESS}/guide/\">")
         if f"{parts[1]}-{parts[2]}" not in ids_of(site, "/guide/"):
             problems.append(f"{target}: the guide has no such topic")
+    elif old_page:
+        target = f"/#{parts[0]}"
+        if page.refresh != f"0; url={target}":
+            problems.append(f"an old page's address sends to {target} with <meta http-equiv=refresh content=\"0; url={target}\">")
+        if page.canonical != ADDRESS + "/":
+            problems.append(f"an old page's address has <link rel=canonical href=\"{ADDRESS}/\">")
+        if parts[0] not in ids_of(site, "/"):
+            problems.append(f"{target}: Home has no such section")
     else:
         if page.refresh is not None:
-            problems.append("only an old guide address may carry a meta refresh")
+            problems.append("only an old guide or page address may carry a meta refresh")
         if parts == ("404.html",):
             if page.canonical is not None:
                 problems.append("the \"not here\" page has no canonical link: it is shown at any address")

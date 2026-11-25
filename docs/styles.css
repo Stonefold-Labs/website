@@ -2830,3 +2830,13 @@ h4 .wm {
   border-top: 0;
   padding-top: 0.5rem;
 }
+
+/* Home holds How it works, Why Stonefold, Price and About as sections (the owner, 2026-11-25). A jump from the stones
+   lands with room above the heading, and the flock sits under About's centred words. */
+.home-part {
+  scroll-margin-top: 1.5rem;
+}
+
+.home-part .flock {
+  justify-content: center;
+}
