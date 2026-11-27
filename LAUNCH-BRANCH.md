@@ -62,5 +62,5 @@ The words come from `SPEC.md`, from the builders' plans in `StonefoldApp/docs/pl
 
 ## On launch day, also (added 2026-11-22)
 
-- Take out Home's line "Coming to iPhone and Mac." (the `p.soon` under the headline).
+- Home's line under the headline (`p.soon`) now reads "For iPhone, iPad, and Mac." (the owner, 2026-11-27); it can stay on launch day.
 - Take out or rewrite the Questions answer "When is Stonefold out?" in "Before you decide" (since 2026-11-25 in the guide's Questions chapter, `/guide/#decide-when-is-stonefold-out`).
