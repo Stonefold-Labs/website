@@ -62,5 +62,5 @@ The words come from `SPEC.md`, from the builders' plans in `StonefoldApp/docs/pl
 
 ## On launch day, also (added 2026-11-22)
 
-- Home's line under the headline (`p.soon#price`) now reads "One-time purchase of $29.99 for iPhone, iPad, and Mac." (the owner, 2026-11-27); it can stay on launch day, beside the store link.
+- Home's line under the headline (`p.soon#price`) now reads "One-time purchase of $29.99 includes iPhone, iPad, and Mac." (the owner, 2026-11-27); it can stay on launch day, beside the store link.
 - Take out or rewrite the Questions answer "When is Stonefold out?" in "Before you decide" (since 2026-11-25 in the guide's Questions chapter, `/guide/#decide-when-is-stonefold-out`).
