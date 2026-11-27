@@ -2865,16 +2865,16 @@ h4 .wm {
   }
 
   body:has(.flip) .flip-card {
-    flex-basis: min(80cqw, 58rem, 132cqh);
+    flex-basis: min(80cqw, 60rem, 145cqh);
   }
 
   body:has(.flip) .flip-card + .flip-card {
-    margin-left: calc(min(80cqw, 58rem, 132cqh) * -0.42);
+    margin-left: calc(min(80cqw, 60rem, 145cqh) * -0.42);
   }
 
   body:has(.flip) .flip-track::before,
   body:has(.flip) .flip-track::after {
-    flex-basis: calc(50% - min(40cqw, 29rem, 66cqh));
+    flex-basis: calc(50% - min(40cqw, 30rem, 72.5cqh));
   }
 
   /* The arrows sit over the pictures' sides, not on a row of their own under them. */
@@ -2961,6 +2961,6 @@ h4 .wm {
    is moved up slightly into the header space"). Only where the window is wide enough that the two can't touch. */
 @media (min-width: 61rem) {
   body:has(.flip) .hero.center {
-    margin-top: -2.5rem;
+    margin-top: -1.75rem;
   }
 }
