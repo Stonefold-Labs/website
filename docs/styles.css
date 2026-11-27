@@ -2847,14 +2847,14 @@ h4 .wm {
     flex: 1 1 0;
     flex-direction: column;
     min-height: 16rem;
-    margin: 0.5rem 0 0.25rem;
+    margin: 0.25rem 0 1rem;
   }
 
   /* The row is as tall as the room left, and each picture as wide as that height allows (the pictures are 16 by 10). */
   body:has(.flip) .flip-track {
     flex: 1 1 0;
     min-height: 0;
-    padding: 0.5rem 0 0.75rem;
+    padding: 0.5rem 0 1rem;
     container-type: size;
   }
 
@@ -2901,7 +2901,7 @@ h4 .wm {
 
   /* The headline is two lines (the owner, 2026-11-27: "a little crowded up top. Can we stack the first line"), set smaller, with room under the logo. */
   body:has(.flip) .hero.center {
-    padding-top: 1.25rem;
+    padding-top: 0.75rem;
   }
 
   body:has(.flip) .hero.center h1 {
@@ -2916,7 +2916,7 @@ h4 .wm {
   }
 
   body:has(.flip) .hero.center .lede {
-    margin: 0.75rem 0 1.125rem;
+    margin: 0.625rem 0 1rem;
     padding: 0 max(0px, calc(50% - 20em));
     font-size: 0.9375rem;
     line-height: 1.65;
@@ -2928,9 +2928,11 @@ h4 .wm {
     font-size: 0.8125rem;
   }
 
+  /* Even top and bottom (the owner, 2026-11-27: "a little crammed at the bottom with lots of space up top"): less air in
+     the hero, more between the pictures and the footer, and a roomier footer. */
   body:has(.flip) .foot {
-    padding-top: 0.875rem;
-    padding-bottom: 1rem;
+    padding-top: 1.125rem;
+    padding-bottom: 1.25rem;
     font-size: 0.8125rem;
   }
 
