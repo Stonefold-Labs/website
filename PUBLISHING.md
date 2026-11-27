@@ -207,6 +207,45 @@ Redirecting before then would send readers to a "not secure" warning.
 
 Button names are from GitHub's and Cloudflare's help pages read on 2026-11-18 (the sources below). A site can rename a button; if one isn't where this says, stop and ask in the website chat rather than guess. Not confirmed from a help page: what GitHub shows on the old address during the gap, the wording of Cloudflare's free-plan button, and whether Apple accepts mail on one domain and the website on another.
 
+## Part 10. Forward bellwetherbudget.com and stonefoldbudget.com (your choice; you, 20 minutes, after one change Claude pushes on your yes) — not decided
+
+**Recommended, not decided.** You own both: `bellwetherbudget.com` (Cloudflare, since 2026-10-28) and `stonefoldbudget.com` (Cloudflare, bought 2026-11-27). On 2026-11-27 you kept the name Stonefold (house rules decision 64), and what the two addresses do was left open. The recommendation is that both, with and without `www`, send readers on to `https://stonefoldapp.com` with the rest of the address kept, the way `stonefoldlabs.com` does (Part 9, step 7), and that `stonefoldapp.com` stays the one main address. They are yours to forward, to leave pointing nowhere, or to keep for later. Nothing here touches `stonefoldapp.com`, `stonefoldlabs.com` or the mail.
+
+Tell the website chat "forward the budget domains" to start. Then:
+
+### Step 1. The privacy page first (Claude, on your yes)
+
+The privacy page says which addresses Cloudflare answers. Before any rule is turned on, Claude changes its line about `stonefoldlabs.com` to name all three, in words like: "This site's other addresses, stonefoldlabs.com, stonefoldbudget.com and bellwetherbudget.com, send you on to this one. They are answered by Cloudflare, which does nothing but pass you here …", runs `python3 -I scripts/check.py`, and pushes on your yes. The page has to be true before the rules make it so.
+
+### Step 2. Give each domain somewhere for the rule to run (you, 5 minutes a domain)
+
+A redirect rule only runs on a name whose DNS record is **Proxied** (the orange cloud). A domain with no website needs a stand-in record. Do this for **stonefoldbudget.com**, then the same for **bellwetherbudget.com**:
+
+1. Cloudflare, the domain, **DNS**, **Records**. **Look first.** If anything is already there (for `bellwetherbudget.com`, say, an old record from before), stop and tell the website chat what you see before changing it. A new domain usually has none, or only Cloudflare's suggestion banners, which you can leave.
+2. **Add record**: **Type** `A`, **Name** `@`, **IPv4 address** `192.0.2.1`, **Proxy status** on (orange, **Proxied**), **TTL** Auto. **Save**.
+3. **Add record**: **Type** `A`, **Name** `www`, **IPv4 address** `192.0.2.1`, **Proxied**. **Save**.
+
+`192.0.2.1` is an address set aside for examples; nothing answers there, and no reader ever reaches it, because Cloudflare answers first and sends them on. If Cloudflare offers to make the record for you when you save the rule in step 3, that does the same thing.
+
+### Step 3. The redirect rules (you, 5 minutes a domain)
+
+Still in the same domain: **Rules**, **Overview**, **Create rule**, **Redirect Rule**. Make two, each with **When incoming requests match** on **Wildcard pattern**. For **stonefoldbudget.com**:
+
+- Rule name `stonefoldbudget to stonefoldapp.com`. **Request URL** `http*://stonefoldbudget.com/*`. **Target URL** `https://stonefoldapp.com/${2}`. **Status code** `301`. **Preserve query string** on. Click **Deploy**.
+- Rule name `www stonefoldbudget to stonefoldapp.com`. **Request URL** `http*://www.stonefoldbudget.com/*`. Everything else the same.
+
+For **bellwetherbudget.com**, the same two with `bellwetherbudget.com` in place of `stonefoldbudget.com`.
+
+If the wildcard option is not where this says, choose **Custom filter expression** with `(http.host eq "stonefoldbudget.com") or (http.host eq "www.stonefoldbudget.com")` (or the bellwether names), a dynamic **Target URL** of `concat("https://stonefoldapp.com", http.request.uri.path)`, status `301`, **Preserve query string** on. If Cloudflare warns that the rule "may not apply", check that both records in step 2 are orange, then **Deploy anyway**, as on 2026-11-18.
+
+A 301 tells browsers the move is for good, and they remember it. That is what you want here; if you ever want one of these addresses to show something of its own, a browser that visited may keep going to stonefoldapp.com until its cache clears.
+
+### Step 4. Check (Claude, then you)
+
+Tell the website chat. Claude adds the four addresses to `scripts/check-live.sh`, which then checks that each, over `http://` and `https://`, ends at `https://stonefoldapp.com/` with the path and query kept and no cookie set, runs it, and commits the change. Then you open https://stonefoldbudget.com/privacy/ and https://www.bellwetherbudget.com/ on your Mac and iPhone: each should land on the same page at stonefoldapp.com. The padlock on the two old names is Cloudflare's; it can take a few minutes after step 2 to appear.
+
+**Not confirmed from a help page** (read 2026-11-27, sources below): Cloudflare's pages say a redirect needs the name to be proxied, but do not give a stand-in value; `192.0.2.1` is the one their own examples use. They also do not name the dashboard's rule templates, or say how many redirect rules the free plan allows (four are made here; stonefoldlabs.com has two).
+
 ## Later changes
 
 Any change to the site: edit the files in `docs/`, run `python3 -I scripts/check.py`, commit, push. The live site follows within a minute or two. Then run `scripts/check-live.sh`.
@@ -227,5 +266,6 @@ When an app is released, its privacy policy goes on `/privacy/` and its help on 
 - GitHub, managing a custom domain and verifying a domain (the two pages above, read again 2026-11-18)
 - Cloudflare, add a site: https://developers.cloudflare.com/fundamentals/manage-domains/add-site/ (read 2026-11-18)
 - Proton, custom domains: https://proton.me/support/custom-domain
+- For Part 10, read 2026-11-27: Cloudflare, redirect to a different hostname, https://developers.cloudflare.com/rules/url-forwarding/examples/redirect-all-different-hostname/ ; create a single redirect in the dashboard, https://developers.cloudflare.com/rules/url-forwarding/single-redirects/create-dashboard/ ; single redirect settings, https://developers.cloudflare.com/rules/url-forwarding/single-redirects/settings/ ; proxy status, https://developers.cloudflare.com/dns/proxy-status/
 
 Not confirmed from a help page, so check on the screen: the exact words of Cloudflare's grey-cloud setting ("DNS only"), GitHub's plan picker for a new organization, and where **Addresses** sits in Proton's settings.
