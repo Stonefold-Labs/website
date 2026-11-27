@@ -2108,17 +2108,25 @@ h4 .wm {
 }
 
 .bar .brand {
-  gap: 0.875rem;
+  gap: 0.375rem;
 }
 
+/* The header's name is stacked (the owner, 2026-11-27, picking draft 4 of four: "I like 4"): the drawn "stonefold",
+   and under it a small, spaced "budget" in the stones' colour. The mark spans both lines: its square of stones runs
+   from the top of "stonefold" to the foot of "budget". Mark size = wordmark height x (244 / 288) / 0.6875.
+   The drawing is in ../Stonefold/reports/2026-11-27-budget-lockups/. The footer keeps the plain name. */
 .bar .brand .mark {
-  width: 3rem;
-  height: 3rem;
+  width: 4.3125rem;
+  height: 4.3125rem;
 }
 
 .bar .brand .wordmark {
   width: auto;
-  height: 2.25rem;
+  height: 3.5rem;
+}
+
+.brand .wordmark .sub {
+  color: var(--mark);
 }
 
 .themes {
@@ -2143,12 +2151,12 @@ h4 .wm {
   }
 
   .bar .brand .mark {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
   }
 
   .bar .brand .wordmark {
-    height: 1.625rem;
+    height: 2.625rem;
   }
 
   .themes {
@@ -2883,12 +2891,12 @@ h4 .wm {
   }
 
   body:has(.flip) .bar .brand .mark {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 3.25rem;
+    height: 3.25rem;
   }
 
   body:has(.flip) .bar .brand .wordmark {
-    height: 1.625rem;
+    height: 2.625rem;
   }
 
   /* The headline is two lines (the owner, 2026-11-27: "a little crowded up top. Can we stack the first line"), set smaller, with room under the logo. */
