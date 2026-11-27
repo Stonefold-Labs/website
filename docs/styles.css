@@ -2858,17 +2858,23 @@ h4 .wm {
     container-type: size;
   }
 
+  /* A little smaller than the room allows (the owner, 2026-11-27: "make the screenshots just slightly smaller"), set in
+     the middle of the row's height. */
+  body:has(.flip) .flip-track {
+    align-items: center;
+  }
+
   body:has(.flip) .flip-card {
-    flex-basis: min(88cqw, 64rem, 160cqh);
+    flex-basis: min(80cqw, 58rem, 132cqh);
   }
 
   body:has(.flip) .flip-card + .flip-card {
-    margin-left: calc(min(88cqw, 64rem, 160cqh) * -0.42);
+    margin-left: calc(min(80cqw, 58rem, 132cqh) * -0.42);
   }
 
   body:has(.flip) .flip-track::before,
   body:has(.flip) .flip-track::after {
-    flex-basis: calc(50% - min(44cqw, 32rem, 80cqh));
+    flex-basis: calc(50% - min(40cqw, 29rem, 66cqh));
   }
 
   /* The arrows sit over the pictures' sides, not on a row of their own under them. */
@@ -2949,4 +2955,12 @@ h4 .wm {
 /* A word that must not break at its hyphen, such as "in-app". */
 .keep {
   white-space: nowrap;
+}
+
+/* The headline rises into the header's band, beside the logo (the owner, 2026-11-27: "it's ok, if 'a private budget'
+   is moved up slightly into the header space"). Only where the window is wide enough that the two can't touch. */
+@media (min-width: 61rem) {
+  body:has(.flip) .hero.center {
+    margin-top: -2.5rem;
+  }
 }
