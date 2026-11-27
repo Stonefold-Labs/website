@@ -207,9 +207,9 @@ Redirecting before then would send readers to a "not secure" warning.
 
 Button names are from GitHub's and Cloudflare's help pages read on 2026-11-18 (the sources below). A site can rename a button; if one isn't where this says, stop and ask in the website chat rather than guess. Not confirmed from a help page: what GitHub shows on the old address during the gap, the wording of Cloudflare's free-plan button, and whether Apple accepts mail on one domain and the website on another.
 
-## Part 10. Forward bellwetherbudget.com and stonefoldbudget.com (your choice; you, 20 minutes, after one change Claude pushes on your yes) — not decided
+## Part 10. Forward bellwetherbudget.com and stonefoldbudget.com (your choice; you, 20 minutes, after one change Claude pushes on your yes) — replaced for stonefoldbudget.com by Part 11
 
-**Recommended, not decided.** You own both: `bellwetherbudget.com` (Cloudflare, since 2026-10-28) and `stonefoldbudget.com` (Cloudflare, bought 2026-11-27). On 2026-11-27 you kept the name Stonefold (house rules decision 64), and what the two addresses do was left open. The recommendation is that both, with and without `www`, send readers on to `https://stonefoldapp.com` with the rest of the address kept, the way `stonefoldlabs.com` does (Part 9, step 7), and that `stonefoldapp.com` stays the one main address. They are yours to forward, to leave pointing nowhere, or to keep for later. Nothing here touches `stonefoldapp.com`, `stonefoldlabs.com` or the mail.
+**Replaced on 2026-11-27:** stonefoldbudget.com became the main address (Part 11); bellwetherbudget.com can still forward, to stonefoldbudget.com (Part 11, step 10). **Recommended, not decided.** You own both: `bellwetherbudget.com` (Cloudflare, since 2026-10-28) and `stonefoldbudget.com` (Cloudflare, bought 2026-11-27). On 2026-11-27 you kept the name Stonefold (house rules decision 64), and what the two addresses do was left open. The recommendation is that both, with and without `www`, send readers on to `https://stonefoldapp.com` with the rest of the address kept, the way `stonefoldlabs.com` does (Part 9, step 7), and that `stonefoldapp.com` stays the one main address. They are yours to forward, to leave pointing nowhere, or to keep for later. Nothing here touches `stonefoldapp.com`, `stonefoldlabs.com` or the mail.
 
 Tell the website chat "forward the budget domains" to start. Then:
 
@@ -245,6 +245,97 @@ A 301 tells browsers the move is for good, and they remember it. That is what yo
 Tell the website chat. Claude adds the four addresses to `scripts/check-live.sh`, which then checks that each, over `http://` and `https://`, ends at `https://stonefoldapp.com/` with the path and query kept and no cookie set, runs it, and commits the change. Then you open https://stonefoldbudget.com/privacy/ and https://www.bellwetherbudget.com/ on your Mac and iPhone: each should land on the same page at stonefoldapp.com. The padlock on the two old names is Cloudflare's; it can take a few minutes after step 2 to appear.
 
 **Not confirmed from a help page** (read 2026-11-27, sources below): Cloudflare's pages say a redirect needs the name to be proxied, but do not give a stand-in value; `192.0.2.1` is the one their own examples use. They also do not name the dashboard's rule templates, or say how many redirect rules the free plan allows (four are made here; stonefoldlabs.com has two).
+
+## Part 11. Move the site to stonefoldbudget.com, and mail to admin@ and support@stonefoldbudget.com (you, in two sittings; Claude pushes one change on your yes) — started 2026-11-27
+
+On 2026-11-27 the owner asked to move the website to `stonefoldbudget.com` and the mail to `admin@stonefoldbudget.com` and `support@stonefoldbudget.com`. After this part, https://stonefoldbudget.com is the site; `stonefoldapp.com` and `stonefoldlabs.com`, with and without `www`, send readers on to it with the path kept; every page names `support@stonefoldbudget.com`. **The `@stonefoldlabs.com` addresses keep working** (Apple, D-U-N-S, Mercury and Sunbiz have them on file) and their mail records are never touched. This replaces Part 10's plan for `stonefoldbudget.com`.
+
+The site change is ready on the local branch `move-to-stonefoldbudget` (rebased onto `5845bae` as `f333538`): `docs/CNAME`, every canonical link and `og:url`, the sitemap, every `mailto`, the privacy page (both old addresses named, dated 27 November 2026), `check.py` and `check-live.sh`. It passes `scripts/check.py`. It is pushed only after steps 1 to 7.
+
+Do **mail first** (steps 1 to 4): nothing a reader sees changes, and the site must not name `support@stonefoldbudget.com` until a test message has gone both ways.
+
+### Step 1. Add stonefoldbudget.com to Proton (you, 10 minutes)
+
+The plan, Mail Essentials, allows 3 custom domains; this is the second.
+1. Proton Mail on the web, **Settings**, **All settings**. Under **Organization** (or under **Proton Mail** — Proton's own pages give both) click **Domain names**, then **Add domain**.
+2. Type `stonefoldbudget.com`, click **Next** (it may ask for your password). Proton shows a **Verify** tab with a TXT record starting `protonmail-verification=`. Leave the tab open.
+3. Cloudflare, **stonefoldbudget.com**, **DNS**, **Records**, **Add record**: **Type** `TXT`, **Name** `@`, **Content** the whole value from Proton, **TTL** Auto. **Save**.
+4. Back in Proton, click **Next** (or **Actions**, **Review**, **Verify**) until it says verified.
+
+### Step 2. The mail records (you, 15 minutes)
+
+Proton's tabs **MX**, **SPF**, **DKIM** and **DMARC** each show what to add. In Cloudflare, **stonefoldbudget.com**, **DNS**, **Records**, add each with **Add record** and **Save**, copying values from Proton, not from here:
+
+| # | Type | Name | Content or target | Priority | Proxy status |
+|---|---|---|---|---|---|
+| 1 | MX | `@` | `mail.protonmail.ch` | 10 | (none for MX) |
+| 2 | MX | `@` | `mailsec.protonmail.ch` | 20 | (none for MX) |
+| 3 | TXT | `@` | the SPF value from Proton's **SPF** tab (stonefoldlabs.com's is `v=spf1 include:_spf.protonmail.ch ~all`) | | |
+| 4 to 6 | CNAME | `protonmail._domainkey`, `protonmail2._domainkey`, `protonmail3._domainkey` | each target from Proton's **DKIM** tab (they are new for this domain; don't copy stonefoldlabs.com's) | | **DNS only** (grey cloud) |
+| 7 | TXT | `_dmarc` | the value from Proton's **DMARC** tab (stonefoldlabs.com uses `p=quarantine`) | | |
+
+The three DKIM records **must** be grey: Proton's Cloudflare page says a proxied one "will not propagate". If Cloudflare rejects a target ending in a dot, drop the dot. Then wait for Proton to show a green tick on every tab (minutes, sometimes an hour).
+
+### Step 3. Make the two addresses (you, 5 minutes)
+
+1. Proton, **Settings**, **All settings**, **Organization**, **Users and addresses**, **Add address**.
+2. **User**: your existing user (`stonefoldlabs`). **Domain**: `stonefoldbudget.com`. **Address**: `support`. **Display name**: `Stonefold`. Click **Save address**.
+3. **Add address** again: `admin`, same user and domain, display name `Stonefold Labs`. **Save address**.
+
+Essentials allows 10 addresses per user. Do **not** delete or disable any `@stonefoldlabs.com` address.
+
+### Step 4. Test both (you, 10 minutes)
+
+For each of `support@` and `admin@stonefoldbudget.com`: from an address that isn't yours at Proton, send a message; see it arrive; reply, choosing the new address in the reply's **From** list; see the reply arrive and not in spam. Then tell the website chat "mail works".
+
+### Step 5. Prove the domain to GitHub (you, 5 minutes)
+
+As Part 9, step 2, with `stonefoldbudget.com`: GitHub, **Your organizations**, **Stonefold-Labs**, **Settings**, **Pages**, **Add a domain**, `stonefoldbudget.com`, **Add domain**. In Cloudflare, **stonefoldbudget.com**, add the TXT record GitHub shows (Name `_github-pages-challenge-Stonefold-Labs`, Content GitHub's code). Back on GitHub, **Verify**. Keep the record for good.
+
+### Step 6. Point stonefoldbudget.com at GitHub (you, 10 minutes)
+
+Cloudflare, **stonefoldbudget.com**, **DNS**, **Records**. **Look first:** if an `A` or `CNAME` record on `@` or `www` is already there (Part 10 suggested a stand-in `192.0.2.1`), delete only that one. Then add the nine records of Part 9, step 3, every one **DNS only** (grey):
+
+| # | Type | Name | Address or target |
+|---|---|---|---|
+| 1 to 4 | A | `@` | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153` |
+| 5 to 8 | AAAA | `@` | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| 9 | CNAME | `www` | `stonefold-labs.github.io` |
+
+Don't touch the mail records from step 2. No wildcard (`*`) record.
+
+### Step 7. Tell the website chat "step 6 is done" (you, 1 minute)
+
+Claude checks the records from here (read-only `dig`), and that mail works from step 4.
+
+### Step 8. Switch on the new address (Claude, on your yes)
+
+Claude merges `move-to-stonefoldbudget` into `main` and pushes it. Then you, GitHub, **Stonefold-Labs/website**, **Settings**, **Pages**: **Custom domain** should show `stonefoldbudget.com`; if not, type it and **Save**, and wait for **DNS check successful**. On 2026-11-18 the certificate came within a minute, so the gap was invisible; it can take longer.
+
+### Step 9. Turn on HTTPS (you)
+
+When **Enforce HTTPS** is no longer greyed out, tick it. Open https://stonefoldbudget.com and check the padlock.
+
+### Step 10. Send the old addresses on (you, 15 minutes; only once step 9 shows the padlock)
+
+1. **stonefoldapp.com:** Cloudflare, **stonefoldapp.com**, **DNS**, **Records**. For the nine web records only, click the grey cloud so it turns orange (**Proxied**), **Save**. Leave its `_github-pages-challenge…` TXT record alone. Then **Rules**, **Overview**, **Create rule**, **Redirect Rule**, two rules on **Wildcard pattern**:
+   - `stonefoldapp to stonefoldbudget`: **Request URL** `http*://stonefoldapp.com/*`, **Target URL** `https://stonefoldbudget.com/${2}`, **Status code** `301`, **Preserve query string** on, **Deploy**.
+   - `www stonefoldapp to stonefoldbudget`: **Request URL** `http*://www.stonefoldapp.com/*`, the rest the same.
+   If Cloudflare warns the rule "may not apply", check the records are orange, then **Deploy anyway**.
+2. **stonefoldlabs.com:** Cloudflare, **stonefoldlabs.com**, **Rules**. Open each of its two rules (`old address to stonefoldapp.com`, `old www to stonefoldapp.com`), change **Target URL** to `https://stonefoldbudget.com/${2}`, rename them to say stonefoldbudget, **Save**. That sends readers in one hop instead of two. Its DNS stays as it is.
+3. **bellwetherbudget.com (optional):** Part 10, steps 2 and 3, with `https://stonefoldbudget.com/${2}` as the target.
+
+### Step 11. Check (Claude, then you)
+
+Tell the website chat. Claude runs `scripts/check-live.sh`: every page exact at stonefoldbudget.com, and both old addresses, with and without `www`, ending there with path and query kept and no cookie. Then you open https://stonefoldbudget.com, https://stonefoldapp.com/privacy/ and https://stonefoldlabs.com on your Mac and iPhone.
+
+### After it
+
+- **The app:** `App/Shell/CompanyLinks.swift` in StonefoldApp names `mailto:support@stonefoldlabs.com` and `https://stonefoldapp.com`. Send the app's build chat the new two, and the App Store URLs become `https://stonefoldbudget.com/privacy` and `https://stonefoldbudget.com/support`.
+- **Accounts with the old addresses:** Apple Developer (contact and website), D-U-N-S (website), Mercury, GitHub's organization e-mail. The old ones keep working, so change them when convenient, except Apple: while Apple support is converting the enrollment to the LLC, ask that chat before changing what Apple has on file.
+- **Undo, if step 8 or 9 goes wrong:** change `docs/CNAME` back to `stonefoldapp.com` (ask the website chat) and re-save it under **Custom domain**. Nothing about stonefoldapp.com was changed before step 10.
+
+Sources, read 2026-11-27: https://proton.me/support/custom-domain-cloudflare, https://proton.me/support/custom-domain, https://proton.me/support/add-users-organization, https://proton.me/support/customize-proton-business; GitHub's and Cloudflare's as in Part 9. Proton's pages give two menu paths to **Domain names** and don't say how to set a default From address; if a button isn't where this says, ask rather than guess.
 
 ## Later changes
 
