@@ -2864,43 +2864,6 @@ h4 .wm {
   }
 
   /* The arrows sit over the pictures' sides, not on a row of their own under them. */
-  body:has(.flip) #price.section {
-    padding-top: 0.75rem;
-    padding-bottom: 0.875rem;
-  }
-
-  body:has(.flip) #price .wrap {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: center;
-    gap: 0.25rem 1.25rem;
-  }
-
-  body:has(.flip) #price .lead {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: center;
-    gap: 0.25rem 1.25rem;
-    margin: 0;
-  }
-
-  body:has(.flip) #price .lead h2 {
-    margin: 0;
-    font-size: 1.5rem;
-  }
-
-  body:has(.flip) #price .lead p,
-  body:has(.flip) #price .price-list {
-    margin: 0;
-  }
-
-  body:has(.flip) #price .price-list li,
-  body:has(.flip) #price .price-list p {
-    padding: 0;
-  }
-
   body:has(.flip) .foot {
     row-gap: 0.25rem;
     padding-top: 0.75rem;
@@ -2949,25 +2912,6 @@ h4 .wm {
   body:has(.flip) .hero .try-theme .theme {
     min-height: 2.125rem;
     font-size: 0.8125rem;
-  }
-
-  body:has(.flip) #price.section {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-
-  body:has(.flip) #price .wrap,
-  body:has(.flip) #price .lead {
-    gap: 0.25rem 1.75rem;
-  }
-
-  body:has(.flip) #price .lead h2 {
-    font-size: 1.1875rem;
-  }
-
-  body:has(.flip) #price .lead p,
-  body:has(.flip) #price .price-list p {
-    font-size: 0.875rem;
   }
 
   body:has(.flip) .foot {
