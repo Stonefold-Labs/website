@@ -1252,41 +1252,6 @@ footer {
 @media (max-width: 56rem) {
 }
 
-/* Four encrypted files, when Files is kept. */
-.vault.wide {
-  max-width: 58rem;
-}
-
-.vault-files.four {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.vault-files.four::after {
-  left: calc((100% - 3rem) / 8);
-  right: calc((100% - 3rem) / 8);
-}
-
-@media (max-width: 56rem) {
-  .vault-files.four {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .vault-files.four::after,
-  .vault-files.four li::before {
-    display: none;
-  }
-}
-
-@media (max-width: 44rem) {
-  .vault-files.four {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .vault-files.four::before {
-    display: none;
-  }
-}
-
 /* Home: a centered hero with the app's window under it, and one big sentence over each section. */
 .hero.center {
   display: block;
