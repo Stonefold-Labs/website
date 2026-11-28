@@ -1865,7 +1865,7 @@ kbd {
   color: var(--text);
 }
 
-.guide.searching .article > :not(.gsearch) {
+.guide.searching .article > :not(.gsearch):not(.ghead) {
   display: none;
 }
 
@@ -2116,13 +2116,13 @@ h4 .wm {
    from the top of "stonefold" to the foot of "budget". Mark size = wordmark height x (244 / 288) / 0.6875.
    The drawing is in ../Stonefold/reports/2026-11-27-budget-lockups/. The footer keeps the plain name. */
 .bar .brand .mark {
-  width: 4.3125rem;
-  height: 4.3125rem;
+  width: 3.25rem;
+  height: 3.25rem;
 }
 
 .bar .brand .wordmark {
   width: auto;
-  height: 3.5rem;
+  height: 2.625rem;
 }
 
 .brand .wordmark .sub {
@@ -2294,6 +2294,14 @@ h4 .wm {
 /* ===== Denser pages. Less room round the header, the hero, sections, the band and the cards. ===== */
 .bar {
   padding-top: 1rem;
+}
+
+/* Every page's logo is the size and place of Home's (the owner, 2026-11-27: "fix the guide page heading to match the
+   front page"). */
+@media (min-width: 45rem) {
+  .bar {
+    padding-top: 0.875rem;
+  }
 }
 
 .hero.center {
@@ -2962,5 +2970,39 @@ h4 .wm {
 @media (min-width: 61rem) {
   body:has(.flip) .hero.center {
     margin-top: -1.75rem;
+  }
+}
+
+/* The guide's top (the owner, 2026-11-27: "should the 'search the guide' be under the guide with sheep logo ... make all of
+   that look more organized and put together"): the bellwether and the title on one line, level with the top of the list
+   down the left, and the search box right under them. */
+.ghead {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0 0 1rem;
+}
+
+.ghead .guide-sheep {
+  width: 3.25rem;
+  margin: 0;
+}
+
+.ghead h1 {
+  margin: 0;
+}
+
+/* Under the search box the first section's line is the only line: the phone's Browse menu keeps its own, and the
+   section after it starts without a second. */
+.article > .gsearch + .tree-m + h2.sec,
+.article > .ghead + .gsearch + .tree-m + h2.sec {
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 44rem) {
+  .article > .tree-m[open] + h2.sec,
+  .article > .tree-m + h2.sec {
+    margin-top: 0.75rem;
+    border-top: 0;
   }
 }
